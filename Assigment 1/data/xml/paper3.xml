@@ -1,0 +1,1234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">A unified framework to improve the interoperability between HPC and Big Data languages and programming models</title>
+				<funder>
+					<orgName type="full">European Regional Development Fund</orgName>
+					<orgName type="abbreviated">ERDF</orgName>
+				</funder>
+				<funder ref="#_mbMqUPr #_2gcgaHn">
+					<orgName type="full">Xunta de Galicia</orgName>
+				</funder>
+				<funder ref="#_YqJghvu">
+					<orgName type="full">MICINN</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2021-12-01">1 Dec 2021</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">César</forename><surname>Piñeiro</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Centro Singular de Investigación en Tecnoloxías Intelixentes (CiTIUS)</orgName>
+								<orgName type="institution">Universidade de Santiago de Compostela</orgName>
+								<address>
+									<addrLine>Santiago de Compostela</addrLine>
+									<postCode>15782</postCode>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author role="corresp">
+							<persName><forename type="first">Juan</forename><forename type="middle">C</forename><surname>Pichel</surname></persName>
+							<email>juancarlos.pichel@usc.es</email>
+							<affiliation key="aff0">
+								<orgName type="department">Centro Singular de Investigación en Tecnoloxías Intelixentes (CiTIUS)</orgName>
+								<orgName type="institution">Universidade de Santiago de Compostela</orgName>
+								<address>
+									<addrLine>Santiago de Compostela</addrLine>
+									<postCode>15782</postCode>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+							<affiliation key="aff0">
+								<orgName type="department">Centro Singular de Investigación en Tecnoloxías Intelixentes (CiTIUS)</orgName>
+								<orgName type="institution">Universidade de Santiago de Compostela</orgName>
+								<address>
+									<addrLine>Santiago de Compostela</addrLine>
+									<postCode>15782</postCode>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">A unified framework to improve the interoperability between HPC and Big Data languages and programming models</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2021-12-01">1 Dec 2021</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">22BE765966C5F85911B14F6EA994C4CA</idno>
+					<idno type="arXiv">arXiv:2112.00467v1[cs.DC]</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Big Data</term>
+					<term>HPC</term>
+					<term>MPI</term>
+					<term>Multi-language</term>
+					<term>Programming models</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>One of the most important issues in the path to the convergence of HPC and Big Data is caused by the differences in their software stacks. Despite some research efforts, the interoperability between their programming models and languages is still limited. To deal with this problem we introduce a new computing framework called IgnisHPC, whose main objective is to unify the execution of Big Data and HPC workloads in the same framework. IgnisHPC has native support for multi-language applications using JVM and non-JVM-based languages. Since MPI was used as its backbone technology, IgnisHPC takes advantage of many communication models and network architectures. Moreover, MPI applications can be directly executed in a efficient way in the framework. The main consequence is that users could combine in the same multi-language code HPC tasks (using MPI) with Big Data tasks (using MapReduce operations). The experimental evaluation demonstrates the benefits of our proposal in terms of performance and productivity with respect to other frameworks such as Apache Spark. IgnisHPC is publicly available for the Big Data and HPC research community.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>The unification of High Performance Computing (HPC) and Big Data has received increasing attention in the last years. It is a common belief that exascale computing and Big Data are closely associated since HPC requires processing large-scale data from scientific instruments and simulations. But, at the same time, it was observed that tools and cultures of HPC and Big Data communities differ significantly <ref type="bibr" target="#b0">[1]</ref>. One of the most important sources of divergence comes from the differences between their software ecosystems. In this way, HPC applications have traditionally been based on MPI (Message Passing Interface) to support inter-node parallel execution, and based on OpenMP or other alternatives to exploit intra-node parallelism. However, Big Data programming models are based on interfaces like Hadoop <ref type="bibr" target="#b1">[2]</ref> or Spark <ref type="bibr" target="#b2">[3]</ref>. In addition to different programming models, programming languages also differ between both communities: being Fortran and C/C++ the most common languages in HPC applications, and Java, Scala, or Python being the most common languages in Big Data applications.</p><p>This divergence between programming models and languages sets out a convergence problem, not only related to the interoperability of the applications but also to the interoperability between data formats from different programming languages <ref type="bibr" target="#b3">[4]</ref>.</p><p>In this scenario, we need to consider how to build end-to-end workflows where, for example, simulations can be MPI applications written in Fortran or C/C++, and the analytics codes can be written in Java or Python (maybe parallelized by a Big Data framework).</p><p>In this work we introduce a new computing framework called IgnisHPC<ref type="foot" target="#foot_0">foot_0</ref> to deal with that issue. The main goal of IgnisHPC is to unify in the same framework the development, combination and execution of HPC and Big Data applications using different languages and programming models. With this objective in mind, we can summarize the main contributions of IgnisHPC as follows:</p><p>-Unlike other frameworks such as Hadoop and Spark, Ig-nisHPC supports natively both JVM and non-JVM-based languages. Applications can be implemented using one or several programming languages following an API inspired by Spark's one. -IgnisHPC uses MPI as backbone technology, which allows the framework to support many communication models and network architectures. In addition, MPI applications and libraries can be directly executed in an efficient way in IgnisHPC. In this way, most of the HPC scientific applications, which in many cases contain tens of thousands of lines of code, do not have to be ported to a new API or programming model. Nowadays, to the best of our knowledge, there is no other Big Data framework with that feature.</p><p>-In IgnisHPC, MPI codes can be easily combined with typical MapReduce operations to create hybrid applications. Therefore, users can use the programming models that best fit their data-intensive and compute-intensive tasks in the same application. -A thorough experimental evaluation has been carried out to demonstrate the benefits of IgnisHPC in terms of performance and productivity. The study showed that Ig-nisHPC clearly outperforms Spark when considering different types of Big Data application patterns. Moreover, we proved that running MPI (and hybrid MPI+OpenMP) applications from IgnisHPC is easy and as efficient as executing them natively. -To avoid dependencies, IgnisHPC is fully containerized and supports some of the most well-known resource and scheduler managers.</p><p>The remainder of this paper is organized as follows. Section 2 provides some context about Big Data and HPC technologies. Section 3 explains in detail the architecture and modules of Ig-nisHPC. Section 4 describes how to implement applications using the IgnisHPC API. Section 5 focuses on the integration of MPI in IgnisHPC, and how MPI applications can be executed within the framework. The experimental evaluation is shown in Section 6. Section 7 discusses the related work. Finally, the main conclusions derived from this work are explained.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Background</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1.">Big Data frameworks</head><p>MapReduce is a programming model introduced by Google for processing and generating large data sets on a huge number of computing nodes <ref type="bibr" target="#b4">[5]</ref>. Apache Hadoop <ref type="bibr" target="#b1">[2]</ref> was the first opensource implementation of the MapReduce programming model. It was widely adopted by both industry and academia, thanks to that simple yet powerful programming model that hides the complexity of parallel task execution and fault-tolerance from the users. However, most applications do not fit this model and require a more general data orchestration.</p><p>Apache Spark <ref type="bibr" target="#b2">[3]</ref> was designed to overcome some of the Hadoop limitations, especially when considering iterative jobs. Nowadays Spark is considered the de-facto standard for Big Data processing. Unlike Hadoop, Spark uses Resilient Distributed Datasets (RDDs) which implement in-memory data structures used to cache intermediate data across a set of nodes. Since RDDs can be kept in memory, algorithms can iterate over RDD data many times very efficiently. In addition, Spark provides many attractive features such as fault-tolerance, as RDDs can be regenerated through lineage when compute nodes are lost. Spark uses a thread-based worker model for executing the tasks. In this way, a Spark job is controlled by a driver program, which usually runs in a separate master node. On the other hand, the parallel regions in the driver program are shipped to the cluster to be executed.</p><p>Spark is implemented in Scala and also has interfaces to execute Java, Python and R applications. Both Hadoop and Spark are capable of running codes written in other programming languages, but they suffer performance issues since they require sharing data outside the Java Virtual Machine (JVM) through system pipes <ref type="bibr" target="#b5">[6]</ref>. Contrary to the common belief, this behavior also applies to Python in Spark because, while the Python driver code can be executed within the JVM thanks to Jython <ref type="bibr" target="#b6">[7]</ref>, executors are directly executed with the available Python interpreter. As a consequence, the performance of Python codes is affected like any non-JVM language such as C++ .</p><p>In our previous work <ref type="bibr" target="#b7">[8]</ref>, we introduced Ignis, a first attempt to build an efficient and scalable multi-language Big Data framework. Despite being a prototype, Ignis has two significant contributions with respect to Spark. First, it allows to execute natively applications implemented using non-JVM languages such as Python and C/C++. Second, it supports multilanguage applications, so different computing tasks could be implemented in the programming language that best suits them. However, there are also some important limitations as the following. For instance, Ignis is restricted to use TCP sockets for inter-node communication, so it is not possible to take advantage of typical HPC networks such as Infiniband, Myrinet, etc. Another issue is that Ignis only supports one data partition per worker (executor). As a consequence, in order to work with big datasets, it is necessary to create new workers, which causes a degradation in the I/O performance. Ignis is completely containerized, but it uses a very limited ad-hoc solution for containers orchestration (named Ancoris). And finally, there was no submitter in Ignis, so jobs are manually launched using several configuration scripts.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2.">MPI</head><p>Message Passing Interface (MPI) is the most widely used and dominant programming model in HPC. In MPI, processes make explicit calls to library routines defined by the MPI standard to communicate data between two or more processes. These routines include both point-to-point (two party) and collective (many party) communication. Note that from MPI-3 new features were introduced to enable MPI processes within an SMP node to collectively allocate shared memory for direct load and store operations, which enables the shared-memory-processes to more efficiently share data.</p><p>Among the different MPI implementations, the most successful ones are MPICH <ref type="bibr" target="#b8">[9]</ref> and Open-MPI <ref type="bibr" target="#b9">[10]</ref>. In particular, IgnisHPC uses MPICH as backbone technology to perform all the communications between processes, which allows the framework to support many communication models and network architectures (e.g. Infiniband, Myrinet, etc.). As we will explain later, one of the most important consequences of this design decision is that IgnisHPC can efficiently execute native MPI applications. Therefore, it is not necessary to port MPI applications using a different API. In this way, IgnisHPC is able to bring together the benefits of HPC and Big Data worlds into the same framework.</p><p>We have considered MPICH instead of other MPI implementations because it is a mature project and provides several important features that are critical in a Big Data environment. For example, it is possible to join processes dynamically. It</p><p>Driver Backend Executor 1 Executor n ... Resource Manager Submitter Driver Container Executors Containers Submitter Container Driver Backend Executor 1 Executor n ... Resource Manager Driver Container Executors Containers means that MPICH allows to connect independent instances of a MPI process at runtime, which is essential for increasing the number of processes when more parallelism is needed or for replacing lost processes when a computing node fails.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3.">Resource managers and schedulers</head><p>In a Big Data environment, it is necessary to manage and balance the cluster resources to allow multiple applications and frameworks to be efficiently executed together on the same system. That is the goal of resource managers such as Apache Mesos <ref type="bibr" target="#b10">[11]</ref> and Nomad <ref type="bibr" target="#b11">[12]</ref>.</p><p>In particular, Apache Mesos groups all the physical resources of each node of the cluster and make them available for the applications as a single pool of resources. Among the features of Mesos we can highlight that it provides resource isolation thanks to its support to Docker containers <ref type="bibr" target="#b12">[13]</ref>. So it allows the execution of jobs in a custom independent environment both in terms of resources and installed software.</p><p>Users cannot interact directly with Mesos because it is only a resource planner, so an orchestration framework is required to run and schedule tasks. We can find many orchestration frameworks depending on the type of tasks to be executed. In this work we have considered two of the most relevant, Apache Marathon <ref type="bibr" target="#b13">[14]</ref> and Apache Singularity <ref type="bibr" target="#b14">[15]</ref>, which both support Docker containers orchestration.</p><p>Finally, Nomad is a simple workload orchestrator created by HashiCorp. Its flexible and consolidated workflow provides users the functionality of both a resource and a scheduler manager, combined into a single system. Nomad is a modern alternative to Mesos and also supports containerized and noncontainerized applications with different life cycle. Unlike old legacy platforms, it is prepared for running heterogeneous applications and using accelerators such as GPUs in a simple way.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">IgnisHPC</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.">Architecture of the framework</head><p>We can divide the IgnisHPC architecture into four independent modules which run inside Docker containers: Submitter, Backend, Driver and Executor. A scheme is shown in The Submitter module is in charge of launching the Ig-nisHPC jobs (1) making a request to the resource manager (and scheduler), which is an external dependency that is responsible of the containers orchestration and the management of their resources. Afterwards, the driver container is started <ref type="bibr" target="#b1">(2)</ref>, where the Driver module is the container entrypoint. That module exposes all the available features of IgnisHPC through a user API created as interface to the Backend, where the API logic is implemented as a service <ref type="bibr" target="#b2">(3)</ref>. The Backend module is started inside the driver container after the driver code initializes the framework, and it is responsible of making the requests to the resource manager following the instructions specified in the driver code <ref type="bibr" target="#b3">(4)</ref>. As a consequence, the resource manager will create the executors containers <ref type="bibr" target="#b4">(5)</ref>. The Executor module contains the low-level implementation of a set of operations required by the Backend for each supported programming language. Note that IgnisHPC uses a SSH tunnel to connect driver and executors containers to handle executors in a safe and secure manner. Finally, the Backend is connected to the executors in order to perform the low-level API operations <ref type="bibr" target="#b5">(6)</ref>. It is important to highlight that the Driver is also considered an executor by the Backend to handle the data transfers.</p><p>There are important architectural differences between Ig-nisHPC and Ignis <ref type="bibr" target="#b7">[8]</ref>, our first prototype of a multi-language Big Data framework. Changes performed to IgnisHPC focused on removing some important limitations and performance issues shown by Ignis (see Section 2.1). Among them we can highlight the following:</p><p>-One of the main goals of IgnisHPC is to unify the execution of Big Data and HPC workloads in the same framework. For this reason data transfers in IgnisHPC (bold arrows in Figure <ref type="figure" target="#fig_0">1</ref>) are performed using MPI.</p><p>It has enormous advantages over the inter-node communications with TCP sockets used by Ignis. First, IgnisHPC supports many different communication models and network architectures (e.g. Infiniband, Myrinet, etc.). In this way, it covers the characteristics of the vast majority of Big Data and/or HPC clusters. Moreover, MPI applications and libraries can be directly executed in IgnisHPC. It means that HPC scientific applications, which in many cases contain tens of thousands of lines of code, do not have to be ported to the IgnisHPC API. And finally, it is possible to combine in the same multi-language code HPC tasks (using MPI) with Big Data tasks (using MapReduce operations). -IgnisHPC has a new Submitter module that handle jobs using an external resource manager. This module includes a submit script, similar to Spark's spark-submit, that allows users to easily launch IgnisHPC jobs. On the contrary, jobs in Ignis are manually configured and IgnisHPC job Cluster 1 Worker 1 ... ... Worker w Cluster c ... Task t Task 1 ... DOCKER CONTAINER Node 1 DOCKER CONTAINER Node 2 DOCKER CONTAINER Node n launched using several scripts. There is no Submitter module in its architecture. -Ignis used a Manager module (one per executor container) that acted as middleman between the Backend module and the executors. To be more efficient, IgnisHPC removed that module and its functionalities were adopted by the Backend. -IgnisHPC supports some of the most well-known resource and scheduler managers. In addition, it was designed to easily add new managers. However, Ignis is bonded to work only with an ad-hoc manager, which has limited functionalities.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2.">Jobs in the framework</head><p>It is important to know the structure of an IgnisHPC job. It consists of a set of Docker containers distributed in multiple computing nodes grouped in Clusters (see Figure <ref type="figure" target="#fig_2">2</ref>). Workers are bonded to a single programming language and run inside a Cluster, so at least one Worker has to be created for each programming language in order to build multi-language applications. A Worker instantiates at least one process (executor) on each Docker container with the aim of executing its tasks in parallel, processing them as a pipeline.</p><p>Clusters are independent, each one has its own assigned resources, so they can execute different tasks at the same time. Using multiple Clusters could be useful if stages or phases of the job have some compatibility issues. In this way, incompatible phases would be executed by different configured Clusters. However, Workers can be executed in shared mode (disabled by default). It means that executors of two or more Workers, which are located in the same container, would share the available resources. Normally users configure each Worker to use a part of the Cluster resources (e.g. cores, memory, etc.).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3.">Resource manager</head><p>Since IgnisHPC must be executed inside Docker containers, a resource and scheduler manager is required to handle the cluster resources and launch these containers. Note that any framework that meets these requirements could be used in Ig-nisHPC by implementing a basic interface. Currently IgnisHPC supports the following managers: Moreover, it has better support for devices like GPUs than Mesos, which allows to create heterogeneous execution environments.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4.">Driver module</head><p>The Driver module is a user API that allows access to all Ig-nisHPC functionalities. The driver program describes the highlevel control flow of the application, and it can be programmed in any of the supported languages (currently, Java, Python and C/C++). The Driver was designed as a Thrift RPC interface to the Backend so the logic has not to be re-implemented for every programming language. More details about the driver API and how to implement an application in IgnisHPC are provided in Section 4.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.5.">Backend module</head><p>The Backend module contains the services that define the Driver's logic. For instance, the reduceByKey function requires searching and grouping the keys. These operations are defined in the Backend, but they are implemented in the Executor module for a specific programming language.</p><p>The Backend module is also responsible of sending requests to the resource manager in accordance with the instructions specified in the driver code. These instructions are lazily executed, so the Backend registers the function calls as a task dependency graph. When a task that represent an action in the driver code is created (e.g. a call to count), all the tasks in its dependency graph are executed. An example is shown in Figure <ref type="figure" target="#fig_4">3</ref>, where the Action Task depends on Task 3, and Task 3 depends on Task 1 and 2. Note that a task dependency is only computed if the task was never executed or if its result was not explicitly cached. The Executor and Container tasks are always executed as final dependencies. These tasks check that executors and containers are running and ready to be used.</p><p>Finally, IgnisHPC is able to recover after a failure of a cluster node or some of the executors. Affected tasks are traced by the Backend in such a way that only their executors are reallocated and recomputed. If the affected tasks are cached, the recovery process will be faster since it is not necessary to recalculate their dependencies. Note that this process is automatic, but users can tune the recovery process using the persistence functions in the driver code (see Section 4).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.6.">Executor module</head><p>The Executor module implements the operations defined by the Backend, where each supported programming language has its own implementation. In order to add support for a new language in IgnisHPC, a minimum implementation only requires programming the context class. The executor context allows the API functions to interact with the rest of the IgnisHPC system. In this way, among the functionalities of the context we find the exchange of user variables between driver and executors or providing the executors access to the MPI communicators.</p><p>As we explained previously, IgnisHPC uses MPI (that is, MPI communicators) to perform all the communications related to the Executor module. IgnisHPC constructs three types of communicators for data transfers (see Figure <ref type="figure" target="#fig_6">4</ref>):</p><p>-Base communicator: for each worker there is a communicator that includes all its executors. This communicator always exists. If one executor is lost, the communicator is destroyed and a new communicator is created including a new executor. To that end, the capability of linking dynamically a single process to a communicator introduced in MPI-3 was of special importance. Without this feature all processes would have to be launched at the same time, and in case a process died, it could not be replaced causing the job to fail. -Driver communicator: it joins a base communicator to the driver process. It is created when the driver and a worker exchange data. -Inter-worker communicator: it is created joining the base communicators of two workers. It is used to send data from one worker to another and it will be destroyed as soon as one of the two workers stops its execution. This communicator is only created between workers that execute the operation ImportData.</p><p>Base Communicator Executor 11 Executor 1n Executor m1 ... Worker with m Executors Containers Driver Communicator Worker Driver Driver Container</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Inter-worker Communicator</head><p>Worker 1 Worker 2 ... Executor mn ... The base communicator for each worker is accessible to programmers by the executor context. It means that IgnisHPC functions can be implemented using that communicator and MPI primitives (e.g. gather, scatter, broadcast, reduce, etc.). As a result, IgnisHPC supports the execution of pure MPI applications with minimal modifications in the original code. A detailed explanation is provided in Section 5.</p><p>Another benefit of using MPI for data transfers is the performance improvement of iterative applications. When using Big Data frameworks such as Ignis and Spark, an iterative application requires the driver to perform an evaluation task per iteration to obtain the final result. Each evaluation has three steps: stopping the executors, analysis of the partial results by the driver and restarting the executors. Note that starting and stopping the executors is very costly in terms of performance. IgnisHPC avoids the driver evaluations because executors share the partial results of each iteration using their MPI base communicator. Therefore, it is not necessary to stop them because they do not need to wait for the driver. This has even a bigger impact on performance for those applications with many short iterations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.7.">Submitter module</head><p>The Submitter is an IgnisHPC module consisting of a set of scripts and utilities for configuring and launching jobs. As we commented previously, Ignis had no module to launch tasks, and the Driver module was launched manually using Ancoris (see Section 3.3). The Submitter is a container, which can be accessed by ssh. There users can set up jobs in a similar environment where the IgnisHPC applications will be executed.</p><p>The main utility of the Submitter module is the ignis--submit script that, like spark-submit, allows users to launch IgnisHPC jobs in the cluster. The script only requires as mandatory arguments a Docker image and the driver program. There are also the following optional parameters:</p><p>name: a job name can be specified.</p><p>arguments: after the driver program name, all the parameters will be considered as driver arguments. attach mode: by default, jobs are launched in unattached mode. That is, ignis-submit launches the job and exits. Attach mode allows users to control the job as if the driver runs locally, so output is printed in real time and it is possible to manually kill the job. properties: users can change the default properties before launching the Driver module. Executor properties can be redefined later but Driver properties are set only by ignis-submit.</p><p>Figure <ref type="figure">5</ref> shows two job submission examples. The first one is a Python basic submission with only its base image and the driver application. The second one deals with a C++ driver and optional parameters. In particular, --name sets the job name, --properties changes the driver default memory to 2 GB, and 0 -g 2 are considered arguments of mydriver. Note that ignishpc/cpp is the C++ base image.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.8.">Data storage</head><p>IgnisHPC provides multiple options for data storage. Users can choose a type of storage according to their particular execution environment. Storage must be defined as a property before the worker creation. IgnisHPC supports the following storage options:</p><p>-In-Memory: it is the best performer since all data is stored in memory. Memory consumption could be an issue so it is not suitable for all kinds of jobs. -Raw memory: data is stored in a memory buffer using a serialized binary format. Extra memory consumption is minimal and the buffer is compressed by Zlib <ref type="bibr" target="#b15">[16]</ref>, which has nine compression levels. Level six is applied by default, but it can be changed when the worker properties are defined. -Disk: similar to raw memory but the buffer is implemented as a file. Performance is much lower but it allows to work with large amounts of data that cannot be completely stored in memory.</p><p>On the other hand, there is an important difference in how memory is handled by Ignis and IgnisHPC. Since Ignis was just a prototype, for simplicity in the implementation, it assigns one data partition to each executor. In this way, if it is necessary to increase the partition size, a realloc operation is performed in such a way that the complete partition is copied to a different memory location. The consequence is a noticeable increment in the memory consumption. This restricts Ignis to work with smaller input datasets. IgnisHPC overcomes that limitation supporting several data partitions per executor. Note that an executor can spawn several threads to process the data partitions in parallel.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Programming applications for IgnisHPC</head><p>IgnisHPC requires a minimal driver code that implements the application at high-level. To facilitate the adoption from the Big Data community, the IgnisHPC API is inspired by the  <ref type="table" target="#tab_3">1</ref>). With respect to Ignis, besides the support for new API functions, IgnisHPC has increased the overall performance for some types of routines (e.g., Group and Sort) thanks to its complete redesign using MPI. -ISource is an auxiliary class used by meta-functions such as map in the driver. This class acts as a wrapper for the input parameters. It is also used to store variables and send them to the executors. Those variables can be obtained by the executors using the context. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1.">An example: Transitive Closure</head><p>With the goal of illustrating how applications are programmed in IgnisHPC, Figure <ref type="figure">6</ref> shows an example of a driver implemented in Python for computing the Transitive Closure of a graph. This algorithm finds out if a vertex x is reachable from another vertex y for all vertex pairs (x, y) in the graph. Note that an equivalent driver code could be implemented in any of the IgnisHPC supported languages (C/C++ and Java) using a similar syntax.</p><p>First, the IgnisHPC framework is initialized (line 6). Properties are created to configure and build a cluster (lines 8 to 14). Note that the properties definition is optional, and IgnisHPC could read them from a default configuration file. Moreover, IgnisHPC introduce the possibility of overwrite the default values when a job is submitted like Spark using the new Submitter module. Therefore, the Docker image, the number of containers, the number of cores and the memory per container could be defined out of the driver code. Computing the Transitive Closure has two phases. To illustrate the multi-language support in IgnisHPC, each phase was implemented in a different programming language. The first one uses a Python executor and the second a C++ executor. The first stage consists of a map operation that takes as input a text file and creates pair values that represent edges in the graph (line 20). As a consequence, it is necessary to previously create a Python worker in the clus-  ter (line 16). It is important to note that creating the worker is mandatory and is not related to the driver programming language. On the other hand, if the worker and the driver code are in the same language, lambda functions can be used (line 20).</p><p>The following phase of the algorithm is iterative: edges are joined into a path until there are not new paths. Since this phase is implemented in C++, a C++ worker should be created (line <ref type="bibr" target="#b21">22)</ref>. Data is shared between workers using the importData function (line 24). The driver code ends printing the results. The framework must be stopped before the driver ends (line 42) to stop the backend. Unlike Ignis, IgnisHPC automatically detects when the driver process ends and stops it. However, this is not a good practice.</p><p>In IgnisHPC a lazy evaluation is performed when a result is no required explicitly. In the example, the trigger that causes the tasks to be launched are the calls to the count function. This approach is also followed by Spark where RDDs are computed lazily the first time they are used in an action <ref type="bibr" target="#b16">[17]</ref>.</p><p>Most of the driver functions are meta-functions. That is, generic functions that require another one to perform an internal operation. This is the case of map in the example of Figure <ref type="figure">6</ref> (lines 20 and 33-34). To implement those functions we should use the executor API provided by IgnisHPC. Basically, it defines a simple interface based on the number of required input parameters. Figure <ref type="figure" target="#fig_10">7</ref> shows an example corresponding to the C++ function used by map in the driver code. Since map takes one parameter and also returns one parameter, IFunction is used. In case there are two input parameters (e.g., reduce), IFunction2 would be used, and so on. Note that if the function does not return any value (e.g. foreach), functions have the same name but with the Void prefix.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2.">Text lambda functions</head><p>As explained previously, lambda functions need that driver and executor codes were implemented in the same language because native code serialization is required. Note that although Python and Java are able to serialize data both languages face compatibility problems. On top of that, C++ does not allow any type of code serialization. To overcome these limitations IgnisHPC implements its own multi-language lambdas without source code serialization, named text lambdas. In this way, Ig-nisHPC allows to define lambdas as text, using the executor language syntax. The executor will transform the lambda text into source code to be used as a meta-function parameter. It is important to highlight that the language of the driver code is indifferent. Figure <ref type="figure">8</ref> shows an example of a text lambda that accumulates all elements (line 2) used by a reduce function. It uses Python syntax so must be evaluated by a Python executor. Another example is shown in line 7. It defines a text lambda that captures the value of a variable, which is read from the context. This lambda function will be compiled and loaded by a C ++ executor. Performance is not affected by using text lambda functions but it can add some overhead to the compilation process, especially for C++.</p><p>In the same way, using the mechanism that allows to execute text lambda functions, IgnisHPC can send a complete job or application to the executors. This is possible thanks to loadLibrary, which can be used to execute a full source code as a IgnisHPC library. It has again a small impact on the compilation time. More details about loadLibrary are provided in Section 5.2 using MPI applications as use case.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">MPI on IgnisHPC</head><p>Our first prototype, Ignis, was limited to perform inter-process communications using only TCP sockets (different computing nodes) or shared memory (same node). However, IgnisHPC was completely redesigned to use MPI as backbone technology. As a consequence, all communications are internally implemented by MPI routines. As we explained previously in the paper, this change makes it possible for IgnisHPC to support more communication models and network architectures. In addition, an important advantage of our approach is that, once IgnisHPC has configured the MPI communications, users can combine in the same application pure MPI libraries using the Ig-nisHPC communicators together with standard Big Data functions (map, reduce, collect, etc.).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1.">Integration of MPI into a Big Data environment</head><p>MPI was not designed to run on Docker containers. As a consequence, there are several problems that should be addressed. First, by default and to preserve an isolation runtime environment, Docker creates a private virtual network between the host and the containers. If two containers are launched on the same host, we can execute MPI processes in the same way that they were two real nodes of a cluster. But if we launched those containers on different hosts, the communication is impossible since they belong to different networks. We can find in the literature several works that deal with this issue (see the Related Work section). For instance, some approaches opt for launching the container on the host network or creating a virtual network between the cluster nodes <ref type="bibr" target="#b17">[18]</ref>. However, these configurations are difficult to handle and implement by resource managers in Big Data environments.</p><p>Second, there are important differences in how ports are handled by a Big Data or a HPC environment. For instance, ports are considered a resource in a Big Data environment because there are services that require an exclusive port, which is not the case in HPC. MPI needs ports to establish connections between processes but restricted to a range. However, ports provided by resource managers in a Big Data environment are usually random and not consecutive.</p><p>Finally, IgnisHPC can internally spawn several threads per MPI process (executor) to increase the performance when processing and/or communicating data. All these threads use communicators to exchange data in parallel. Every time a communicator is created, MPI assigns a virtual interface to it. However, a virtual interface can only be used by one communicator at the same time, so parallel communications requires the use of multiple virtual interfaces. In the most recent MPICH version, which is the MPI implementation used by IgnisHPC, virtual interfaces are assigned sequentially. Since IgnisHPC creates and destroys communicators dynamically, it is not possible to assure that threads can always exchange data in parallel using communicators with different assigned virtual interfaces. The consequence is a degradation in the performance.</p><p>To overcome the above problems, IgnisHPC applies the following changes to MPICH:</p><p>-Containers: MPICH has been designed to work on a local network. Docker containers can be joined to a network but only within the same node (internal network). Although resource managers can export a service from the internal network to the local network, this causes a problem when MPI is executed containerized. MPICH uses a service to store the network addresses of the launched MPI processes, but when using containers, each MPI process stores the values corresponding to the internal network which are not valid outside the node. For this reason, it is necessary to modify MPICH in order to store the correct network values that correspond to the local network. -Ports: now MPICH uses a list of ports provided by the resource manager instead of a range. -Multithreading: MPICH was modified to assure that all threads use a different virtual connection. In this way, communications between threads can always be performed in parallel.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2.">Running MPI applications in IgnisHPC</head><p>IgnisHPC can execute MPI applications implemented in any of the supported languages. We must highlight that, to the best of our knowledge, currently does not exist other Big Data framework with this feature. Most of the MPI codes for HPC  are implemented in C/C++, while applications in other languages such as Java and Python are a minority. So although IgnisHPC supports Python and Java, we will focus on C/C++ MPI applications.</p><p>To explain how to execute a MPI application within Ig-nisHPC, we have considered LULESH <ref type="bibr" target="#b18">[19]</ref> as guiding example. LULESH is a proxy HPC application for shock hydrodynamics with more than 5,000 lines of C++ code.</p><p>MPI applications, like other IgnisHPC codes, must be implemented using the executor API to be used from the driver (see Figure <ref type="figure" target="#fig_10">7</ref>). However, some minimal modifications should be previously applied to the original MPI codes:</p><p>-MPI initialization: IgnisHPC controls the MPI environment, so MPI Init and MPI Finalize must be removed from the MPI application. -MPI COMM WORLD: MPI applications use a default communicator but IgnisHPC requires its own communicator. The simplest solution is to create a custom header to overwrite the default communicator. Figure <ref type="figure" target="#fig_13">9</ref> shows an implementation of this functionality. -I/O data: These modifications are optional. In some scenarios, it is interesting to allow IgnisHPC to handle the operations on input and output data of an MPI application. This is the case, for example, when the output file of the application will be afterwards processed by other Ig-nisHPC tasks. If IgnisHPC manages the output file, data is kept in memory. If not, the output file would be written to disk and read again to continue executing the following tasks, causing an important degradation in the performance. To do that, read and write functions related to input/output files will be removed from the MPI source code. As we explain next, they will be replaced by input and return parameters of the call function in the corresponding executor code.</p><p>Figure <ref type="figure" target="#fig_16">10</ref> shows the executor code for calling LULESH from the IgnisHPC driver. First, the global variable for the communicator of Figure <ref type="figure" target="#fig_13">9</ref> is created (line 4) and initialized with the IgnisHPC MPI group (line 9). LULESH is a benchmark, so it does not receive any data from IgnisHPC. As a consequence, according to the executor API explained in Section 4, it is of type IVoidFunction0 (line 5). The only mandatory method to be implemented is call (line 7). Inside that method, the application arguments are parsed from the IgnisHPC context. In our example, each argument is individually parsed to create a user 1 using ignis::executor::api;    worker.loadLibrary("liblulesh.so") 2 worker.voidCall("lulesh_app", s = "70", i = "2400") 1 worker.loadLibrary("liblulesh.so");    friendly interface. However, the arguments could be parsed together as a list, reducing noticeably the necessary lines of code. The call method ends calling the LULESH main function (line 34). Afterwards, Lulesh class is exported (line 38). This operation is only necessary in C++. To finalize, an IgnisHPC library is created (line 40), which will be used to call LULESH from the driver.</p><p>Finally, we show how to use an MPI application from the driver. The example of Figure <ref type="figure" target="#fig_21">11</ref> focuses only in the necessary functions to execute LULESH using a Python and a C++ driver. Note that the MPI application should be previously compiled as a library (liblulesh.so). The example assumes that there is a C++ worker in the driver where two functions are executed: loadLibrary and voidCall. On the one hand, loadLibrary loads all the classes from the library declared in create ignis library. In this case, Lulesh is the only existent class. On the other hand, voidCall is an action that causes the execution of the library. If the library returns an output to IgnisHPC, voidCall should be replaced by call that would</p><p>1 ...  return a IDataFrame object. Library arguments in C++, which were parsed in the executor code, are added to the function using addParam from the ISource class. This syntax could be also used in Python. Nevertheless, keyword arguments in Python are a more elegant alternative (see line 2 in Figure <ref type="figure" target="#fig_21">11</ref>).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.3.">Hybrid applications</head><p>In IgnisHPC an MPI code can be combined with typical MapReduce operations to create a hybrid application. In this way, the different computing tasks could be implemented in the programming model and language that best suits them.</p><p>Figure <ref type="figure" target="#fig_24">12</ref> shows a simple example of a Wordcount application where a MPI Python library is combined with IgnisHPC API functions. Input data is distributed and prepared by Ig-nisHPC (Tasks 1 and 2), so MPI is only responsible of the compute-intensive part (Task 3). Observe that for using functions included in a Python library it is only necessary to load the library (line 5) and invoke the call routine with the name of the desired function (line 11). Finally, results are converted and written to disk in json format using the IgnisHPC API (Task 4).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.">Experimental evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.1.">Experimental setup</head><p>The experiments shown in this section were carried out on an 12-node cluster, where each node consists of:</p><formula xml:id="formula_0">-CPU: 2 × Intel Xeon E5-2630v4 (2.2Ghz, 10 cores) -Memory: 384 GB of RAM -Storage: 8 × 4TB 7.2k SATA -Network: 2 × 10GbE</formula><p>It is a Linux cluster running CentOS 7 (kernel 3.10.0), Docker 20.10.2-ce and Spark 2.2.0 (with YARN <ref type="bibr" target="#b19">[20]</ref> as cluster manager). Ignis and IgnisHPC run on a Ubuntu 20.04 image with MPICH 3.4.1.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.">Big Data applications</head><p>We have selected five workloads that represent different types of application patterns for which Spark is considered the best performing Big Data framework: Minebench, TeraSort, K-Means, PageRank and Transitive Closure.</p><p>Table 2 lists the use of the most important operators by each Big Data application, including basic core operators and specific ones implemented by the IgnisHPC framework. Batch (one pass) Iterative (caching) Operators MB TS KM PR TC textFile map mapValues</p><formula xml:id="formula_1">- - - - flatMap - - - - reduceByKey - - - collectAsMap - - - - repartition - - - count - - - join - - - union - - - - distinct - - - - importData (I) - - - - sort - - - - saveAsTextFile - -</formula><p>Table 2: Operations used in each Big Data application. Minebench (MB), Terasort (TS), K-means (KM), PageRank (PR) and Transitive Closure (TC). Operators annotated with I are specific only to IgnisHPC.</p><p>-Minebench (MB). This application<ref type="foot" target="#foot_3">foot_3</ref> performs the calculation of SHA-256 hashes imitating the Proof-of-Work algorithm used in the Bitcoin protocol <ref type="bibr" target="#b20">[21]</ref>. Do not confuse with the data mining benchmark suite NU-MineBench. This algorithm has two phases which are implemented using two chained map operations. The first map is data-intensive, while the second is a compute-intensive task. In particular, in the first stage a set of Bitcoin transactions are grouped together forming a block proposal. A binary Merkle tree <ref type="bibr" target="#b21">[22]</ref> is calculated for those transactions and its Merkle root hash is added to a block header. The second stage calculates the hash of the block header iteratively while the condition is not met. The strong scaling tests were obtained using an input file containing 300K blocks (120MB), while the weak scaling experiments fixed the input data per core to 300K blocks. -TeraSort (TS). It is a sorting algorithm suitable for measuring the I/O and the communication performance of the considered frameworks. Elements in IgnisHPC are sorted by means of the MergeSort algorithm where elements are distributed by a regular sampling among the executors <ref type="bibr" target="#b22">[23]</ref>. Note that this task requires that executors exchange data. The input data used in the tests contains 1 TB of text with 1.8B lines. -K-Means (KM). This is a classical machine learning algorithm for data clustering, and it is a good example of an iterative MapReduce application. This pattern covers a large set of iterative machine learning algorithms such as linear regression, logistic regression, and support vector machines.</p><p>The goal of KM is to classify a given data set through a certain number of clusters (K clusters). In each iteration, a data point is assigned to its nearest cluster center, using a map function. Data points are grouped to their center to further obtain a new cluster center at the end of each iteration (reduce). The experimental evaluation was carried out using the NUS-WIDE dataset <ref type="bibr" target="#b23">[24]</ref>, which contains 269,648 images with 500 attributes per image. In the tests the results were obtained after 10 iterations and K = 81.  -PageRank (PR). It is a graph algorithm which ranks elements by counting the number and quality of links. To evaluate the PR algorithm on IgnisHPC and Spark we used the Live-Journal graph from the SNAP repository <ref type="bibr" target="#b24">[25]</ref>, which contains 4.8M vertices and about 69M edges. -Transitive Closure (TC). One of the most basic questions that arises when analyzing a complex graph G is whether one vertex x can reach another vertex y via a directed path. A way to store this information is to construct another graph, such that there is an edge (x, y) in the new graph if and only if there is a path from x to y in the input graph. This new graph is called the Transitive Closure of G. Since computing the TC is very costly, we used a small graph with 75 vertices and 200 edges in our tests.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.1.">Analysis and discussion</head><p>We now present the performance results from our evaluation of Spark, Ignis and IgnisHPC considering all the Big Data applications detailed above. Figures <ref type="figure" target="#fig_25">13</ref> and <ref type="figure" target="#fig_26">14</ref> show the scalability study of the Minebench (MB) application using two different implementations. In the first one, MB was programmed using only Python, while in the second one, the two chained map operations are implemented using Python (data-intensive task) and C++ (compute-intensive task), respectively. Results show that IgnisHPC exhibits very good strong-scaling behavior for both implementations. On the contrary, the Spark scalability is impacted for the cost of starting JVMs and transferring data through system pipes to the Python processes, causing an important degradation in the overall performance <ref type="bibr" target="#b7">[8]</ref>. This scenario is even more clear for the multi-language implementation in Figure <ref type="figure" target="#fig_26">14</ref>(a) since Spark sends data from Python to C++ processes through the JVM, increasing the number of pipe operations. As a consequence, the Spark strong scalability is really poor. On the other hand, IgnisHPC weak scales very well for both code versions (Figures <ref type="figure" target="#fig_25">13(c</ref>) and 14(c)), which is not surprising since there is not much communication in the MB application. As a consequence, IgnisHPC is able to extract all the existent parallelism. Finally, we must highlight that IgnisHPC clearly outperforms Ignis both in terms of strong and weak scalability, especially when considering the multi-language application.</p><p>Performance results of the TeraSort (TS) application running on IgnisHPC and Spark frameworks are displayed in Figure <ref type="bibr" target="#b14">15</ref>. Ignis results are not shown because the memory consumption of sorting 1 TB of data is too high for our cluster. As we explained in Section 3.8, Ignis assigns one data partition to each executor. For TS those partitions are very large. Every time an element is added to a partition, the complete partition is copied to a different memory location (realloc operation), which causes a boost in the memory requirements. This restricts Ignis to work with smaller input datasets. We avoid this limitation since IgnisHPC was designed to allow several partitions per worker. Two different TS implementations in IgnisHPC were analyzed: a pure Python code and a multilanguage Python-C++ code. In the latter case, the sort operation uses a user-defined C++ function for comparison purposes. For all the cases IgnisHPC outperforms Spark, especially when considering the multi-language implementation. In this way, for instance, IgnisHPC is 116× faster than sequential Spark when using 160 cores, while Spark reaches a speedup of only 66× (Figure <ref type="figure" target="#fig_27">15(b)</ref>). It allows IgnisHPC to sort 1 TB of data in barely 5 minutes.</p><p>Strong scaling results of K-Means (KM) are shown in Figure <ref type="bibr" target="#b15">16</ref>. We used as reference the Spark implementation of this algorithm included in MLlib (Machine Learning Library) <ref type="bibr" target="#b25">[26]</ref>. For Ignis, a pure C++ and a Python-C++ implementations of   KM were analyzed. For IgnisHPC, we only show the results for the multi-language Python-C++ code because the numbers obtained by a pure C++ application are very similar. We can observe that Ignis was able to beat Spark when considering the C++ code. However, an important degradation in the scalability was detected for the multi-language implementation as the parallelism increases. This problem was explained in Section 3.6 and is related to the way Ignis handle iterative applications. Ignis starts and stops the executors each iteration because the driver must compute the partial results, which has an important impact on the performance. To deal with this, IgnisHPC takes advantage of MPI in such a way that executors compute the partial results and share them without intervention of the driver. For this reason IgnisHPC exhibits a very good strong scalability even for multi-language iterative applications, decreasing noticeably the execution times with respect to Spark and Ignis. It can be observed in Figure <ref type="figure" target="#fig_28">16</ref>(b) that IgnisHPC is about two and four times faster than Spark and Ignis (multi-language code) when using all the cores in the cluster, respectively. In Big Data analytics many problems require processing graphs. For this reason it is essential for a Big Data framework as IgnisHPC to include primitives to support this kind of applications. In addition, since the size of the graphs to be processed is often very large, a good scalability is essential. With this goal in mind we have evaluated two well-known graph algorithms in Spark and IgnisHPC: PageRank (PR) and Transitive Closure (TC). Performance results are shown in Figures <ref type="figure" target="#fig_29">17</ref> and <ref type="figure" target="#fig_30">18</ref>, respectively. The algorithms in Spark were implemented using GraphX <ref type="bibr" target="#b26">[27]</ref>. Note that Ignis does not support several operations that are basic for this type of applications such as join and union (see Table <ref type="table" target="#tab_6">3</ref>), so it cannot be evaluated. Despite the fact that GraphX is a highly tuned API for graph processing, IgnisHPC is capable of outperforming Spark in both cases.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.2.2.">Final remarks</head><p>Table <ref type="table" target="#tab_6">3</ref> summarizes the performance gains obtained by Ig-nisHPC with respect to Spark and Ignis when running all the considered Big Data applications. Results were obtained using the maximum number of cores available and taking into account the best Ignis and Spark implementation (if there is more than one). In this way, for example, two implementations are available for Minebench, pure Python and multi-language  Table 4: MPI calls used for communications in the HPC applications.</p><p>Python-C++. In that case we used as reference for Spark the Python code, while for Ignis the best performing implementation was the multi-language one (see the values in Figures <ref type="figure" target="#fig_25">13(a</ref>) and 14(a) when using 240 cores). According to the results, IgnisHPC is from 1.10× to 3.87× faster than Spark. It is especially relevant the good behavior of IgnisHPC when considering multi-language applications. At the same time, IgnisHPC is a step forward with respect to Ignis in terms of performance. In this case, IgnisHPC is from 1.23× to 1.28× faster than Ignis. However, there are additional benefits. First, the memory consumption in IgnisHPC was optimized allowing multiple partitions per executor, which allows to work with extremely large datasets. That is the reason why Ignis is not able to execute TeraSort in our cluster. And second, the IgnisHPC API was extended to support, among others, graph processing algorithms such as PageRank and Transitive Closure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3.">HPC applications</head><p>For many years MPI has been the dominant parallel programming model in the HPC area. As we explained in Section 5, thanks to its architectural design, one of the most important features of IgnisHPC is its ability to execute native MPI applications within the framework just adding a few lines of code. To evaluate the benefits of our approach we are interested in two key areas: performance (with respect to the native MPI execution) and productivity (additional Source Lines Of Code -SLOC). In this way, we have selected five HPC applications coming from different scientific fields that represent a variety of MPI communication patterns. Table <ref type="table">4</ref> summarizes the most important MPI calls (point-to-point and collective operations) used in the applications. Note that during a specific run, an application may use only a subset of these communications. All the codes were implemented using C/C++. For some of them we have considered hybrid implementations (MPI+OpenMP) to demonstrate that is also possible to execute efficiently this type of applications in IgnisHPC without additional effort.</p><p>Next we provide some information about the selected HPC applications used in the experimental evaluation:</p><p>-LULESH (Livermore Unstructured Lagrange Explicit Shock Hydrodynamics). It is a shock hydrodynamics code developed at Lawrence Livermore National Lab (LLNL) <ref type="bibr" target="#b18">[19]</ref>. It has been ported to a number of programming models: MPI, OpenMP, MPI+OpenMP, CUDA, etc. In this paper we have</p><p>1 2 4 8 16 20</p><p>Cores per node considered the hybrid MPI+OpenMP implementation, which uses MPI between nodes and OpenMP for cores on a node. Performance tests were run on 8 nodes with a problem size of 70 3 on each node, which corresponds to the most representative problem size <ref type="bibr" target="#b27">[28]</ref>. -AMG. It is a parallel algebraic multigrid solver for linear systems arising from problems on unstructured grids. It is part of the Exascale Computing Project (ECP) proxy applications suite <ref type="foot" target="#foot_4">4</ref> and was derived directly from the BoomerAMG <ref type="bibr" target="#b28">[29]</ref> solver. AMG is an SPMD application with about 65,000 lines of code which uses OpenMP threading within MPI tasks. Parallelism is achieved by simply subdividing the grid into logical P × Q × R (in 3D) chunks of equal size. AMG is a highly synchronous and memory-access bound code. The scalability tests were obtained with a fixed local problem grid size per MPI process of 100×100×100 points. -miniAMR. It is a proxy app for adaptive mesh refinement (AMR), which is a frequently used technique for efficiently solving partial differential equations (PDEs) <ref type="bibr" target="#b29">[30]</ref>. It applies a stencil calculation on a unit cube computational domain, which is divided into blocks. This application also belongs to the ECP proxy app collection and was implemented using MPI. We used blocks with dimensions 8×8×8 and a maximum of 4 refinement levels. The test case we considered is that of an expanding sphere, which closely mimics an explosion. Blocks are refined along the boundary of the expanding sphere. -miniVite. It implements a parallel Louvain method for community detection, which is one of the most important graph kernels used in scientific and social networking applications for discovering higher order structures within a graph <ref type="bibr" target="#b30">[31]</ref>. It is also included in ECP proxy app collection. miniVite was programmed using MPI and OpenMP. As input we used a graph with 10% of the vertices of the well-known friendster social network graph <ref type="bibr" target="#b31">[32]</ref>. It consists of 6.6M vertices and 24.2M edges. -MSAProbs. One basic step in many bioinformatics analyses is the multiple sequence alignment (MSA). MSAProbs <ref type="bibr" target="#b32">[33]</ref> is a state-of-the-art tool to compute protein MSA based on hidden Markov models. In this work we have considered its MPI+OpenMP parallel implementation <ref type="bibr" target="#b33">[34]</ref>. The input dataset PF07085 <ref type="bibr" target="#b34">[35]</ref> used in the tests consists of 975 sequences with an average length of 512.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6.3.1.">Analysis and discussion</head><p>Next we carry out the analysis of the execution of the MPIbased HPC applications within IgnisHPC. As mentioned previously, we will focus on two aspects. First, the performance differences between running the HPC applications on the cluster as native MPI tasks or using IgnisHPC. It is important to highlight that is out of the scope of this paper to analyze the particular behavior of each MPI application in terms of performance and scalability. This was extensively explained in the references provided in the description paragraphs of Section 6.3. The second key aspect is productivity. In our case we measured the source lines of code (SLOC) of the applications. This metric is very important since scientists will only adopt IgnisHPC to execute MPI applications if porting them requires little effort.</p><p>Performance. Figure <ref type="figure" target="#fig_32">19</ref> shows the strong scaling results of LULESH. Note that this application uses a hybrid MPI+OpenMP approach. Performance differences between native MPI and IgnisHPC are really small, always lower than 1.7%. Running LULESH from IgnisHPC shows the same scalability trend than the MPI native execution.</p><p>Weak scalability tests were run to evaluate AMG (MPI + OpenMP) and miniAMR (MPI). Results are shown in Figures <ref type="figure" target="#fig_34">20(a</ref>) and 20(b). In both cases also, the performance of Ig-nisHPC comes close to that of its counterpart, the native MPI implementation. The maximum performance difference is only about 1.4% for both applications. In this way, for instance, the execution times of miniAMR using all the cores in the cluster were 520 and 517 seconds with native MPI and IgnisHPC, respectively.</p><p>miniVite scalability results are displayed in Figure <ref type="figure" target="#fig_35">21</ref>. The behavior replicates the observations commented previously for the other HPC applications. That is, running an MPI application within the IgnisHPC framework achieves very similar performance with respect to the native execution. In this particular case, the maximum difference drops to only 0.2%. The same scalability analysis applied to MSAProbs (Figure <ref type="figure" target="#fig_36">22</ref>) produces a maximum performance difference of 0.4%.</p><p>So we conclude that running MPI (and MPI+OpenMP) applications from IgnisHPC is as efficient as executing them natively.</p><p>Productivity. As we explained in Section 5, running MPI applications in IgnisHPC requires some minimal modifications to</p><p>1 2 4 8 12</p><p>Nodes -log scale   the original source code and adding a few lines to call the application from the driver code. It is important to highlight that most of these extra lines are devoted to parsing the arguments of the MPI application. In any case, this is a very simple and repetitive code as shown in the example of Figure <ref type="figure" target="#fig_16">10</ref>, which can be considered as boilerplate. We measure the SLOC using SLOCcount <ref type="bibr" target="#b35">[36]</ref> of each original MPI application and its counterpart adapted to IgnisHPC (see Table 5: SLOC of the HPC applications.</p><p>compiling the code. In addition, if an update of any component is required, all modules will be affected. For this reason the most common difficulty faced by end-users when creating and implementing scientific software is the installation and configuration of a framework with thousands of dependencies. Containers are a good way to self-contain an application and its dependencies in a controlled environment. Containers do not interfere with each other and allow to be deleted or updated without leaving any trace on the physical machine. They are an alternative to virtual machines while maintaining a similar level of isolation and showing a superior performance that in some cases is almost identical to the one obtained when executing natively on a real machine <ref type="bibr" target="#b36">[37,</ref><ref type="bibr" target="#b37">38]</ref>.</p><p>IgnisHPC can be seen as an MPI application, so it can be efficiently executed inside containers as it was proven in several works. For example, running MPI applications on a containerized cluster using Docker on a cluster <ref type="bibr" target="#b38">[39]</ref> or in the Cloud <ref type="bibr" target="#b39">[40]</ref>, or using Shifter <ref type="bibr" target="#b40">[41]</ref> instead. Other works deal with the orchestration of Docker containers in a HPC environment. For instance, Higgins et al. <ref type="bibr" target="#b41">[42]</ref> implemented a script based on SSH for the creation of an MPI environment inside a Docker container. Unlike IgnisHPC, this approach requires root privileges to modify the hosts configuration. Other paper introduces Scylla <ref type="bibr" target="#b42">[43]</ref>, a framework for deploying MPI jobs within Docker Containers using Apache Mesos. As explained in Section 2, Apache Mesos requires an orchestration framework such as Marathon or Singularity to be used. However, the authors, instead of considering a third party framework, implemented an ad-hoc solution. Their approach also requires root privileges. We must highlight that IgnisHPC supports all the functionalities included in Scylla without needing root permissions and is not limited to work with Apache Mesos.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2.">Spark and HPC applications</head><p>As a general-purpose framework, Spark has been widely used for many scientific applications and algorithms. However, there are examples from different areas such as linear algebra <ref type="bibr" target="#b43">[44]</ref>, genomics <ref type="bibr" target="#b44">[45]</ref> or even data science <ref type="bibr" target="#b45">[46]</ref> where Spark does not obtain the expected performance.</p><p>One way to approach Big Data and HPC worlds is trying to boost the performance of well-established Big Data technologies when running on HPC systems. For example, taking advantage of the Infiniband fast interconnection network <ref type="bibr" target="#b46">[47]</ref> or the standard HPC programming models such as MPI. We are especially interested in those works that opt for the latter approach. For instance, Anderson et al. <ref type="bibr" target="#b47">[48]</ref> try to combine Spark and MPI. They offload computations to an MPI environment from within Spark in such a way that Spark and MPI tasks run at the same time, using a socket-based implementation for efficient data exchange between processes. In their approach the results of the MPI processing are copied back to persistent storage (HDFS), and then into Spark for further processing. As a consequence, for those applications that require few iterations and/or less work per iteration, there is a degradation in the performance. However, their approach shows a good behavior with several graph and machine learning applications that do not require a lot of data movement between Spark and MPI environments.</p><p>A similar solution can be found in <ref type="bibr" target="#b48">[49]</ref>. They introduce Alchemist, a TCP socket-based implementation for inter-process communication between Spark and MPI. Alchemist was designed to call MPI-based libraries from Spark using the Scala programming language. Like previous work, due to the use of two type of tasks for MPI and Spark, it is always necessary to keep two copies of the same data. In addition, moving data between Spark and MPI processes is costly since TCP sockets are often a slower alternative with respect to shared memory. Therefore, this approach is also limited to computationallyintensive applications for which the cost associated with data transfers is negligible when compared to the overhead that would have been incurred by Spark.</p><p>Finally, there are several related works of the same research group that make a better integration between Spark and HPC technologies. In <ref type="bibr" target="#b49">[50]</ref>, Spark and MPI tasks share the same process, which removes the overhead caused by the data transfers. Python is used as programming language since Spark and MPI has an interface for this language. However, as we explained in <ref type="bibr" target="#b7">[8]</ref>, Python is not natively supported by Spark which causes an important degradation in its overall performance. IgnisHPC overcomes that limitation using native executors for each supported programming language.</p><p>In their next works, the authors introduce Spark-MPI <ref type="bibr" target="#b50">[51,</ref><ref type="bibr" target="#b51">52]</ref>, a hybrid platform that combines Spark and MPI taking advantage of the MPI Exascale Process Management Interface (PMIx). A Spark-MPI application consists of a driver launched by Spark and a set of processes launched by MPI. These MPI processes connect to the Spark driver as workers and they will be able to execute both RDD and MPI functions. Note that using MPI routines in Spark-MPI only makes sense when the data is processed using mapPartitions. That is the only way that Spark provides to work on a complete partition instead of on each element of the partition. The authors showed the benefits of Spark-MPI with deep learning algorithms and ptychographic and tomographic applications. However, Spark-MPI has several limitations that we detailed next:</p><p>-Spark-MPI requires a hybrid environment for Spark and MPI, which will be configured with their respective resource managers. For example, Mesos or Yarn for Spark and Hydra or Slurm for MPI. It is hard to find a system configured this way since resource managers cannot shared the available hardware resources. Moreover, a Spark-MPI job should queue for both Spark and MPI queuing systems, and the requested resources may not be granted at the same time. On the other hand, IgnisHPC is a single application so the previous problems do not apply. -Due to its particular architecture and how Spark executors are launched, Spark-MPI loses the fault tolerance system provided by Spark. As a consequence, after any failure in the executors, all the job is lost. On the contrary, as we demonstrated in <ref type="bibr" target="#b7">[8]</ref>, Ignis and IgnisHPC are able to recover after a failure of a cluster node or some of the executors. If some data is lost, IgnisHPC has enough information about how it was derived in such a way that only those operations needed to recompute the corresponding portion of data are performed. -Spark-MPI is limited to access one partition at the same time per executor. Partition size is restricted to a maximum of 2 GB, which is related to the use of JVMs in Spark. Therefore, additional executors should be created in case more data is necessary, degrading the overall I/O performance. This restriction only applies to IgnisHPC for Java applications, but not for Python and C/C++. -Although the execution of pure MPI codes in Spark-MPI is discussed, the vast majority of MPI libraries and ap-plications are implemented in C/C++ for which Spark does not have native support. Spark uses system pipes to share data outside the JVM in order to run non-JVM codes, which introduces an additional overhead that negatively affects performance. So the expected performance of running MPI applications in the Spark-MPI platform would be low. However, as we demonstrated in this paper, running MPI applications in IgnisHPC achieves very similar performance with respect to its native execution.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8.">Conclusions</head><p>In this work we have introduced a new computing framework named IgnisHPC 5 to fill the gap between Big Data and HPC languages and programming models. IgnisHPC supports the combination of JVM and non-JVM-based languages in the same application (currently, Java, Python and C/C++). It was designed to take advantage of MPI for communications, which allows the framework to execute efficiently MPI applications and libraries. As a consequence, the MPI-based HPC scientific applications do not have to be ported to a new API or programming model. Moreover, it is possible to combine in the same multi-language code HPC tasks (using MPI) with Big Data tasks (using MapReduce operations).</p><p>The experimental evaluation demonstrated the benefits of our proposal in terms of performance with respect to the defacto standard for Big Data processing, Spark, and our first prototype of multi-language framework, Ignis. In particular, Ig-nisHPC is from 1.1× to 3.9× faster than Spark, and about 1.2× faster than Ignis. In the same way, we observed that running MPI and MPI+OpenMP applications in IgnisHPC is as efficient as executing them natively. Therefore, thanks to IgnisHPC we are merging both Big Data and HPC software ecosystems in just one execution environment.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Scheme of the architecture of IgnisHPC.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><figDesc>Figure 1. Modules were implemented in different languages, using Apache Thrift 2 for the inter-module communications. In the figure, thin arrows represent those RPC communications, bold arrows data transfers, and numbers indicate the call order.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Job hierarchy in the IgnisHPC framework.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>-</head><figDesc>Docker: It is the easiest way to run IgnisHPC locally on a single machine. It uses the Docker client to directly launch containers. -Ancoris [8]: This is the only one supported by Ignis and it was designed as a simple and light resource manager. It executes itself inside Docker containers and is composed of two types of instances: master and slaves. The master manages the available resources in the cluster and it is responsible of launching the containers. Slaves expose the resources of their host to the master when they are deployed. -Mesos+Marathon: Since Spark supports Mesos, using it as resource manager together with Marathon as container orchestrator allows users to execute in a single environment Spark and IgnisHPC jobs. In addition, since Ig-nisHPC is able to execute efficiently Big Data and MPIbased applications, we are merging both Big Data and HPC software ecosystems in just one execution environment. -Mesos+Singularity: The same benefits commented above apply to the combination of Mesos and Singularity. -Nomad: It combines in the same framework a resource and a scheduler manager. Due to its lack of dependencies, it is the best option to install in a cluster from scratch.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Example of a task dependency graph.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: MPI communicators in IgnisHPC.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>1 # Python driver 2 ignis-submit ignishpc/python python3 mydriver.py 3 4 # C++ driver 5 ignis 2 Figure 5 :</head><label>124525</label><figDesc>Figure 5: Job submission examples.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>1 # 5 # 7 #Figure 6 :</head><label>1576</label><figDesc>Figure 6: Transitive Closure driver code in Python.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>1 # 2 3 7 /</head><label>127</label><figDesc>include&lt;ignis/executor/api/function/IFunction.h&gt; using namespace ignis::executor::api; 4 typedef std::pair&lt;int64_t, int64_t&gt; ipair; 5 typedef std::pair&lt;int64_t, ipair&gt; ipair2; 6 / Reverse pairs (z, (x, y)) to (z, (y, x)) 8 class Reverse2 : public function::IFunction&lt; 9 ipair2, ipair2&gt;{ 10 ipair2 call(ipair2&amp; x_y, IContext&amp; context){ 11 return {x_y.second, x_y.first};</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Figure 7 :</head><label>7</label><figDesc>Figure 7: Function in C++ used by a map operation for the Transitive Closure application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_11"><head>1 // Python lambda 2 data 9 } 10 )Figure 8 :</head><label>129108</label><figDesc>Figure 8: Examples of text lambda for a Python and a C++ executor.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_12"><head>1 /</head><label>1</label></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_13"><head>Figure 9 :</head><label>9</label><figDesc>Figure 9: C header that replaces MPI COMM WORLD by IGNIS COMM WORLD (global variable).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_14"><head>2 3</head><label>2</label><figDesc>extern int main(int argc, char *argv[]); parsing arguments **************** 15 if (context.isVar("i")) { 16 argv[argc++] = "-i"; 17 argv[argc++] = const_cast&lt;char *&gt;( 18 context.var&lt;std::string&gt;("i").data());</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_15"><head>32 /</head><label>32</label><figDesc>.isVar("h") &amp;&amp; context.var&lt;bool&gt;("h")) { 30 argv[argc++] = "-h"; 31 } / End parsing arguments **************** 33 34 main(argc, const_cast&lt;char **&gt;(argv));</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_16"><head>Figure 10 :</head><label>10</label><figDesc>Figure 10: Executor code for LULESH using C++.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_17"><head>1</head><label>1</label></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_18"><head>2</head><figDesc>worker.voidCall(ISource("lulesh_app").</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_19"><head>3</head><figDesc>addParam("s","70").</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_20"><head>4</head><figDesc>addParam("i","2400"));</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_21"><head>Figure 11 :</head><label>11</label><figDesc>Figure 11: Lulesh usage from a Python driver (top) and its equivalent C++ code (bottom).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_23"><head>2 # 4 # 6 # Task 1 : 8 # Task 2 :</head><label>246182</label><figDesc>Initialization of a Python Worker3 worker = ignis.IWorker(cluster, "python") Load wordcount function implemented in Python with MPI 5 worker.loadLibrary("wordcount.py") Read a text line by line 7 text = worker.textFile("text.txt") Split each line into words 9 words = text.flatmap(lambda line : line.split(" ")) # Task 3: Execute wordcount using words as input counts = worker.call("wordcount", words) # Task 4: Result is stored as json counts.saveAsJson("result.json") ....</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_24"><head>Figure 12 :</head><label>12</label><figDesc>Figure 12: Wordcount example as MPI hybrid application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_25"><head>Figure 13 :</head><label>13</label><figDesc>Figure 13: Study of the scalability of IgnisHPC, Ignis and Apache Spark running the Python Minebench application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_26"><head>Figure 14 :</head><label>14</label><figDesc>Figure 14: Study of the scalability of IgnisHPC, Ignis and Apache Spark running the Python &amp; C++ Minebench application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_27"><head>Figure 15 :</head><label>15</label><figDesc>Figure 15: Study of the scalability of IgnisHPC and Apache Spark running the TeraSort application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_28"><head>Figure 16 :</head><label>16</label><figDesc>Figure 16: Study of the scalability of IgnisHPC, Ignis and Apache Spark running the K-Means application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_29"><head>Figure 17 :</head><label>17</label><figDesc>Figure 17: Study of the scalability of IgnisHPC and Apache Spark running the PageRank application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_30"><head>Figure 18 :</head><label>18</label><figDesc>Figure 18: Study of the scalability of IgnisHPC and Apache Spark running the Transitive Closure application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_32"><head>Figure 19 :</head><label>19</label><figDesc>Figure 19: Study of the scalability of LULESH (8 nodes).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_34"><head>Figure 20 :</head><label>20</label><figDesc>Figure 20: Study of the weak scalability of AMG (20 threads/cores per node) (a) and miniAMR (b).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_35"><head>Figure 21 :</head><label>21</label><figDesc>Figure 21: Study of the scalability of miniVite (20 threads/cores per node).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_36"><head>Figure 22 :</head><label>22</label><figDesc>Figure 22: Study of the scalability of MSAProbs (20 threads/cores per node).</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 1 :</head><label>1</label><figDesc>Example of some IDataFrame functions supported by IgnisHPC.IDataFrame contains all the functions of the MapReduce paradigm, similarly to Spark RDD. A function can be a transformation that generates another IDataFrame or an action that generates a final result (see Table</figDesc><table><row><cell>Type</cell><cell>Functions</cell></row><row><cell></cell><cell>map, filter, flatmap, keyBy,</cell></row><row><cell>Conversion</cell><cell>mapPartitions, keys, values,</cell></row><row><cell></cell><cell>mapValues, etc.</cell></row><row><cell>Group</cell><cell>groupBy, groupByKey</cell></row><row><cell>Sort</cell><cell>sort, sortBy, sortByKey</cell></row><row><cell></cell><cell>reduce, treeReduce, aggregate,</cell></row><row><cell>Reduce</cell><cell>treeAggregate, fold, reduceByKey,</cell></row><row><cell></cell><cell>aggregateByKey, etc.</cell></row><row><cell></cell><cell>collect, top, take,</cell></row><row><cell>I/O</cell><cell>saveAsObjectFile, saveAsTextFile,</cell></row><row><cell></cell><cell>saveAsJsonFile, etc</cell></row><row><cell>SQL</cell><cell>union, join, distinct</cell></row><row><cell></cell><cell>sample, sampleByKey, takeSample,</cell></row><row><cell>Math</cell><cell>count, max, min, countByKey,</cell></row><row><cell></cell><cell>countByValue</cell></row><row><cell>Balancing</cell><cell>repartition, partitionBy</cell></row><row><cell>Persistence</cell><cell>persist, cache, unpersist, uncache</cell></row></table><note><p>Spark API in such a way that IgnisHPC codes are easily understandable by users who are familiar with Spark. In comparison to Ignis, we have extended the API to cover the most important primitives required by Big Data applications. For instance, Ig-nisHPC includes functions such as join and union for graph processing. The IgnisHPC driver API is composed by six main classes:</p><p>-Ignis starts and stops the driver environment.</p><p>-IProperties defines the execution environment properties. -ICluster represents a group of executors containers. It is possible, for example, to execute remote commands (execute, executeScript) and send files (sendFile, sendCompressedFile) to them. -IWorker represents a group of processes of the same programming language. This class includes functions to read files (textFile, partitionJsonFile, etc.), import data partitions from another worker (importData), send data from the driver (parallelize) and execute external codes (loadLibrary, call, voidCall). As we explain later, the former routines allow IgnisHPC to execute MPI applications within the framework. -</p></note></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_6"><head>Table 3 :</head><label>3</label><figDesc>Summary of the IgnisHPC performance results for all the Big Data applications considering the maximum number of cores and the best Ignis and Spark implementation (in case there is more than one). Between brackets the programming language/s used in the IgnisHPC implementation.</figDesc><table><row><cell>Application</cell><cell></cell><cell cols="2">No. times faster than Spark</cell><cell>No. times faster than Ignis</cell></row><row><cell>Minebench</cell><cell></cell><cell cols="2">3.87× [Python &amp; C++], 1.26× [Python]</cell><cell>1.23× [Python &amp; C++], 1.08× [Python]</cell></row><row><cell>TeraSort</cell><cell></cell><cell cols="2">1.76× [C++], 1.35× [Python]</cell><cell>-</cell></row><row><cell>K-Means</cell><cell></cell><cell cols="2">1.94× [Python &amp; C++]</cell><cell>1.28× [Python &amp; C++]</cell></row><row><cell>PageRank</cell><cell></cell><cell>1.10× [Python]</cell><cell></cell><cell>-</cell></row><row><cell cols="2">Transitive Closure</cell><cell>1.12× [Python]</cell><cell></cell><cell>-</cell></row><row><cell></cell><cell cols="2">Point-to-point</cell><cell></cell><cell>Collective</cell></row><row><cell>Application</cell><cell>Blocking</cell><cell>Non-blocking</cell><cell></cell><cell>Blocking</cell><cell>Non-blocking</cell></row><row><cell>LULESH</cell><cell>-</cell><cell>Isend, Irecv</cell><cell></cell><cell>Allreduce, Barrier</cell><cell>-</cell></row><row><cell>AMG</cell><cell>Send, Recv</cell><cell>Isend, Irecv, Irsend</cell><cell cols="2">Allreduce, Barrier, Bcast, Gather(v), Scan, Scatter(v) Reduce, Alltoall, Allgather(v),</cell><cell>-</cell></row><row><cell>MiniAMR</cell><cell>Send, Recv</cell><cell>Isend, Irecv</cell><cell cols="2">Allreduce, Barrier, Bcast, Alltoall</cell><cell>-</cell></row><row><cell>MiniVite</cell><cell>Sendrecv</cell><cell>Isend, Irecv</cell><cell cols="2">Allreduce, Barrier, Bcast, Reduce, Alltoall(v), Exscan</cell><cell>Ialltoall</cell></row><row><cell>MSAProbs</cell><cell>Send, Recv</cell><cell>Isend, Irecv</cell><cell cols="2">Allreduce, Barrier, Bcast</cell><cell>-</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_8"><head>Table 5 )</head><label>5</label><figDesc>. The number of extra lines, between brackets in the table, ranges only from 17 to 75. This demonstrates that integrating MPI applications and libraries in IgnisHPC is a straightforward process, which is very important for the HPC community since it is not necessary to port MPI codes to a new API or programming model. Therefore, IgnisHPC fulfills its design goal of unifying in a single framework the benefits of HPC and Big Data applications.</figDesc><table><row><cell>Application</cell><cell>SLOC MPI</cell><cell>SLOC IgnisHPC</cell></row><row><cell>LULESH</cell><cell>5,918</cell><cell>5,993 (+75)</cell></row><row><cell>AMG</cell><cell>65,154</cell><cell>65,197 (+43)</cell></row><row><cell>MiniAMR</cell><cell>9,958</cell><cell>9,987 (+39)</cell></row><row><cell>MiniVite</cell><cell>3,264</cell><cell>3,324 (+60)</cell></row><row><cell>MSAProbs</cell><cell>6,045</cell><cell>6,062 (+17)</cell></row><row><cell>7. Related Work</cell><cell></cell><cell></cell></row><row><cell>7.1. HPC and Containers</cell><cell></cell><cell></cell></row><row><cell>HPC workloads tend to be monolithic in nature so that each</cell><cell></cell><cell></cell></row><row><cell>component and its dependencies must be present for running or</cell><cell></cell><cell></cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_0"><p>It is publicly available at https://github.com/ignishpc Preprint submitted to Future Generation Computer Systems December</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_1"><p>2, 2021</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_2"><p>https://thrift.apache.org</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_3"><p>Publicly available at: https://github.com/brunneis/minebench</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_4"><p>http://proxyapps.exascaleproject.org/ecp-proxy-apps-suite</p></note>
+		</body>
+		<back>
+
+			<div type="funding">
+<div><p>This work has been supported by <rs type="funder">MICINN</rs> (<rs type="grantNumber">RTI2018-093336-B-C21</rs>), <rs type="funder">Xunta de Galicia</rs> (<rs type="grantNumber">ED431G-2019/04</rs> and <rs type="grantNumber">ED431C-2018/19</rs>) and the <rs type="funder">European Regional Development Fund (ERDF)</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_YqJghvu">
+					<idno type="grant-number">RTI2018-093336-B-C21</idno>
+				</org>
+				<org type="funding" xml:id="_mbMqUPr">
+					<idno type="grant-number">ED431G-2019/04</idno>
+				</org>
+				<org type="funding" xml:id="_2gcgaHn">
+					<idno type="grant-number">ED431C-2018/19</idno>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">The Landscape of Exascale Research: A Data-Driven Literature Analysis</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Heldens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">ACM Comput. Surv</title>
+		<imprint>
+			<biblScope unit="volume">53</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<author>
+			<persName><forename type="first">T</forename><surname>White</surname></persName>
+		</author>
+		<title level="m">Hadoop: The Definitive Guide, 4th Edition</title>
+		<imprint>
+			<publisher>O&apos;Reilly Media, Inc</publisher>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Spark: Cluster Computing with Working Sets</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zaharia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Chowdhury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J</forename><surname>Franklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shenker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Stoica</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 2nd USENIX Conf. on Hot Topics in Cloud Computing (HotCloud)</title>
+		<meeting>of the 2nd USENIX Conf. on Hot Topics in Cloud Computing (HotCloud)</meeting>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="10" to="10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Big data and extreme-scale computing: Pathways to Convergence-Toward a shaping strategy for a future software and data ecosystem for scientific inquiry</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Asch</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The International Journal of High Performance Computing Applications</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="issue">4</biblScope>
+			<biblScope unit="page" from="435" to="479" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Dean</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ghemawat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mapreduce</forename></persName>
+		</author>
+		<title level="m">Simplified Data Processing on Large Clusters, in: Symposium on Operating System Design and Implementation</title>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+			<biblScope unit="page" from="10" to="10" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">More Convenient More Overhead: The Performance Evaluation of Hadoop Streaming</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Ding</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the ACM Symposium on Research in Applied Computation</title>
+		<meeting>of the ACM Symposium on Research in Applied Computation</meeting>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="307" to="313" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<ptr target="http://www.jython.org/" />
+		<title level="m">Jython</title>
+		<imprint>
+			<date type="published" when="2019-04">April, 2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Ignis: An efficient and scalable multi-language Big Data framework</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Piñeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Martínez-Castaño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">C</forename><surname>Pichel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Future Generation Computer Systems</title>
+		<imprint>
+			<biblScope unit="volume">105</biblScope>
+			<biblScope unit="page" from="705" to="716" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Mpich</surname></persName>
+		</author>
+		<ptr target="https://www.mpich.org" />
+		<imprint>
+			<date type="published" when="2021-10">October, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Open-Mpi</forename></persName>
+		</author>
+		<ptr target="https://www.open-mpi.org/" />
+		<imprint>
+			<date type="published" when="2021-10">October, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Mesos: A Platform for Fine-Grained Resource Sharing in the Data Center</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hindman</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 8th USENIX Conf. on Networked Systems Design and Implementation</title>
+		<meeting>of the 8th USENIX Conf. on Networked Systems Design and Implementation</meeting>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="295" to="308" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Nomad: workload orchestration made easy</title>
+		<author>
+			<persName><surname>Hashicorp</surname></persName>
+		</author>
+		<ptr target="https://www.nomadproject.io/" />
+		<imprint>
+			<date type="published" when="2021-10">October, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Docker: lightweight linux containers for consistent development and deployment</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Merkel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Linux journal</title>
+		<imprint>
+			<biblScope unit="issue">239</biblScope>
+			<biblScope unit="page">2</biblScope>
+			<date type="published" when="2014">2014. 2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Apache</forename><surname>Marathon</surname></persName>
+		</author>
+		<ptr target="https://mesosphere.github.io/marathon/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title/>
+		<author>
+			<persName><forename type="first">Apache</forename><surname>Singularity</surname></persName>
+		</author>
+		<ptr target="https://getsingularity.com/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">High Performance ZLIB Compression on Intel Architecture Processors</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">T</forename><surname>Kukunas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Gopal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Guilford</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Gulley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Van De Ven</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">W</forename><surname>Feghali</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Tech. rep</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<pubPlace>Intel</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Resilient Distributed Datasets: A Fault-tolerant Abstraction for In-memory Cluster Computing</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zaharia</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th USENIX Conference on Networked Systems Design and Implementation</title>
+		<meeting>the 9th USENIX Conference on Networked Systems Design and Implementation</meeting>
+		<imprint>
+			<publisher>USENIX Association</publisher>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="2" to="2" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">Integrating MPI with Docker for HPC</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>De Bayser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Cerqueira</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE Int. Conference on Cloud Engineering (IC2E)</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="259" to="265" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Exploring Traditional and Emerging Parallel Programming Models Using a Proxy Application</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Karlin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">th Int. Symposium on Parallel and Distributed Processing</title>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="page" from="919" to="932" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Apache Hadoop YARN: Yet Another Resource Negotiator</title>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">K</forename><surname>Vavilapalli</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 4th Annual Symposium on Cloud Computing, ACM</title>
+		<meeting>of the 4th Annual Symposium on Cloud Computing, ACM</meeting>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="page">16</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Bitcoin: A Peer-to-Peer Electronic Cash System</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Nakamoto</surname></persName>
+		</author>
+		<ptr target="http://bitcoin.org/bitcoin.pdf" />
+		<imprint>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<analytic>
+		<title level="a" type="main">Protocols for public key cryptosystems</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">C</forename><surname>Merkle</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE Symposium on Security and Privacy</title>
+		<imprint>
+			<date type="published" when="1980">1980</date>
+			<biblScope unit="page" from="122" to="122" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<analytic>
+		<title level="a" type="main">On the Versatility of Parallel Sorting by Regular Sampling</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Schaeffer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Shillington</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">S</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Shi</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Parallel Computing</title>
+		<imprint>
+			<biblScope unit="volume">19</biblScope>
+			<biblScope unit="page" from="1079" to="1103" />
+			<date type="published" when="1993">1993</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<author>
+			<persName><forename type="first">T.-S</forename><surname>Chua</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Tang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Hong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Li</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Z</forename><surname>Luo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nus-Wide</forename></persName>
+		</author>
+		<title level="m">Proc. of the ACM Int. Conference on Image and Video Retrieval</title>
+		<meeting>of the ACM Int. Conference on Image and Video Retrieval</meeting>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="volume">48</biblScope>
+			<biblScope unit="page" from="1" to="48" />
+		</imprint>
+		<respStmt>
+			<orgName>A Real-world Web Image Database from National University of Singapore</orgName>
+		</respStmt>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<monogr>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leskovec</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Krevl</surname></persName>
+		</author>
+		<ptr target="http://snap.stanford.edu/data" />
+		<title level="m">SNAP Datasets: Stanford Large Network Dataset Collection</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">MLlib: Machine Learning in Apache Spark</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Meng</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">The Journal of Machine Learning Research</title>
+		<imprint>
+			<biblScope unit="volume">17</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="1235" to="1241" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">GraphX: A Resilient Distributed Graph System on Spark, in: 1st International Workshop on Graph Data Management Experiences and Systems</title>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">S</forename><surname>Xin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">E</forename><surname>Gonzalez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J</forename><surname>Franklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Stoica</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<publisher>ACM</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<title level="m" type="main">Tuning the LULESH Mini-app for Current and Future Hardware</title>
+		<author>
+			<persName><forename type="first">I</forename><surname>Karlin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mcgraw</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Keasler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Still</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">Tech. rep</note>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">BoomerAMG: A parallel algebraic multigrid solver and preconditioner</title>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">E</forename><surname>Henson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">U</forename><forename type="middle">M</forename><surname>Yang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Applied Numerical Mathematics</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="155" to="177" />
+			<date type="published" when="2002">2002</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sasidharan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Snir</surname></persName>
+		</author>
+		<title level="m">MiniAMR -A miniapp for Adaptive Mesh Refinement</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">Tech. rep</note>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">MiniVite: A Graph Analytics Benchmarking Tool for Massively Parallel Systems</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Ghosh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Halappanavar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Tumeo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kalyanaraman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">H</forename><surname>Gebremedhin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE/ACM Performance Modeling, Benchmarking and Simulation of High Performance Computer Systems (PMBS)</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="51" to="56" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">Defining and Evaluating Network Communities based on Ground-truth</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Yang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Leskovec</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1205.6233</idno>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">MSAProbs: multiple sequence alignment based on pair hidden Markov models and partition function posterior probabilities</title>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schmidt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">L</forename><surname>Maskell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">26</biblScope>
+			<biblScope unit="issue">16</biblScope>
+			<biblScope unit="page" from="1958" to="1964" />
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<analytic>
+		<title level="a" type="main">MSAProbs-MPI: parallel multiple sequence aligner for distributed-memory systems</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>González-Domínguez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Touriño</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schmidt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Bioinformatics</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="issue">24</biblScope>
+			<biblScope unit="page" from="3826" to="3828" />
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Pfam: The protein families database in 2021</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Mistry</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nucleic Acids Research</title>
+		<imprint>
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="issue">1</biblScope>
+			<biblScope unit="page" from="412" to="D419" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<monogr>
+		<author>
+			<persName><forename type="first">D</forename><surname>Wheeler</surname></persName>
+		</author>
+		<ptr target="http://www.dwheeler.com/sloccount" />
+		<title level="m">SLOCCount</title>
+		<imprint>
+			<date type="published" when="2021-11">November, 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Is container-based technology a winner for high performance scientific applications?</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Adufu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Choi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><surname>Kim</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">17th Asia-Pacific Network Operations and Management Symp. (APNOMS)</title>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="507" to="510" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Using Docker in high performance computing applications</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">T</forename><surname>Chung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Quang-Hung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M.-T</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Thoai</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE 6th Int. Conference on Communications and Electronics</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="52" to="57" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<author>
+			<persName><forename type="first">L</forename><surname>Benedicic</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">A</forename><surname>Cruz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Madonna</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Mariotti</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1704.03383</idno>
+		<title level="m">Portable, highperformance containers for HPC</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">A Tale of Two Systems: Using Containers to Deploy HPC Applications on Supercomputers and Clouds</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">J</forename><surname>Younge</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Pedretti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">E</forename><surname>Grant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Brightwell</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE Int. Conference on Cloud Computing Technology and Science</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="74" to="81" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<author>
+			<persName><forename type="first">P</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Beltre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Uminski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Govindaraju</surname></persName>
+		</author>
+		<title level="m">Evaluation of Docker Containers for Scientific Workloads in the Cloud, in: Proc. of the Practice and Experience on Advanced Research Computing</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<analytic>
+		<title level="a" type="main">Orchestrating Docker Containers in the HPC Environment</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Higgins</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Holmes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Venters</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="s">HPC. Lecture Notes in Computer Science</title>
+		<imprint>
+			<biblScope unit="volume">9137</biblScope>
+			<biblScope unit="page" from="506" to="513" />
+			<date type="published" when="2015">2015</date>
+			<publisher>Springer Int. Publishing</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b42">
+	<monogr>
+		<title level="m" type="main">Scylla: a Mesos Framework for Container Based MPI Jobs</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Beltre</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Govindaraju</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1905.08386</idno>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b43">
+	<monogr>
+		<title level="m" type="main">Matrix factorizations at scale: A comparison of scientific data analytics in Spark and C+MPI using three case studies</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gittens</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<publisher>IEEE Int</publisher>
+			<biblScope unit="page" from="204" to="213" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b44">
+	<analytic>
+		<title level="a" type="main">Big Data in metagenomics: Apache Spark vs MPI</title>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Abuín</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Lopes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Ferreira</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">F</forename><surname>Pena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Schmidt</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Plos One</title>
+		<imprint>
+			<biblScope unit="volume">15</biblScope>
+			<biblScope unit="issue">10</biblScope>
+			<biblScope unit="page" from="1" to="20" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b45">
+	<analytic>
+		<title level="a" type="main">Comparison of MPI and Spark for Data Science Applications</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Saxena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Jha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Khan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Rodgers</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Lindner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Gabriel</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">IEEE Int. Parallel and Distributed Processing Symposium Workshops (IPDPSW)</title>
+		<imprint>
+			<date type="published" when="2020">2020</date>
+			<biblScope unit="page" from="682" to="690" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b46">
+	<analytic>
+		<title level="a" type="main">High-Performance Design of Hadoop RPC with RDMA over InfiniBand</title>
+		<author>
+			<persName><forename type="first">X</forename><surname>Lu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">S</forename><surname>Islam</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Wasi-Ur-Rahman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Jose</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Subramoni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Wang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">K</forename><surname>Panda</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">nd Int. Conference on Parallel Processing</title>
+		<imprint>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="page" from="641" to="650" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b47">
+	<analytic>
+		<title level="a" type="main">Bridging the Gap between HPC and Big Data Frameworks</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Anderson</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. VLDB Endow</title>
+		<meeting>VLDB Endow</meeting>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="volume">10</biblScope>
+			<biblScope unit="page" from="901" to="912" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b48">
+	<analytic>
+		<title level="a" type="main">Accelerating Large-Scale Data Analysis by Offloading to High-Performance Computing Libraries Using Alchemist</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Gittens</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proc. of the 24th ACM SIGKDD Int. Conference on Knowledge Discovery &amp; Data Mining</title>
+		<meeting>of the 24th ACM SIGKDD Int. Conference on Knowledge Discovery &amp; Data Mining</meeting>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="293" to="301" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b49">
+	<analytic>
+		<title level="a" type="main">Bringing the HPC reconstruction algorithms to Big Data platforms</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Malitsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NY Scientific Data Summit</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b50">
+	<analytic>
+		<title level="a" type="main">Building near-real-time processing pipelines with the Spark-MPI platform</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Malitsky</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NY Scientific Data Summit</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b51">
+	<monogr>
+		<author>
+			<persName><forename type="first">N</forename><surname>Malitsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Castain</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Cowan</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:1806.01110</idno>
+		<title level="m">Spark-MPI: Approaching the Fifth Paradigm of Cognitive Applications</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

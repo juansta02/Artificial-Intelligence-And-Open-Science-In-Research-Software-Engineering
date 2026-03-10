@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Scylla: A Mesos Framework for Container Based MPI Jobs</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Pankaj</forename><surname>Saha</surname></persName>
+							<email>psaha4@binghamton.edu</email>
+							<affiliation key="aff0">
+								<orgName type="laboratory">Cloud and Big Data Laboratory</orgName>
+								<orgName type="institution">State University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Angel</forename><surname>Beltre</surname></persName>
+							<email>abeltre1@binghamton.edu</email>
+							<affiliation key="aff0">
+								<orgName type="laboratory">Cloud and Big Data Laboratory</orgName>
+								<orgName type="institution">State University of New York</orgName>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Madhusudhan</forename><surname>Govindaraju</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="laboratory">Cloud and Big Data Laboratory</orgName>
+								<orgName type="institution">State University of New York</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Scylla: A Mesos Framework for Container Based MPI Jobs</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">53F98D58CCCF74E61E184C5754CC81FB</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Open source cloud technologies provide a wide range of support for creating customized compute node clusters to schedule tasks and managing resources. In cloud infrastructures such as Jetstream and Chameleon, which are used for scientific research, users receive complete control of the Virtual Machines (VM) that are allocated to them. Importantly, users get root access to the VMs. This provides an opportunity for HPC users to experiment with new resource management technologies such as Apache Mesos that have proven scalability, flexibility, and fault tolerance. To ease the development and deployment of HPC tools on the cloud, the containerization technology has matured and is gaining interest in the scientific community. In particular, several well known scientific code bases now have publicly available Docker containers. While Mesos provides support for Docker containers to execute individually, it does not provide support for container inter-communication or orchestration of the containers for a parallel or distributed application. In this paper, we present the design, implementation, and performance analysis of a Mesos framework, Scylla, which integrates Mesos with Docker Swarm to enable orchestration of MPI jobs on a cluster of VMs acquired from the Chameleon cloud <ref type="bibr" target="#b0">[1]</ref>. Scylla uses Docker Swarm for communication between containerized tasks (MPI processes) and Apache Mesos for resource pooling and allocation. Scylla allows a policy driven approach to determine how the containers should be distributed across the nodes depending on the CPU, memory, and network throughput requirement for each application.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>The Jetstream <ref type="bibr" target="#b1">[2]</ref>  <ref type="bibr" target="#b2">[3]</ref> and Chameleon <ref type="bibr" target="#b0">[1]</ref> cloud infrastructures provide a platform for the research community to explore new solutions for several scientific computing challenges including new software architectures for cluster computing. These cloud infrastructures provide users or communities with VMs and bare metal nodes that have varied resource configurations in terms of numbers of cores, memory capacity, network and I/O bandwidth. Users have complete control over the VMs, including root access to the VMs. Additionally, users also have the flexibility to choose their tools for scheduling, resource management, fault tolerance, and other cluster management tasks. While the scientific community has so far primarily used tools such as Slurm <ref type="bibr" target="#b3">[4]</ref> and Torque <ref type="bibr" target="#b4">[5]</ref> on bare metal clusters, there is an opportunity to leverage the open source Big Data and Cloud tools that have several desired features including performance, fault tolerance, and massive scalability.</p><p>Open source tools, especially the ones belonging to the Apache family, are being widely used in production settings. Interestingly, they are receiving active contributions from experts in several companies in the Big Data and Cloud space. In particular, Apache Mesos <ref type="bibr" target="#b5">[6]</ref> has emerged as a leader for large-scale cluster management. As of now, more than 100 companies use Mesos for their software infrastructure. In companies such as Apple and Twitter, it is estimated to be deployed on more than 10K nodes <ref type="bibr" target="#b6">[7]</ref>.</p><p>Mesos pools all the available CPUs, RAM, and disk space in a cluster and provides an abstraction layer so that applications can request arbitrary units of each resource. Mesos uses policies, such as fair-sharing, to decide how to divide resources between co-scheduled applications. Mesos uses cgroups to ensure isolation between processes and also to guarantee that a process does not exceed its allocation.</p><p>Another trend in the Big Data and Cloud space is that of containerization, with Docker <ref type="bibr" target="#b7">[8]</ref> emerging as a standard container choice. Containers provide a consistent development environment, uniform packaging, ease of deployment, and a dynamic delivery mechanism for new upgrades and new features. The scientific community has embraced containers, as is evident from the recent availability of several Dockerized scientific applications <ref type="bibr" target="#b8">[9]</ref>  <ref type="bibr" target="#b9">[10]</ref>.</p><p>While Apache Mesos recently added support for running Docker containers, it does not have support for orchestration of Dockerized scientific jobs. Native support for networking between Docker containers is not available, which is essential for MPI based scientific workloads that can span several VMs/nodes. To address this shortcoming, we use Docker Swarm <ref type="bibr" target="#b10">[11]</ref>. The key advantage of Docker Swarm is how it provides cluster creation and container scheduling. The Swarm nodes are connected to each other via a private virtual network.</p><p>In this paper, we present the design and performance evaluation of our framework, Scylla, which uses Docker Swarm for communication between containerized tasks (MPI processes) and Apache Mesos as a resource manager. Scylla enables coscheduling of multiple containers on a node, as well as the distribution of the containers in the cluster.</p><p>By default, the Docker Swarm manager decides which node will host the next container based on the Swarm's policy but that does not depend on the resource requirement of the application. Scylla allows a policy driven approach to determine which participating nodes will be hosting the application containers based on the resource requirement for each parallel application.</p><p>The contributions of this paper are the following:</p><p>Mesos framework and also leverage Docker Swarm for orchestration of containerized scientific jobs. • We present a policy driven approach to manage CPU, memory, and networking resources more efficiently across VMs allocated on the Chameleon cloud. • We present an evaluation of Scylla on a cluster of VMs on the Chameleon cloud and conclude on the efficacy of various policies for distributing containers with MPI processes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. BACKGROUND</head><p>Apache Mesos consists of three major components (a) Mesos Agent (b) Mesos Master and (c) the Mesos Framework. Mesos Agents are the computational nodes that execute the requested tasks. The Mesos Master acts as a resource broker between the agent and Mesos Frameworks for resource negotiation. After the negotiation, Mesos Framework makes scheduling decisions to map tasks to available agents. Each Mesos framework can either employ its own custom executor or use the default Mesos executor. The Executor takes the responsibility of executing a job within the Mesos defined environment.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Mesos Master</head><p>Mesos Framework Mesos Agent Mesos Executor Mesos Agent Mesos Executor Mesos Agent Mesos Executor Resource Offer&lt; CPU, RAM &gt; Offer Negotiation 1 2 3 4 Framework packs tasks with offers Master sends tasks to Agents for execution Figure <ref type="figure" target="#fig_0">1</ref> shows the steps involved when using a Mesos environment. In step 1, all Mesos Agents advertise their available resources (CPU, RAM, disk, I/O) to the Mesos Master. In our current implementation we only use the CPU and RAM specifications. Next, in step 2, each framework negotiates offers with the Mesos Master. Mesos uses the Dominant Resource Fairness (DRF) algorithm by default. So, while a framework may get all or most of the dominant resource it has requested (CPU, for example), the other resource requests (for RAM and disk, for example) may not be satisfied. So, the negotiation phase involves frameworks possibly declining a few offers. After the negotiation phase, the frameworks have access to a list of available offers. In step 3, each framework, based on its scheduling policy, packs the tasks to the accepted offers. The framework then communicates its scheduling decisions with the Mesos Master. In step 4, the Mesos Master send tasks to assigned Agents to execute it by using the appropriate Mesos executor.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Apache Mesos Executor</head><p>Mesos executors are part of the Mesos framework. Each Mesos framework can decide which executor to use for executing submitted jobs. The executor receives a task and executes it in the environment provided by each Mesos Agent. The executor can communicate with other software tools, such as Docker, to launch tasks. The executor terminates the task when it is completed or when Docker notifies that it has been completed.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Apache Mesos Framework</head><p>A Mesos Framework is an external entity that communicates between the end user and the Mesos Master. It negotiates with the Mesos Master for resource offers. Upon approval, it employs the framework's scheduling policy to distribute the tasks among the Agents. Frameworks are expected to be designed as customizable in order to allow application specific policies and scheduling decisions. For example, Marathon <ref type="bibr" target="#b11">[12]</ref>, Apache Aurora <ref type="bibr" target="#b12">[13]</ref>, Chronos <ref type="bibr" target="#b13">[14]</ref>, Hadoop Framework <ref type="bibr" target="#b14">[15]</ref>, and Spark Framework <ref type="bibr" target="#b15">[16]</ref> are the widely used Mesos frameworks, each differing in the scheduling policy and also the nature of jobs they run.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Docker Swarm</head><p>Docker is a containerization technology that provides an isolated Operating System environment for each job. Apache Mesos provides native support for Docker containers <ref type="bibr" target="#b16">[17]</ref>. Docker Swarm provides container orchestration across multiple connected host machines. A node is a participating Docker engine for the Swarm cluster. Swarm can launch multiple replicas of the same Docker container image as part of the same service across multiple host machines connected via a Swarm overlay network. The overlay network is a software defined subnet on top of the host network. It can span across multiple host/VMs and allows containers on this network to seamlessly communicate.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. ARCHITECTURE OF SCYLLA WITH APACHE MESOS</head><p>AND DOCKER SWARM Our Scylla framework is designed for MPI applications that could be distributed across several nodes. It uses Mesos to leverage resource pooling and enable co-scheduling of applications. The customizable policy driven approach allows optimized packing of MPI processes, each of which is launched in a Docker container, on the Mesos Agent nodes. Docker Swarm provides networking support between the containers running on the Agent nodes. Mesos uses its own containers for running tasks in a sandbox environment but it does not support inter-container communication. Mesos supports Docker containers but only to run in a standalone mode. The Docker Swarm overlay network provides the key feature to connect all the service containers and facilitate seamless intercontainer communication. As a result, the Docker containers can be placed in different physical nodes while remaining a part of the same virtual private network.</p><p>The Scylla framework allows the end user to choose the policy to distribute the MPI processes (each in a container) across nodes. This provides an opportunity to develop and deploy customized policies for the target applications to increase both cluster utilization and throughput. Scylla provides two policies to launch service containers across host nodes.</p><p>• Spread -distribute the service containers on all the available nodes.</p><p>• MinHost -distribute the service containers in as few available nodes as possible. In Section V, our experimental results show how these two policies can be useful to increase the cluster resource utilization. The Scylla framework has a custom Mesos executor that communicates with Docker Swarm Manager to run the Mesos tasks across multiple Docker containers.</p><p>The architectural setup of Scylla with a Mesos and Docker Swarm cluster consists of the following components.</p><p>• Node-0: this is a host node in the cluster that hosts the Mesos Master, Mesos Agent with custom Scylla executor and Swarm Manager. • Task-0: this task is created by Scylla to initiate the launch of the MPI task in the service containers. Task-0 uses the custom Scylla executor to communicate with the Swarm Manager to orchestrate the containers for running the MPI task.</p><p>• Workers: these are the computational nodes that consists of Mesos Agents and Swarm Workers. Figure <ref type="figure" target="#fig_2">3</ref> illustrates the event flow when a Dockerized MPI task is launched via the Scylla framework. 1)</p><p>User submits an MPI application by selecting an MPI Docker image from Docker Hub <ref type="bibr" target="#b17">[18]</ref>. Scylla has a web interface that provides options to select and specify the parameters for the application. 2) Scylla, executing on the Node-0, negotiates the offers with the Mesos Master and receives available offers. 3) Based on the requirements of the MPI application and the policy of the framework, Scylla chooses appropriate offers and creates the service containers on the chosen agent nodes. It also keeps track of how the containers are distributed on the agent nodes. One of the containers it launches is the Master container that creates an SSH tunnel to the head node. For each MPI application, it creates an SSH tunnel between the master container and the head node. Once all the service containers are created successfully, Scylla collects their IP addresses on the overlay network and sets the hostfile inside the master container. 4) Scylla launches Mesos tasks to block the amount of allocated resources for the service containers in each of the participating nodes. 5) Once all the tasks are launched successfully, Scylla launches an init task, named task-0, on Node-0 through custom Scylla executor that communicates with the Swarm Manager and connects with the master service container through the SSH tunnel. 6) Task-0 starts the MPI application processes via the master service container, which distributes the processes across the worker containers in the Mesos Agents.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. EXPERIMENTAL SETUP</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. MPI Benchmarks</head><p>We chose a set of Dockerized MPI applications that represent scientific workloads and computational kernels. They are described in Table <ref type="table" target="#tab_1">1</ref>. To Dockerize these applications we have used nlknguyen/alpine-mpich:onbuild <ref type="bibr" target="#b18">[19]</ref> as our base image.</p><p>It contains MPICH <ref type="bibr" target="#b19">[20]</ref> and other required softwares to enable MPI programs to execute. We have created individual Docker images for each application along with all the dependencies.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Benchmark Description</head><p>CoMD <ref type="bibr" target="#b20">[21]</ref> Classical molecular dynamics algorithms MiniAMR <ref type="bibr" target="#b20">[21]</ref> Adaptive mesh refinement MiniFE <ref type="bibr" target="#b20">[21]</ref> Unstructured finite element solver HPCCG <ref type="bibr" target="#b20">[21]</ref> A conjugate gradient solver MiniAero <ref type="bibr" target="#b20">[21]</ref> Unstructured finite volume code HP2P <ref type="bibr" target="#b21">[22]</ref> Measures bandwidths and the latencies of a network  We also received another KVM based Virtual Machine (VM) node with smaller resource configuration to serve as Node-0 (head node). Node-0 hosts the Mesos Master, Swarm Manager, Mesos Agent, along with a custom Scylla MPI-Swarm executor. Each of the bare metal nodes contain a Mesos Agent advertising its resources to the Mesos Master and a Swarm Worker that commits the resources to the Swarm Manager. Resource offers from the Mesos Agent at Node-0 is not considered for any submitted tasks and the Swarm Manager is set up to not run any service containers.</p><p>After the resource negotiation phase, Scylla decides which Mesos Agents are the best fit to execute the application.</p><p>Scylla launches Task-0 on Node-0 that communicates with the underlying Swarm Manager to launch Dockerized MPI task as a service on the specific nodes identified by Scylla. Mesos works as the resource manager whereas the Docker Swarm Manager is the container orchestrator.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>V. EXPERIMENTAL RESULTS</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Overhead of MPI Processes within Containers</head><p>Figure <ref type="figure">5</ref>: Container deployment overhead Scylla creates one service container for each parallel process of an MPI task. Based on the MPI application, increased parallelism may improve the performance, but in the Scylla implementation, increased parallelism has an additional overhead for creating more containers. Container creation cost varies depending the size of the cluster. We have varied the number of hosts in our experimental cluster and observed the container overhead.</p><p>In Figure <ref type="figure">5</ref>, we observe that increasing the number of hosts in a cluster reduces the overhead of creating the required service containers. We varied the cluster size from 2 to 6 hosts and the result shows that for a cluster size greater than 3 hosts, where less than 16 containers are deployed, the overhead does not vary significantly. One service container is associated with each MPI parallel process. Our results show that if the required parallelism is below 16, for a cluster of size 4 or greater, the service container creation overhead is close to 20% compared to the overall run time. This can be attributed to the nature of our workloads that consist of mini-scale MPI applications. We expect this overhead to be much lower for long running MPI applications. So, the container overhead is an important consideration when the required parallelism is more than 16 and the size of the cluster is below 4 nodes in our experimental setup.</p><p>In Figure <ref type="figure" target="#fig_4">6</ref>, we show how the execution time of the MiniFE MPI application, which is both CPU and memory intensive, increases as we vary the number of nodes in the cluster. As the container instantiation overhead cost is amortized due to the execution time of MiniFE, it is expectedly beneficial to distribute it to as many nodes as available.  Figure <ref type="figure" target="#fig_5">7</ref> demonstrates the performance of the MPI benchmark, HP2P, which communicates with all the hosts and computes the average latency for information sent over the Docker Swarm network. We ran HP2P for 32 parallel Docker occurrences with 2048 MB of data to be transmitted for 20 iteration and varied the number of hosts in the cluster. We observe that the required transmission time increases as we increase the size of the cluster. The average latency increases by 10% the size of the cluster reaches four. After that, as nodes are added the there significant results do not change even when we ran the experiment with 64 Docker instances and 4096 MB of information is sent across the network for 20 iterations.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Co-Scheduling MPI Tasks Across Host Nodes</head><p>In the approach used often in HPC clusters, MPI jobs get exclusive access to the nodes. While this traditional approach avoids container overheads, it can suffer from low resource utilization and throughput compared to the co-scheduled approach. Figure 9: CPU Utilization in Non-Co-Scheduled vs. Co-Scheduled Approach</p><p>Figure <ref type="figure">8</ref> and 9 demonstrate CPU and memory usage using the traditional HPC (without co-scheduling) and the Mesos coscheduling approach. We ran ten occurrences of the MiniFe MPI application using both the approaches and gathered performance data using the Performance Co-Pilot software tool <ref type="bibr" target="#b22">[23]</ref>. The performance data quantifies the gains in resource utilization using the co-scheduled approach. Without co-scheduling, the CPU usage peaks around 35% and dips even further several times. In the co-scheduled approach, it peaks at 45% but stays around the peak longer than in the non co-scheduled approach. For the same number of tasks, the co-scheduled approach takes close to half of the time to finish those tasks compared to that of the non-co-scheduled approach.</p><p>Figure <ref type="figure" target="#fig_7">10</ref> and 11 present an average of the CPU and memory utilization for non-Co-Scheduled and Co-Scheduled Policy. We have observed that CPU utilization is 60% and memory utilization is 44% more in Scylla-imposed co-scheduled approach compared to the non-Co-Scheduled approach.  Based on these observations of the experimental results, it is clear that MPI applications need to be launched in a Swarm cluster with different policies for container placement based on the type of the application. Scylla, provides two policies:</p><p>• Spread -Scylla finds all eligible offers from the Mesos Master and distributes the service containers across all of them. This policy is enforced by Scylla for resource intensive tasks in order reduce resource contention. • MinHost -In this approach, Scylla finds all eligible offers and picks the minimum number of Mesos Agents that can fit all the required service containers with specific resource requirements. The goal of this policy is to keep the containers as co-located as possible that the overhead due to network communication can be reduced. This policy is enforced by Scylla for communication intensive tasks. We ran the memory intensive MPI application, MiniFE, and the communication intensive benchmark, HP2P, to measure the  performance of both the policies. Our experimental results in Figure <ref type="figure" target="#fig_9">12</ref> and Figure <ref type="figure" target="#fig_10">13</ref> show that Spread is better for resource intensive tasks whereas the MinHost policy is better for a communication intensive task. miniFE perform 29% better with the Spread policy while HP2P shows 21% better average latency using the MinHost policy compared to Spread.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VI. RELATED WORK</head><p>Sparks <ref type="bibr" target="#b23">[24]</ref> highlighted that attributes such as host level access, privileged operations, and runtime environments are essential to run a Docker container in any environment. For example, Singularity <ref type="bibr" target="#b24">[25]</ref>, a containerization application, mitigates two of the main bottlenecks faced by administrators in the HPC community -unauthorized user root privileges and portability. Singularity makes an important contribution to the container space, but it does not currently have orchestration support which Scylla aims to provide.</p><p>In our earlier work <ref type="bibr" target="#b25">[26]</ref>, we discussed the feasibility of enabling Docker containers based scientific application to run va Science Gateways <ref type="bibr" target="#b26">[27]</ref>. In this current work, we have presented a design and implemented a framework which can schedule containerized MPI tasks on HPC clusters.</p><p>Abdelbaky et al. <ref type="bibr" target="#b27">[28]</ref> have shown an approach to launch Docker containers across multiple clouds and addressed the challenge of container scheduling and placement. Our work places the container of a single service across multiple host machines wherein the scheduler is aware of the host machines and their resources. We utilize the resources of each host based on the submitted request and organize the placement of containers across hosts to improve overall execution time.</p><p>Nguyen et al. <ref type="bibr" target="#b28">[29]</ref> show how Docker Swarm can be utilized to create an environment for running MPI applications on the cloud. We have extended that work by providing <ref type="bibr" target="#b0">(1)</ref> with Apache Mesos; (2) resource matching for each MPI task; and (3) a driven framework that decides how to distribute MPI tasks and related service containers across host nodes.</p><p>Ruiz C et al. <ref type="bibr" target="#b29">[30]</ref> performed an evaluation of container for HPC environments. In the experimental setup, they ran NAS benchmarks on containers located on single physical machines and also spread across several physical machines. They observed that the inter-container communication is fast but there is a degradation of CPU performance for memory applications due to shared memory communication. They also noted that the virtual network for inter-container communication does not add any extra cost. However when containers were distributed to several physical nodes, they observed that network bound applications can be affected severely by the container network. Our results in Figure <ref type="figure" target="#fig_4">6</ref> and 7 show similar trends for memory intensive and network communication intensive MPI applications that we ran.</p><p>It is to be noted that several research initiatives have done extensive work on containers for HPC environments. Bahls <ref type="bibr" target="#b30">[31]</ref> conducted experiments using Cray XC40 systems <ref type="bibr" target="#b31">[32]</ref>, in which the author was able to identify the potential of containers for HPC to run serial as well as parallel applications. This work is not akin to the research presented in our research, but it is a contribution to the HPC community that serves as an incentive for full container technology adoption in HPC.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VII. CONCLUSION</head><p>Scylla provides fine grained resource allocation, through Apache Mesos, for the task launched in a cluster and distributes the MPI task according to the nature of the application to improve the overall throughput.</p><p>Expectedly, inter-container communication increases the over head when the containers are spread across multiple physical hosts. So, for a network intensive workload, Scylla provides a policy to keep the containers close to each other. On the other hand, for CPU and memory intensive tasks, keeping the containers close, increases the resource contention and thereby decreases the overall performance. Scylla's policy driven scheduling distributes the containers based on the nature of the task and mitigates the overhead due to resource contention and virtual network communication across physical hosts. Apart from container distribution, Scylla enables and enforces co-scheduling through the Apache Mesos resource manger, which improves both the resource utilization and throughput.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VIII. FUTURE WORK</head><p>Containers, such as the ones provided by Docker, have emerged as a widely acceptable solution for easy application deployment. However, there are other new technologies that are competing with Docker to provide specialized features for application development and deployment. Singularity <ref type="bibr" target="#b24">[25]</ref> and rkt <ref type="bibr" target="#b32">[33]</ref> can also support the MPI-HPC paradigm with container orchestrators such as Kubernetes <ref type="bibr" target="#b33">[34]</ref>. The Docker Swarm mode enables communication between containers via a private overlay network. For the other container mechanisms, overlay network or Network Address Translation (NAT) modules are not currently available. We plan to study these technologies once these features are available. We also plan to design solutions with resource managers such as Apache Hadoop Yarn <ref type="bibr" target="#b34">[35]</ref> and frameworks for Apache Spark <ref type="bibr" target="#b35">[36]</ref> to allow the HPC community to adopt more cloud technologies into the HPC ecosystem.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Apache Mesos Architecture</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :Figure 2</head><label>22</label><figDesc>Figure 2: Docker Swarm service containers spread across an overlay network Figure 2 is a representation of how Docker Swarm containers are placed in a distributed cluster. The Docker containers of the Swarm service are spread across multiple host nodes but connected to the same overlay network, which presents all containers in the same logical network.Figure3illustrates the event flow when a Dockerized MPI task is launched via the Scylla framework.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Event flow of an MPI task on Mesos-Docker Swarm cluster through Scylla</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Figure 4 :Figure 4</head><label>44</label><figDesc>Figure 4: Experimental setup of an overlay cluster of Apache Mesos and Docker Swarm B. Experimental Cluster Figure 4 shows our experimental cluster on the Chameleon cloud. Each node contains 48 CPU cores and 124GB of RAM. This allocation is typical of what scientists are given on the Chameleon cluster.We also received another KVM based Virtual Machine (VM) node with smaller resource configuration to serve as Node-0 (head node). Node-0 hosts the Mesos Master, Swarm Manager, Mesos Agent, along with a custom Scylla MPI-Swarm executor. Each of the bare metal nodes contain a Mesos Agent advertising its resources to the Mesos Master and a Swarm Worker that commits the resources to the Swarm Manager. Resource offers from the Mesos Agent at Node-0 is not considered for any submitted tasks and the Swarm Manager is set up to not run any service containers.After the resource negotiation phase, Scylla decides which Mesos Agents are the best fit to execute the application.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 6 :</head><label>6</label><figDesc>Figure 6: MiniFE with variable cluster size</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 7 :</head><label>7</label><figDesc>Figure 7: Communication intensive HP2P Benchmark</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Figure 8 :Figure 9 :</head><label>89</label><figDesc>Figure 8: Memory Utilization in a Non-Co-Scheduled vs. Co-Schedule Approach</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Figure 10 :</head><label>10</label><figDesc>Figure 10: Average CPU Utilization in Non-Co-Scheduled vs. Co-Scheduled Approach</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Figure 11 :</head><label>11</label><figDesc>Figure 11: Average Memory Utilization in Non-Co-Scheduled vs. Co-Scheduled Approach C. Policy Driven Container Placement in Docker Swarm</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Figure 12 :</head><label>12</label><figDesc>Figure 12: Memory Intensive Workload Applied Policies</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Figure 13 :</head><label>13</label><figDesc>Figure 13: Intensive Workload Applied Policies</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1"><head>Table 1 :</head><label>1</label><figDesc>MPI Mini-Applications</figDesc><table><row><cell>Software</cell><cell>Version</cell></row><row><cell>Ubuntu</cell><cell>Ubuntu 16.04.2 LTS (Xenial)</cell></row><row><cell>Docker Engine</cell><cell>17.06.0-ce</cell></row><row><cell>Apache Mesos</cell><cell>1.3.0</cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Software Stack and Version</figDesc><table><row><cell></cell><cell>Mesos Agent</cell><cell>Node -01</cell></row><row><cell></cell><cell>Swarm Worker</cell><cell></cell></row><row><cell>Mesos Master</cell><cell></cell><cell></cell></row><row><cell></cell><cell>Mesos Agent</cell><cell>Node -02</cell></row><row><cell>Mesos Agent</cell><cell>Swarm Worker</cell><cell></cell></row><row><cell>Swarm</cell><cell></cell><cell></cell></row><row><cell>Executor</cell><cell></cell><cell></cell></row><row><cell>Swarm Manager</cell><cell>Mesos Agent</cell><cell>Node -n</cell></row><row><cell></cell><cell>Swarm Worker</cell><cell></cell></row><row><cell>Node -0</cell><cell></cell><cell></cell></row><row><cell></cell><cell>Worker Nodes</cell><cell></cell></row></table></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">Chameleon Cloud</title>
+		<ptr target="https://www.chameleoncloud.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<monogr>
+		<title level="m" type="main">Jetstream: A National Science and Engineering Cloud</title>
+		<ptr target="https://jetstream-cloud.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Jetstream</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">A</forename><surname>Stewart</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Turner</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Vaughn</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">I</forename><surname>Gaffney</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><forename type="middle">M</forename><surname>Cockerill</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Foster</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Hancock</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Merchant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Skidmore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Stanzione</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Taylor</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Tuecke</surname></persName>
+		</author>
+		<ptr target="http://dl.acm.org/citation.cfm?doid=2792745.2792774" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2015 XSEDE Conference on Scientific Advancements Enabled by Enhanced Cyberinfrastructure -XSEDE &apos;15</title>
+		<meeting>the 2015 XSEDE Conference on Scientific Advancements Enabled by Enhanced Cyberinfrastructure -XSEDE &apos;15<address><addrLine>New York, New York, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM Press</publisher>
+			<date type="published" when="2015">2015</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Slurm Workload Manager</title>
+		<ptr target="https://slurm.schedmd.com/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">TORQUE Resource Manager</title>
+		<ptr target="http://www.adaptivecomputing.com/products/open-source/torque/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Mesos: a platform for fine-grained resource sharing in the data center</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Hindman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Konwinski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zaharia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ghodsi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">D</forename><surname>Joseph</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Katz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shenker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Stoica</surname></persName>
+		</author>
+		<ptr target="http://dl.acm.org/citation.cfm?id=1972488" />
+		<imprint>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="295" to="308" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Mesos has been simulated to scale to 50,000 nodes, although it is not clear ho... -Hacker News</title>
+		<ptr target="https://news.ycombinator.com/item?id=10228820" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Docker: Lightweight Linux Containers for Consistent Development and Deployment</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Merkel</surname></persName>
+		</author>
+		<ptr target="http://dl.acm.org/citation.cfm?id=2600239.2600241" />
+	</analytic>
+	<monogr>
+		<title level="j">Linux J</title>
+		<imprint>
+			<biblScope unit="volume">2014</biblScope>
+			<date type="published" when="2014">3 2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Testing Docker Performance for HPC Applications</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ermakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Vasyukov</surname></persName>
+		</author>
+		<idno>abs/1704.05592</idno>
+		<ptr target="http://arxiv.org/abs/1704.05592" />
+	</analytic>
+	<monogr>
+		<title level="j">CoRR</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Use of Docker for deployment and testing of astronomy software</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Morris</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Voutsinas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><forename type="middle">C</forename><surname>Hambly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">G</forename><surname>Mann</surname></persName>
+		</author>
+		<idno>abs/1707.03341</idno>
+		<ptr target="http://arxiv.org/abs/1707.03341" />
+	</analytic>
+	<monogr>
+		<title level="j">CoRR</title>
+		<imprint>
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<monogr>
+		<title level="m" type="main">swarm mode -Docker Documentation</title>
+		<ptr target="https://docs.docker.com/engine/swarm/swarm-tutorial/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">Marathon: A container orchestration platform for Mesos and DC/OS</title>
+		<ptr target="https://mesosphere.github.io/marathon/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Apache Aurora</title>
+		<ptr target="http://aurora.apache.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Chronos: Fault tolerant job scheduler for Mesos</title>
+		<ptr target="https://mesos.github.io/chronos/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Welcome to Apache Hadoop R !</title>
+		<ptr target="http://hadoop.apache.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Apache Spark -Lightning-Fast Cluster Computing</title>
+		<ptr target="https://spark.apache.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Apache Mesos -Supporting Container Images in Mesos Containerizer</title>
+		<ptr target="http://mesos.apache.org/documentation/latest/container-image/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<title level="m" type="main">Docker Hub</title>
+		<ptr target="https://hub.docker.com/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<monogr>
+		<title level="m" type="main">nlknguyen/alpine-mpich -Docker Hub</title>
+		<ptr target="https://hub.docker.com/r/nlknguyen/alpine-mpich/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<monogr>
+		<title level="m" type="main">MPICH -High-Performance Portable MPI</title>
+		<ptr target="http://www.mpich.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<monogr>
+		<title level="m" type="main">Improving Performance via Mini-applications</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Heroux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">W</forename><surname>Doerfler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">S</forename><surname>Crozier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Willenbring</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Rajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">R</forename><surname>Keiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">K</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">W</forename><surname>Numrich</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+		</imprint>
+		<respStmt>
+			<orgName>Sandia National Laboratories</orgName>
+		</respStmt>
+	</monogr>
+	<note>Tech. Rep. SAND2009-5574</note>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<title level="m" type="main">CEA -HPC -Research and Development</title>
+		<ptr target="http://www-hpc.cea.fr/en/red/red.htm" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<title level="m" type="main">Performance Co-Pilot</title>
+		<ptr target="http://pcp.io/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<title level="m" type="main">HPC Containers in Use</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Sparks</surname></persName>
+		</author>
+		<ptr target="https://cug.org/proceedings/cug2017proceedings/includes/files/pap164s2-file1.pdf" />
+		<imprint>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">Singularity: Scientific containers for mobility of compute</title>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">M</forename><surname>Kurtzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Sochat</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">W</forename><surname>Bauer</surname></persName>
+		</author>
+		<idno type="DOI">10.1371/journal.pone.0177459</idno>
+		<ptr target="http://dx.plos.org/10.1371/journal.pone.0177459" />
+	</analytic>
+	<monogr>
+		<title level="j">PLOS ONE</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="issue">5</biblScope>
+			<date type="published" when="2017">0177459, 5 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">Integrating Apache Airavata with Docker, Marathon, and Mesos</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Govindaraju</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Marru</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Pierce</surname></persName>
+		</author>
+		<idno type="DOI">10.1002/cpe.3708</idno>
+		<ptr target="http://doi.wiley.com/10.1002/cpe.3708" />
+	</analytic>
+	<monogr>
+		<title level="j">Concurrency and Computation: Practice and Experience</title>
+		<imprint>
+			<biblScope unit="volume">28</biblScope>
+			<biblScope unit="issue">7</biblScope>
+			<date type="published" when="1952">1952-1959, 5 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<monogr>
+		<title level="m" type="main">Home -Science Gateways</title>
+		<ptr target="https://sciencegateways.org/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<analytic>
+		<title level="a" type="main">Docker Containers across Multiple Clouds and Data Centers</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Abdelbaky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Diaz-Montes</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Parashar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Unuvar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Steinder</surname></persName>
+		</author>
+		<ptr target="https://www.mendeley.com/research-papers/docker-containers-across-multiple-clouds-data-centers/" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings -2015 IEEE/ACM 8th International Conference on Utility and Cloud Computing</title>
+		<meeting>-2015 IEEE/ACM 8th International Conference on Utility and Cloud Computing<address><addrLine>UCC</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2015">2015. 2015</date>
+			<biblScope unit="page" from="368" to="371" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<analytic>
+		<title level="a" type="main">Distributed MPI cluster with Docker Swarm mode</title>
+		<author>
+			<persName><forename type="first">N</forename><surname>Nguyen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bein</surname></persName>
+		</author>
+		<ptr target="http://ieeexplore.ieee.org/document/7868429/" />
+	</analytic>
+	<monogr>
+		<title level="m">2017 IEEE 7th Annual Computing and Communication Workshop and Conference (CCWC)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017">1 2017</date>
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<monogr>
+		<title level="m" type="main">Performance Evaluation of Containers for HPC</title>
+		<author>
+			<persName><forename type="first">C</forename><surname>Ruiz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Jeanvoine</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">L</forename><surname>Nussbaum</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/978-3-319-27308-2_65</idno>
+		<ptr target="http://link.springer.com/10.1007/978-3-319-27308-265" />
+		<imprint>
+			<date type="published" when="2015">2015</date>
+			<publisher>Springer</publisher>
+			<biblScope unit="volume">8</biblScope>
+			<biblScope unit="page" from="813" to="824" />
+			<pubPlace>Cham</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Evaluating Shifter for HPC Applications</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bahls</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Cray User Group Conference Proceedings</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<title level="m" type="main">Cray XC40 systems</title>
+		<ptr target="http://www.cray.com/sites/default/files/resources/crayxc40specifications.pdf" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<monogr>
+		<title level="m" type="main">rkt -rkt Container Engine with CoreOS</title>
+		<ptr target="https://coreos.com/rkt" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title level="m" type="main">Kubernetes -Production-Grade Container Orchestration</title>
+		<ptr target="https://kubernetes.io/" />
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<analytic>
+		<title level="a" type="main">Apache Hadoop YARN</title>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">K</forename><surname>Vavilapalli</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Seth</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Saha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Curino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">O</forename><surname>O'malley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Radia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Reed</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Baldeschwieler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">C</forename><surname>Murthy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Douglas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Agarwal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Konar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Evans</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Graves</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Lowe</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Shah</surname></persName>
+		</author>
+		<ptr target="http://dl.acm.org/citation.cfm?doid=2523616.2523633" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 4th annual Symposium on Cloud Computing -SOCC &apos;13</title>
+		<meeting>the 4th annual Symposium on Cloud Computing -SOCC &apos;13<address><addrLine>New York, New York, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM Press</publisher>
+			<date type="published" when="2013">2013</date>
+			<biblScope unit="page" from="1" to="16" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<title level="a" type="main">Apache Spark</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Zaharia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">J</forename><surname>Franklin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Ghodsi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Gonzalez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Shenker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Stoica</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">S</forename><surname>Xin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Wendell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Das</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Armbrust</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Dave</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">X</forename><surname>Meng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Rosen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Venkataraman</surname></persName>
+		</author>
+		<ptr target="http://dl.acm.org/citation.cfm?doid=3013530.2934664" />
+	</analytic>
+	<monogr>
+		<title level="j">Communications of the ACM</title>
+		<imprint>
+			<biblScope unit="volume">59</biblScope>
+			<biblScope unit="issue">11</biblScope>
+			<biblScope unit="page" from="56" to="65" />
+			<date type="published" when="2016">10 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">A Large-Scale Study of MPI Usage in Open-Source HPC Applications</title>
+				<funder ref="#_Dhf5w4h">
+					<orgName type="full">Lawrence Livermore National Laboratory</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">U.S. Department of Energy</orgName>
+				</funder>
+				<funder ref="#_k6VgFZc">
+					<orgName type="full">National Science Foundation</orgName>
+				</funder>
+				<funder ref="#_UxW2h7Q #_fjMDs8Z #_dktQZK3 #_aMbXARM #_68jq3Mr #_qkaEJmA #_NjwH2Nj #_GBsTaAq #_Zwcscmz">
+					<orgName type="full">unknown</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2015-06-04">June 04, 2015</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Ignacio</forename><surname>Laguna</surname></persName>
+							<email>ilaguna@llnl.gov</email>
+						</author>
+						<author>
+							<persName><forename type="first">Ryan</forename><surname>Marshall</surname></persName>
+							<email>ryan-marshall@utc.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Kathryn</forename><surname>Mohror</surname></persName>
+							<email>mohror1@llnl.gov</email>
+						</author>
+						<author>
+							<persName><forename type="first">Martin</forename><surname>Ruefenacht</surname></persName>
+							<email>martin-ruefenacht@utc.edu</email>
+						</author>
+						<author>
+							<persName><forename type="first">Anthony</forename><surname>Skjellum</surname></persName>
+							<email>tony-skjellum@utc.edu</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Lawrence Livermore National Laboratory</orgName>
+								<orgName type="institution" key="instit2">University of Tennessee</orgName>
+								<address>
+									<settlement>Chattanooga</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="institution" key="instit1">Lawrence Livermore National Laboratory</orgName>
+								<orgName type="institution" key="instit2">University of Tennessee</orgName>
+								<address>
+									<settlement>Chattanooga</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">University of Tennessee</orgName>
+								<address>
+									<settlement>Chattanooga</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff3">
+								<orgName type="institution">Nawrin Sultana Auburn University</orgName>
+							</affiliation>
+						</author>
+						<title level="a" type="main">A Large-Scale Study of MPI Usage in Open-Source HPC Applications</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2015-06-04">June 04, 2015</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">B6D95780FB277CC51FEF37C0557C6BF0</idno>
+					<idno type="DOI">10.1145/3295500.3356176</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>MPI</term>
+					<term>applications survey</term>
+					<term>program analysis</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Understanding the state-of-the-practice in MPI usage is paramount for many aspects of supercomputing, including optimizing the communication of HPC applications and informing standardization bodies and HPC systems procurements regarding the most important MPI features. Unfortunately, no previous study has characterized the use of MPI on applications at a signicant scale; previous surveys focus either on small data samples or on MPI jobs of specic HPC centers. This paper presents the rst comprehensive study of MPI usage in applications. We survey more than one hundred distinct MPI programs covering a signicantly large space of the population of MPI applications. We focus on understanding the characteristics of MPI usage with respect to the most used features, code complexity, and programming models and languages. Our study corroborates certain ndings previously reported on smaller data samples and presents a number of interesting, previously unreported insights.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>CCS CONCEPTS</head><p>• General and reference → Surveys and overviews; • Computing methodologies → Parallel programming languages.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">INTRODUCTION</head><p>The Message-Passing Interface (MPI) is the predominant programming model for multi-node communication in scientic computing. Since its conception in 1994, nine versions of the MPI Standard have been released and more than a dozen implementations of MPI exist between open-source and vendor implementations.</p><p>While many scientic computing applications have adopted MPI, the HPC community lacks a comprehensive understanding of the use of MPI in applications. Understanding the state-of-the-practice of MPI usage is important to many aspects of supercomputing. First, optimizations of the communication characteristics of applications require a detailed understanding of MPI usage; given detailed MPI usage characterization, implementation developers and HPC centers can allocate resources to optimize the most commonly used MPI features. Second, MPI usage statistics can inform the MPI standardization body about the features of MPI with the greatest and smallest impact on the community, which can help with prioritization and standardization of new features. Third, MPI usage characteristics can be leveraged in the procurement of HPC systems so that that HPC vendors prioritize the most valuable features of the MPI Standard (e.g., focus eorts on performance to high priority APIs). Fourth, application programming support can be enhanced by knowing current trends in programming languages and programming models used along with MPI.</p><p>While previous work has provided surveys of MPI usage, these studies have been limited in various ways: either they surveyed a narrow set of MPI programs <ref type="bibr" target="#b12">[13,</ref><ref type="bibr" target="#b13">14]</ref>, or they focused on MPI applications in specic HPC facilities <ref type="bibr" target="#b1">[2,</ref><ref type="bibr" target="#b11">12]</ref> or of specic projects <ref type="bibr" target="#b0">[1]</ref>. To the best of our knowledge, no one has presented a large-scale study of MPI usage (i.e., one that uses a data sample large enough to adequately represent the population of MPI programs).</p><p>In this paper, we present the rst such large-scale survey of MPI usage. We analyze more than one hundred distinct MPI programs, which in total contain more than forty million lines of code, the largest data sample ever surveyed thus far.</p><p>Obtaining data from a signicant sample of applications presents a number of challenges. One of the key challenges is the cost of building and running applications. Previous work <ref type="bibr" target="#b1">[2]</ref> has used lightweight proling tools to automatically prole the MPI usage of jobs running on a given HPC center. This approach, however, is dicult to scale (the code must be built, executed, and cannot experience errors) and it is not portable to all HPC systems. To address the above challenges, in this work we develop a scalable program analysis method that allows us to analyze applications statically; that is, programs do not need to be compiled and/or executed to obtain their MPI usage characteristics.</p><p>Our survey concentrates on open-source MPI programs. This allows us to consider a broad variety of programs, including programs from dierent scientic domains, programs of dierent sizes and levels of complexity (from proxy applications to libraries), and programs that receive contributions from various countries.</p><p>We analyze four key characteristics of the population of MPI programs: (a) the most important MPI routines and MPI features, (b) program characteristics with respect to the size and complexity of programs, (c) MPI usage characteristics versus code release dates, and (d) use of multi-threaded programming models (i.e., the MPI+X model). To the best of our knowledge, this is the rst comprehensive survey of MPI programs that considers all of these characteristics.</p><p>The most important ndings of our study are the following:</p><p>(1) While advanced features of MPI exist to improve performance and code readability, a large proportion of MPI programs surprisingly do not use these features. We nd, for example, that point-to-point (blocking and non-blocking) routines are more prominently used than persistent pointto-point or one-sided routines. We also nd (surprisingly) that a large portion of applications (67%) use blocking send and received operations. (2) The majority of MPI programs use only a small set of features from the MPI Standard-a considerable number of applications use only the point-to-point and collective communication features of the standard, leaving other parts of the standard totally unused. This raises questions about the value of the eorts and costs in standardizing minor features (perhaps "syntactic sugar" features) that are ultimately not widely adopted by users. (3) While three major versions of the MPI Standard have been released (each with at least a minor version), a large portion of programs (42%) rely on the features in MPI version 1.0 only. We nd that, for most programs (about 80%), the minimum version they require is MPI version 2.0. We also nd that the features provided in subversions of the standard (i.e., 1.3, 2.1, 2.2, and 3.1) are practically of little value to applications since they are rarely used. (4) We nd (not surprisingly) that MPI is widely used in conjunction with several multi-threaded programming models (OpenMP being the most popular). We observe that about 2/3 of the programs use a mixture of such programming models, which can perhaps be explained by an increase in available architectures and in-node parallelism models in the supercomputing arena. (5) While the conventional wisdom is that Fortran is largely used on scientic computing programs (partly because many legacy codes were originally developed in Fortran), we nd that C++ is the dominant language in MPI programs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">RELATED WORK</head><p>While a number of previous surveys have reported on the use of general-purpose programming languages in scientic and nonscientic programs <ref type="bibr" target="#b8">[9]</ref><ref type="bibr" target="#b9">[10]</ref><ref type="bibr" target="#b10">[11]</ref> few studies have focused on the use of the MPI programming model. As far as we know, the rst survey of MPI usage in scientic codes goes back to 1997 <ref type="bibr" target="#b13">[14]</ref>. This work evaluated the use of the MPI programming model and of other models, such as PVM and Shmem in scientic codes. The goal of this study was not to understand the use of MPI functionality but rather to evaluate the impact of software complexity of these models and its implications to runtime performance. This study evaluated only six small benchmarks. More recently, a number of attempts have been made to better understand the use of MPI. A survey of MPI usage in the US Exascale Computing Project (ECP) is presented in <ref type="bibr" target="#b0">[1]</ref>. This study focused on applications of the ECP projects only. The goal was to understand the applications needs around MPI usage and surveyed issues related to possible problems with respect to the MPI Standard, whether current codes expect to use MPI at exascale, and questions about the dynamic behavior of codes. This survey analyzed a total of 56 projects, with each project having on average one main application.</p><p>Sultana et al. <ref type="bibr" target="#b12">[13]</ref> present a survey of usage of MPI in the ECP proxy applications suite. This work primarily analyzed the dynamic characteristics of the programs but also some static characteristics; it presents analysis of MPI call usage as well as other aspects of MPI, such as error handling, tools, dynamic process management, and I/O. This work analyzed 14 MPI programs. Klenk and Fröning <ref type="bibr" target="#b7">[8]</ref> study the dynamic MPI characteristics of 18 exascale proxy programs.</p><p>Previous works have reported on the dynamic usage of MPI in production programs in specic HPC systems and centers. Rabenseifner <ref type="bibr" target="#b11">[12]</ref> reports dynamic MPI usage on Cray T3E and SGI Ori-gin2000 systems. In a more recent study, Chunduri et al. <ref type="bibr" target="#b1">[2]</ref> analyzed MPI jobs on a large IBM BG/Q supercomputing system (Mira) and its corresponding development system (Cetus) at the Argonne National Laboratory over a span of two years. The study attempted to obtain dynamic MPI traces of thousands of jobs in these two systems; however only the jobs that terminate normally (i.e., without an error) and hence produce a prole log le are analyzed. A total of 79 prole les (which correspond to 79 unique MPI executables) were analyzed. Note that the analysis uses unique executables, where multiple unique executables can correspond to the same MPI program source code. In contrast, in our survey we analyze unique program source codes.</p><p>In summary, the three most important dierences between previous work and our work are the following: (1) we use the largest data sample ever employed thus far (110 unique MPI programs) to understand MPI usage; this data sample represents the population of MPI programs better than previous samples and yields a more realistic understanding of MPI usage in the HPC community-the statistics we present can only be observed with a large sample such as ours; <ref type="bibr" target="#b1">(2)</ref> we analyze the static usage characteristics of MPI whereas most previous studies focus on the dynamic characteristics of MPI usage; (3) we sample the space of programs as randomly as possible, whereas the relevant previous work sample from specic projects or specic HPC centers.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">BACKGROUND ON MPI</head><p>In this section, we provide background on MPI that is useful for the reader to understand our study. We detail a number of historical Table <ref type="table">1</ref>: MPI Standard versions with their release dates aspects of the MPI standardization process, which will help us explain some of our ndings later on. We also provide a summary of the key MPI features that we analyze in the sample programs.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">MPI Standard</head><p>The MPI standardization eort was formally started in early 1993 (with pre-organizational meetings in 1992) to facilitate the development of parallel applications and libraries. It involved approximately 40 organizations that included major vendors of concurrent computers, researchers from universities, government laboratories, and industry, mainly from the United States and Europe.</p><p>The rst version of MPI was released in May 1994. Since then the MPI Forum has released several versions (both major and minor) of the MPI Standard. Several new features (e.g., dynamic process management, one-sided communication, MPI I/O) were introduced in version 2.0. Another major update to the MPI Standard was version 3.0. The MPI-3.0 standard contains signicant extensions to MPI functionality, including non-blocking collective operations, new one-sided communication operations, and Fortran 2008 bindings. Table <ref type="table">1</ref> presents all the major and minor MPI Standard version with their respective release dates.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">MPI Features Classication</head><p>MPI Standard version 3.1 (the most recent version) species roughly 443 distinct routines. These routines can be grouped into 13 categories. In our analysis, we refer to these categories as MPI features. As a quick reference for the reader, we summarize these categories as follows-for more information, the reader should refer to the MPI Standard <ref type="bibr" target="#b4">[5]</ref>: • Point-to-Point communication: This feature species how to transmit messages between a pair of processes where both sender and receiver cooperate with each other. • Collective communication: This feature describes synchronization, data movement, or collective computation that involve all processes within the scope of a communicator. • Persistent communication<ref type="foot" target="#foot_1">foot_1</ref> : To reduce the overhead of repeated point-to-point calls with the same argument list, this feature creates a persistent request by binding the communication arguments and uses that request to initiate/complete messages. • One-Sided communication: This feature denes a communication where a process can write data to or read data from another process without involving that other process directly. Various synchronization models are dened, some involving all the processes in the underlying group that formed the one-sided "window. " • Derived Datatypes: This feature describes how to create userdened structures to transfer heterogeneous/non-contiguous data. • Communicator and Group management: A Group is an ordered set of processes and a Communicator encompasses a group of processes that may communicate with each other. This feature describes the manipulation of groups and communicators (e.g., construction of new communicator) in MPI. • Attribute caching: This feature allows an application to attach arbitrary pieces of information to MPI communicators, windows, and datatypes. • Process Topology: An MPI application with a specic communication pattern can use this feature to specify a mapping/ordering of MPI processes to a geometric shape. Two topologies supported by MPI are Cartesian and Graph. • MPI I/O: This feature provides support of concurrent read/write to a common le (parallel I/O) from multiple processes. • Error Handling: An MPI application can associate an error handler with communicators, windows, or les. If an MPI call is not successful, an application might use this error handling feature to test the return code of that call and execute a suitable recovery model or abort the application. • Info object: This feature allows passing additional information to MPI APIs through an info argument. The info object consists of an unordered set of (key, value) pairs. • Process management: This feature species how a running MPI program can create new MPI processes and communicate with them. • Tools Interface: This interface allows tools to prole MPI applications and to access internal MPI library information.</p><p>There are also miscellaneous features, such as MPI_Wtime and MPI_Wtick and generalized requests, that are not specic to any of these thirteen categories. Their omission from a catch-all category does not detract from our study.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">DATA GATHERING</head><p>In this section, we explain our data gathering strategy. We start by dening the research questions that we seek to answer. Next, we explain the static analysis that we develop to gather MPI usage from a large number of applications, the applications we target, and, nally, we identify certain limitations of this approach.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.1">Research Questions</head><p>In this study, we are interested in understanding how the use of MPI is correlated to four key aspects: (a) number of MPI calls (or percentage of the total calls) in programs, (b) size of the programs, (c) time span (longevity) of the programs (e.g., birthdate to present), and (d) programming models and languages. In particular, we are interested in answering the following questions:</p><p>• Q1: Do MPI programs use most of the MPI routines that are dened in the MPI Standard, or do they use a small portion of them?</p><p>• Q2: Is there a correlation between the time span of programs and their MPI usage? • Q3: Is it true that newer programs use modern MPI features while older programs tend to use only old MPI features? • Q3: Is there any correlation between the size of programs and MPI usage? For example, do complex programs tend to use more MPI features than smaller programs? • Q4: What is the use of dierent programming languages (C, C++ and Fortran) in MPI programs? • Q5: What is the use of multi-threaded programming models (e.g., CUDA and OpenMP) in conjunction with MPI programs?</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.2">Community Benets of This Study</head><p>People in the HPC community can benet from the answers to these questions, including: (a) people involved in the procurement of HPC systems, who can request that HPC vendors give higher priority to optimizations that aect the most-used functionality</p><p>; (b) programmers of new MPI applications, who may decide to utilize only the most used MPI functionality since this is the most reliable and optimized; (c) implementors of MPI libraries, who can opt to focus their eorts on the MPI features that have the highest impact to applications; (d) vendors of communication hardware (e.g., interconnects); (e) programmers of closed-source applications who can benet from how open-source applications are written; (f) tool developers who could guide their development to cover the most used MPI functionality; and (g) the MPI Forum, the body that standardizes new versions of MPI. 4.3 Static Analysis 4.3.1 Static Versus Runtime Analysis. The main advantage of runtime analysis is that it provides a mechanism to analyze the runtime communication patterns and MPI usage with given inputs in specic HPC systems. The disadvantage of this approach, however, is that it is not a practical method to analyze a large number of applications because the applications must be compiled and run, which is demanding and time-consuming. While a static analysis approach does not give insights on specic runtime behavior, it is a more scalable method to cover a larger set of codes since applications do not need to be fully compiled and/or run. Because our goal is to cover a large number of open-source MPI applications, we base our study on static analysis. 4.3.2 Our Approach: Static Analysis. Our analysis framework statically parses MPI programs and detects the use of MPI routines or calls<ref type="foot" target="#foot_2">foot_2</ref> .</p><p>Our framework traverses all the directories in the source code of an application and inspects each le to determine the use of MPI calls in each. In addition to reporting the MPI calls that are used in the program, the analysis also reports whether the application uses C, C++, or Fortran<ref type="foot" target="#foot_3">foot_3</ref> , the number of lines (not including comment lines) of the application, and whether or not the application uses CUDA, OpenMP, OpenCL, and/or OpenACC as a multi-threaded programming model. The static analysis framework is written in Python and relies on the cloc <ref type="bibr" target="#b2">[3]</ref> tool for lines-of-code counting and the detection of programming languages.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3.3">Scalability of Static Analysis.</head><p>Our static analysis framework provides a fast and simple method to gather static MPI usage and other static characteristics of MPI programs, which does not require compiling or running programs. We avoid using complex syntax and semantic analysis of the programs (we assume programs are correctly written using their corresponding language, C, C++, or Fortran) and rely on parsing MPI statements; that is, nding places in the program that make use of (a) MPI calls or (b) MPI symbols, using a set of predened regular expressions. The analysis opens each le and matches MPI statements in a per-line, per-le basis.</p><p>The analysis is fairly scalable, and has a complexity of O (n), where n is the number of lines of the program. In most applications it took less than a minute to perform the analysis; only in a few cases with large applications we saw analysis times of a few minutes (but on average less than 10 minutes). On the other hand, performing a runtime analysis on all these applications could take a signicantly large amount of time.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.3.4">Date and Age</head><p>Information. In addition to static features, we gather time span (longevity) information of the programs. In particular, we obtain two timestamps: date of the latest release and date of the rst release. This time-span information, however, is not captured by the static analysis framework and is performed manually. We use the repository website where the program is obtained as the main source to get these two timestamps. If the repository does not specify the latest release, we use the date of the latest commit as the date of the latest release-we use a similar approach for the date of the rst release if such release date cannot be found.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4">Sample MPI Programs</head><p>We statically analyze a total of 110 MPI programs. Appendix A shows the names of all these programs.</p><p>Strategy for Online Crawling. In searching for sample programs, our strategy is to sample as many MPI programs as possible without limiting ourselves to specic classes of applications. More specically, our crawling strategy uses the following criteria:</p><p>• Randomness: sample MPI programs as randomly as possible;</p><p>• Signicantly large sample size: target a data sample size that is larger than the size of data samples that has been used in previous studies; • Heterogeneity: sampled applications that include dierent classes and structures of codes, including (1) small and large codes, (2) proxy and non-proxy applications, and (3) libraries and standalone codes.</p><p>MPI programs can be developed in dierent places around the world end can be made available online using using several hosting methods. Our crawling strategy systematically prioritize our search using this method:</p><p>(1) Obtain programs from USA HPC centers and universities (2) Obtain programs from European HPC centers and universities (3) Obtain programs from Asian HPC centers and universities (4) Online crawling on github.com (5) Online crawling on bitbucket.org </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.4.1">Overview of Programs.</head><p>A distribution of the sample programs versus the number of lines of codes is shown in Figure <ref type="figure" target="#fig_0">1</ref>. The application code size stretches from 1,400 lines to seven million lines and are written in all the core high-performance computing languages encountered. We split the codes by languages used (C, C++, Fortran, and some combinations of them) to illustrate the most used language. Other languages and components of an application repository are aggregated under the All category.</p><p>The cumulative distribution shown in Figure <ref type="figure" target="#fig_0">1</ref> shows the overall probability of application codes by count using particular combinations of languages. We can see C++ being widely used primarily and in combination with C. Using this overview of the data set we can state 30% of the sample programs are written using C++. We present more details on the size of programs in Section 7. We also observe that after C++, smaller programs tend to use C initially. This could be explained by the use of C in the vast majority of documentation and introductory material in MPI programming.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.5">Limitations</head><p>While our static analysis considers most of the programming idioms upon which MPI calls are used, the analysis has limitations on identifying a few corner cases of MPI usage, e.g., when MPI is used via Python bindings or C++ bindings, and when MPI calls are made in the program using complex C/C++ macros. Fortunately, we identied only a few of such cases and we ltered these out from the samples set.</p><p>The timing information analysis presented several challenges. In particular, in 4% of the codes we were not able to gather the date of rst release-sometimes the information was not available from the repository since the code was initially released much earlier than the dates of release in the repository. In these cases, we eliminated the code from any analysis that involves dates of rst release.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">OVERVIEW OF APPLICATIONS' MPI USAGE</head><p>In this section, we briey overview the overall use of MPI by the applications in our study. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.1">MPI Calls Usage</head><p>To understand the usage of MPI in our sample application set, we rst create a list of all the MPI calls from the latest MPI Standard 3.1 <ref type="bibr" target="#b4">[5]</ref> using the "MPI Function Index". The list excludes any MPI constants or predened handles. Then, we categorize the MPI calls into MPI features. We group the MPI calls into 13 categories-P2P, Collective, Persistent, One-Sided, Datatype, Topology, Tool, Comm_Group, Attr_Cache, Error, File (MPI I/O), Info, and Process_Management based on the feature classication described in Section 3.2. Finally, all the environmental management (e.g., startup, memory allocation) and language bindings routines are considered as Other category.</p><p>For each application, we collect all the MPI calls using static analysis on the source as mentioned in Section 4.3. Then we categorize the calls to MPI features. An application uses an MPI feature if it has at least one MPI call that falls into that particular category. If an application uses both MPI_Barrier and MPI_Allreduce, our analysis will consider that the application is using the Collective feature of the MPI Standard; thus, we do not count the frequency of the MPI calls.</p><p>Findings. Figure <ref type="figure" target="#fig_1">2</ref> presents the overall usage of MPI features. Our gure shows that all of the applications except one use collective communication routines. While the percentage of applications using P2P communication is above 90%, less than 10% use persistent point-to-point and one-sided communication. Out of all applications, only two use the process management feature of the standard.</p><p>Point-to-point calls are more prominently used than either persistent point-to-point or one-sided calls.</p><p>Our analysis shows that the process management feature has rarely been adopted in codes even though it was introduced long ago   (in version 2.0, 1997). We hypothesize that the reason is that most production environments use batch schedulers, and such schedulers a) have little or no support for dynamic changes in the runtime size of MPI programs, b) production applications specify their maximum size of process utilization at startup, and c), most programs operate in terms of the build-down from MPI_COMM_WORLD, rather than a build-up mode of process creation and aggregation. The latter is also complex-to-cumbersome syntactically (e.g., merging multiple intercommunicators).</p><p>The process management feature is only rarely used in MPI programs.</p><p>Figure <ref type="figure" target="#fig_2">3</ref> shows the per-application usage of MPI features. Different applications use dierent sets of MPI features. None of our applications use all 13 features. We observe that just one application uses only point-to-point while almost 8% of our sample applications use only collectives for communication. Our analysis also shows that almost 24% of the applications use only point-to-point and collective features from the standard. Only 19% of the applications use six or more MPI features.</p><p>In both gures, we do not show the Other category as all of the applications use the calls MPI_Init and MPI_Finalize which are part of the Other category.</p><p>The majority of MPI programs surveyed only use a small set of features from the MPI Standard. A considerable number of applications use only point-to-point and collective communication features of the standard.</p><p>Figure <ref type="figure" target="#fig_4">4</ref>(a)-(b) shows the collective and point-to-point communication calls used in the applications. Figure <ref type="figure" target="#fig_4">4</ref>(a) shows the collective routines versus the number of applications that use these routines. Here we observe that, MPI_Allreduce, MPI_Barrier and MPI_Bcast are the most commonly used collective routines. We also observe that few applications use the non-blocking collective routines introduced in the MPI Standard version 3.0.</p><p>Figure <ref type="figure" target="#fig_4">4</ref>(b) shows the usage of point-to-point communication routines of the data sample. We observe that the majority of the applications use the non-blocking point-to-point calls (MPI_Irecv and MPI_Isend). However, a large number of applications (over 70) use blocking send and receive calls.</p><p>MPI_Allreduce is the most used collective routine. Applications use more non-blocking point-to-point calls than blocking calls.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.2">MPI Version Usage</head><p>In this section, we explore the version of MPI used by applications in the sample set. This is done by matching the minimum function set used by the application with the function sets extracted from the dierent versions of the MPI Standard.</p><p>As expected, many applications only use MPI 1.0 features, whereas higher versions of MPI are more rarely used. Additions to the MPI Standard in minor versions are almost never used. The threading support added by the MPI_INIT_THREAD in MPI 2.0 seems to be the only reason why twelve applications use that version. Finally, the usage of MPI 3.0 is largely because of the usage of non-blocking collectives and neighborhood collectives with nine of nineteen applications making use of either of those MPI-3.0 features. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">TIME-BASED USAGE ANALYSIS</head><p>In this section, we analyze MPI usage with respect to the release dates of applications. We gather two date metrics for each code. The rst is date of the rst release. We expect that this us understand MPI usage with respect to the maturity of the codeolder codes tend to be more mature than newer codes. The second metric is date of the latest release. We expect that this helps us understand MPI usage with respect to codes that have been actively improving their functionality-we assume that codes with recent releases are working toward adding new functionality to the code or toward improving the code reliability (e.g., xing bugs).</p><p>When analyzing release dates, each code is classied into three groups, depending on the language that is used: applications that use C/C++ only, applications that use Fortran only, and applications that use both C/C++ and Fortran.</p><p>Findings. Figures <ref type="figure" target="#fig_7">6(a</ref>)-(b) shows correlation of MPI calls to release dates. Figure <ref type="figure" target="#fig_6">6</ref>(a) shows the number of unique MPI calls versus the date of the rst code release of the application. The three vertical lines present the release dates of the major MPI Standard version, 1.0, 2.0, and 3.0. We observe that codes that were released before 2000 limit the number of used MPI calls to only 40. This is expected because the MPI Standard version 2.0 was released within 1997-1998 and contained fewer MPI calls than future versions (i.e., versions after 1997-1998); thus, codes that were released after 2000 tend to use a richer set of MPI calls, possibly because they make use of newer MPI functionality.</p><p>The MPI Standard version 2.0 may have signicantly allowed developers to explore using new MPI features in scientic codes. 1 9 9 2 1 9 9 6 2 0 0 0 2 0 0 4 2 0 0 8 2 0 1 2 2 0 1 6 DDte RI FiUst ReleDse 0 20 40 60 80 100 120 140 1uPbeU RI 8nique 03I &amp;Dlls 03I 1.0 03I 2.0 03I 3.0 &amp;/&amp;++ Rnly FRUtUDn Rnly BRth &amp;/&amp;++ &amp; FRUtUDn (a) Unique MPI calls versus the rst code release date. 2 0 1 1 2 0 1 2 2 0 1 3 2 0 1 4 2 0 1 5 2 0 1 6 2 0 1 7 2 0 1 8 2 0 1 9 DDte RI /Dtest 5eleDse 0 20 40 60 80 100 1uPbeU RI 8nLque 03I &amp;Dlls &amp;/&amp;++ Rnly FRUtUDn Rnly BRth &amp;/&amp;++ &amp; FRUtUDn (b) Unique MPI function calls versus the latest code release date. releases (in this case, recent updates since this is the latest release) use a larger set of MPI calls with respect to the codes that were last updated before 2017. Our sample indicates that a signicant portion of MPI projects (about 75%) are actively improving their codes with recent releases in the last two years.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">COMPLEXITY ANALYSIS</head><p>In this section, we discuss the MPI usage with respect to the complexity of programs. We want to explore whether the code complexity correlates with dierent usages of MPI. Several software metrics, such as number of lines of code, cyclomatic complexity, and instruction path length, can be used to measure complexity <ref type="bibr" target="#b5">[6]</ref>. We chose to use lines of code since it has been proven to be eective <ref type="bibr" target="#b14">[15]</ref> and it is easy to calculate in practice. In Section 7.1, we explore the correlation between line count and the number of unique MPI functions used. Section 7.2 analyzes the usage of dierent programming languages with which MPI is used.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.1">MPI Function Usage</head><p>Figure <ref type="figure" target="#fig_8">7</ref> shows all applications' unique MPI function usage with respect to the number of lines present in the respective application. We exclude NAMD from this analysis because it exhibits counts that are distant from the rest of the applications-it uses 314 of the 444 MPI functions present in MPI 3.1-thus we classify it as an outlier for this analysis.</p><p>The trend line shown in Figure <ref type="figure" target="#fig_8">7</ref> indicates a correlation between lines of code and the number of unique MPI functions used. From this it can be observed that larger applications have more complex usage of MPI and require a more complex set of communications capability, an intuitive observation. On the other hand, smaller applications below 100,000 lines of code rarely use more than forty functions. The plot shows a general set of MPI functionality required by many applications, where only few large applications exploit even close to a large set of MPI functionality. In addition, few applications use less than nine MPI functions, which suggests a minimum requirement for a functional usage of MPI.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7.2">Language Usage vs Code Size</head><p>In addition to the direct usage of MPI, it is also interesting to note what languages are used most for development with MPI. Figure <ref type="figure" target="#fig_9">8</ref> shows the language fractions of an application ordered in respect to the code base size. The languages of interest here are C, C++, and Fortran since these are the languages that the MPI Standard supports (at least directly). Applications often use other languages, such as scripting languages (e.g., Bash and Python), in their source code. We classify languages that are distinct from C, C++, and Fortran as Other and we calculate it by subtracting the number of C, C++, and Fortran codes lines from the total number of code lines.</p><p>As shown, C is used more rarely than we expected, however, it is used mainly for smaller applications. For larger applications C++ or Fortran are the predominant programming languages. The Other category is also interesting since, for some applications, this comprises the majority of the code base.</p><p>Surprisingly, C only comprises 16% of the language usage. C++ comprises 44%, with Fortran at 19%, and other languages at 21% of the application code bases. Since no C++ MPI interface exists <ref type="foot" target="#foot_4">4</ref> , usage from C++ is most likely through the C interface. C++ appears to be the most signicant programming language in MPI programs-C appears to be the least signicant.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="8">PROGRAMMING MODELS ANALYSIS</head><p>This section describes our ndings for the MPI+X programming model, where X corresponds to multi-threaded programming models used along with MPI. We also study the adoption of the three general-purpose programming languages that the MPI Standard supports-C, C++, and Fortran-in our sample set.</p><p>Our static analysis detects whether applications make use of OpenMP, OpenCL, OpenACC, and/or CUDA constructs. We do not consider the frequency of these constructs used in a given application, we consider only whether or not the application uses any of these models if the static analysis detects at least one construct for any model. If none of the models are seen in the code, we record it as None. We also checked for all combinations of mixed usage over the four models, such as CUDA and OpenMP.</p><p>Findings. Figure <ref type="figure" target="#fig_10">9</ref> shows the percentage of total programs using multi-threaded programming models. We nd that 74.5% of the programs use some form of hybrid code (i.e., MPI+X). Additionally, we manually checked the samples comprising the 25.5% in the None category for custom-built solutions using pthreads, but none were found. OpenMP is by far the most prevalent, found in nearly 3/4 of the sampled applications and 42.7% exclusively. We found that 17.3% of the sample set uses CUDA and OpenMP. OpenCL and OpenACC are not found to be used exclusively in any of the samples; however, we found 4.5% of the samples use CUDA and OpenCL, and 0.9% use CUDA and OpenACC, while 3.6% use OpenACC and OpenMP. We found another 3.6% of the applications use native CUDA exclusively.</p><p>The fact that a signicant number of applications (28%) use a mixture of multi-threaded models can be attributed to an increasing availability of various classes of architectures in supercomputing systems, including the increased prevalence of accelerators. This has implications on frameworks to enable performance portability <ref type="bibr" target="#b3">[4,</ref><ref type="bibr" target="#b6">7]</ref>, which allow executing programs on multiple platforms and in-node parallelism models; these frameworks may become increasingly important in the future. About one third of programs use a mixture of multi-threaded programming models, possibly due to an increase of available distinct architectures in HPC systems.</p><p>The MPI execution environment is initialized by using MPI_Init or MPI_Init_Thread. If MPI_Init_Thread is used, the program can use one out of four thread environment options: MPI_THREAD-_SINGLE, MPI_THREAD_FUNNELED, MPI_THREAD_SERIALIZED, and MPI_THREAD_MULTIPLE. We nd that 70% of the programs in our sample use the hybrid (MPI+OpenMP) programming model. However, not all of these programs use MPI_Init_thread to initialize the thread environment. We nd that less than half of the programs (30 out of 77) with the hybrid model use MPI_Init_thread to initialize MPI.</p><p>The routine MPI_Init_thread takes two parameters: required which indicates the level of desired thread support and provided indicating the actual thread support while executing the program. In our static analysis, we only capture the required thread level specied by the application.</p><p>Figure <ref type="figure" target="#fig_11">10</ref> shows the use of thread environment in our sample programs. Here, we show the percentage with respect to the total application that actually use MPI_Init_thread. Our analysis shows that, the majority (almost 60%) of them use FUNNELED as the required level of thread support. We also observe that, around one-third of these applications use MULTIPLE. With respect to the total application set, only 8% of programs use thread MULTIPLE. One possible reason of observing more programs with FUNNELED than MULTIPLE might be that the performance implications of MULTIPLE in MPI implementations.</p><p>Programs mostly use MPI_THREAD_FUNNELED as the required level of thread support.</p><p>Figure <ref type="figure" target="#fig_12">11</ref> shows the percentage of sampled applications whose source codes used C, C++, and Fortran programming languages exclusively, or some combination of the three. Only 2.7% of the applications use Fortran exclusively in their sources, while about 10% use C and 30% use C++. We found that 24.5% of the applications in the sample set use all three languages, while 16.4% use C with C++, 13.6% use C with Fortran, and 2.7% use C++ with Fortran.</p><p>To our surprise, few applications in our sample set are written purely in Fortran, though Fortran is found in about 41% of the applications that use more than one language. While early HPC applications were based in C and Fortran, the trend appears to be shifting toward using more modern languages such as C++, which is used exclusively in 30% of our sample set.</p><p>In the past, programs were predominantly written in Fortran and C. We observe that C++ is becoming the dominant programming language for MPI programs. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="9">DISCUSSION OF PREVIOUS INSIGHTS</head><p>We compare our key ndings with the observations that have been reported in previous surveys. Unfortunately, most previous surveys use only a small fraction of MPI programs in comparison to our sample set; thus, a direct comparison would not be fair. The study presented in <ref type="bibr" target="#b1">[2]</ref> analyzed 79 MPI executables-we consider this survey as the closest survey to ours, at least in terms of data sample size; (we analyzed 110 unique MPI programs).</p><p>It is worth noting that <ref type="bibr" target="#b1">[2]</ref> analyzed the runtime characteristics of MPI programs (in an HPC center) while we analyze the static characteristics of general MPI programs; clearly both studies dier on the target characteristics and scope of the data. It is therefore worthwhile to discuss the ndings of both studies.</p><p>Table <ref type="table" target="#tab_2">2</ref> shows a comparison of our ndings and the ndings in <ref type="bibr" target="#b1">[2]</ref>. The table shows the main seven insights we nd and whether they were reported before in <ref type="bibr" target="#b1">[2]</ref> or not. We nd that three out of seven insights were also reported previously. These insights are mostly related to the use of dierent classes of MPI calls and functionality, which was the goal of <ref type="bibr" target="#b1">[2]</ref> since they focus on executed programs. Findings 4-7 are more oriented towards other aspects of MPI programs, such as compatibility with the standard versions, programming languages utilized, and unused features of the standard-since we are the rst analyzing these aspects, these insights have not been reported before.</p><p>This comparison highlights that our study serves as conrmation of some previously reported trends in MPI usage (however, at a larger scale), as well as reporting new insights.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="10">CONCLUSIONS</head><p>While previous works have studied the use of MPI, the vast majority of these works focused either on a small set of programs or on programs executed in specic HPC centers. Our work presents the rst study based on data from a large number of MPI programs,</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Insight</head><p>First Time Reported? Comments analyzing a total of 110 programs. To the best of our knowledge, this is the largest study reported so far on MPI usage. A signicant challenge in examining a large sample of MPI programs is the cost in time and eort of building and running programs-we avoid this by statically analyzing programs using an analysis framework that can quickly infer several metrics of MPI programs without the need of building and/or running the programs. Our static analysis framework allows us to quickly scale to large samples sets of MPI programs and therefore gives us the opportunity to obtain a larger view of MPI usage in the community.</p><p>While our study conrms some insights of MPI usage previously reported in studies that used smaller data samples, it also reveals a number of surprising previously unreported insights. We nd that the majority of MPI programs use only a small set of features from the MPI Standard; 42% programs need only functionality from MPI 1.0 and 80% need only the functionality from MPI 2.0. This interesting nding has implications into where eort should be concentrated in MPI implementations and in the process of standardizing new features in MPI. We report that blocking and non-blocking point-to-point operations are more widely used than persistent or one-sided routines-a surprising nding given that the latter could potentially improve performance over the former. We also nd that hybrid MPI+X applications populate a considerable portion of the space (29%), and that, surprisingly, C++ dominates the programming language use over Fortran and C. We speculate that as C++ evolves, more projects are adopting C++ perhaps to support more advanced language features.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A LIST OF PROGRAMS</head><p>Table <ref type="table" target="#tab_3">3</ref> shows the list of MPI programs that we analyze in our study. </p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Cumulative distribution of application count with respect to their code size.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: MPI features shown by percentage of applications using them.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 3 :</head><label>3</label><figDesc>Figure 3: Usage of unique MPI features by applications. We show that the majority of applications use a small fraction of the MPI functionality.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><figDesc>(a) MPI collective function usage. We show AllReduce is the most used collective operation. (b) MPI point-to-point function usage. We show non-blocking send and recv are the most used functionality.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Figure 4 :</head><label>4</label><figDesc>Figure 4: Overview of communication calls used in the applications.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Figure 5 :</head><label>5</label><figDesc>Figure 5: Application count versus the minimum version of MPI which provides the functionality required by each application. Most applications require only early versions of MPI.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Figure 6 (</head><label>6</label><figDesc>Figure 6(b)  shows the number of unique MPI calls versus the date of the latest code release of the application. Here, we observe that, in our data sample, a large proportion of the codes pushed out their latest release in the last two years (2018-2019); these recent</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Figure 6 :</head><label>6</label><figDesc>Figure 6: Correlation of MPI function calls with application release dates.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>Figure 7 :</head><label>7</label><figDesc>Figure 7: Unique MPI functions used by applications of various sizes. Larger applications tend to use more MPI functionality.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Figure 8 :</head><label>8</label><figDesc>Figure 8: Programming language percentage used versus application code size. Fortran and C++ are the most used programming languages, with C being used surprisingly little.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Figure 9 :</head><label>9</label><figDesc>Figure 9: Percentage of total applications using multithreaded programming models. The most often used model is MPI+OpenMP.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_11"><head>Figure 10 :</head><label>10</label><figDesc>Figure 10: The percentage use by applications of thread modes provided by MPI. The funneled threading model is used most often.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_12"><head>Figure 11 :</head><label>11</label><figDesc>Figure 11: The percentage of applications using specic programming languages. Most applications use a mixture of languages.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_2"><head>Table 2 :</head><label>2</label><figDesc>Comparison of our ndings with the previous studies of MPI usage.</figDesc><table><row><cell>1 Hybrid MPI+X applications are more widely used than expected.</cell><cell>No</cell><cell>[2] reports a similar insight</cell></row><row><cell>2 MPI_Allreduce is the most signicantly used collective.</cell><cell>No</cell><cell>[2] reports a similar insight</cell></row><row><cell>3 Applications use more non-blocking point-to-point calls than blocking calls.</cell><cell>No</cell><cell>[2] reports a similar insight</cell></row><row><cell>4 The majority of the MPI programs use only a small set of features from the MPI Standard.</cell><cell>Yes</cell><cell></cell></row><row><cell>5 A large proportion of programs (42%) require the features in MPI version 1.0 only; most</cell><cell>Yes</cell><cell></cell></row><row><cell>programs (about 80%), require only the features of MPI version 2.0.</cell><cell></cell><cell></cell></row><row><cell>6 The most signicant language in MPI programs is C++.</cell><cell>Yes</cell><cell></cell></row><row><cell>7 Some features of the MPI Standard, such as process management are practically unused.</cell><cell>Yes</cell><cell></cell></row><row><cell>8 The MPI Standard version 2.0 may have signicantly allowed developers to explore the</cell><cell>Yes</cell><cell></cell></row><row><cell>use of new MPI features.</cell><cell></cell><cell></cell></row><row><cell>9 Programs mostly use MPI_THREAD_FUNNELED as the required level of thread support.</cell><cell>Yes</cell><cell></cell></row></table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3"><head>Table 3 :</head><label>3</label><figDesc>The set of MPI application used in our study.</figDesc><table><row><cell cols="2">No. Program Name</cell><cell>Version</cell><cell>Latest Release</cell><cell cols="2">No. Program Name</cell><cell>Version</cell><cell>Latest Release</cell></row><row><cell>1</cell><cell>ADCIRC</cell><cell>53.04</cell><cell>3/18/19</cell><cell>56</cell><cell>Paradis</cell><cell>2.5.1.1</cell><cell>11/15/11</cell></row><row><cell>2</cell><cell>ADIOS</cell><cell>1.13.1</cell><cell>4/1/18</cell><cell>57</cell><cell>PlasmaApp</cell><cell></cell><cell>1/9/14</cell></row><row><cell>3</cell><cell>AMG2013</cell><cell>2.3</cell><cell>1/6/14</cell><cell>58</cell><cell>PrincetonCBEMDMPI</cell><cell></cell><cell>1/17/13</cell></row><row><cell>4</cell><cell>ASPA</cell><cell></cell><cell>9/23/14</cell><cell>59</cell><cell>ProfugusMC</cell><cell></cell><cell>8/31/18</cell></row><row><cell>5</cell><cell>BioEM</cell><cell>2</cell><cell>12/18/18</cell><cell>60</cell><cell>QBox</cell><cell>1.2</cell><cell>1/6/14</cell></row><row><cell>6</cell><cell cols="2">CFDEMcoupling 3.8.0</cell><cell>11/30/17</cell><cell>61</cell><cell>Qmcpack</cell><cell>3.6.0</cell><cell>12/19/18</cell></row><row><cell>7</cell><cell>CGM</cell><cell>16</cell><cell>1/4/19</cell><cell>62</cell><cell>Quantum_Espresso</cell><cell>6.4</cell><cell>3/4/19</cell></row><row><cell>8</cell><cell>CLAMR</cell><cell>2.0.7</cell><cell>11/23/14</cell><cell>63</cell><cell>SCOREC</cell><cell>2.2.0</cell><cell>10/19/18</cell></row><row><cell>9</cell><cell>Cactus</cell><cell>4.3.0</cell><cell>3/1/19</cell><cell>64</cell><cell>SNbone</cell><cell></cell><cell>2/11/15</cell></row><row><cell>10</cell><cell>Cae-MPI</cell><cell>2</cell><cell>2/5/18</cell><cell>65</cell><cell>SPPARKS</cell><cell>0.14</cell><cell>12/20/18</cell></row><row><cell>11</cell><cell>Chatterbug</cell><cell>1</cell><cell>8/27/18</cell><cell>66</cell><cell>SW4lite</cell><cell>1</cell><cell>3/14/19</cell></row><row><cell>12</cell><cell>Chombo</cell><cell>3.2</cell><cell>12/7/15</cell><cell>67</cell><cell>SWFFT</cell><cell>1</cell><cell>10/25/17</cell></row><row><cell>13</cell><cell>CloverLeaf</cell><cell>1.3</cell><cell>10/28/15</cell><cell>68</cell><cell>Samrai</cell><cell>v-3-12-0</cell><cell>5/31/18</cell></row><row><cell>14</cell><cell>CoMD</cell><cell>1.1</cell><cell>10/26/17</cell><cell>69</cell><cell>ScaLAPACK</cell><cell>2.0.2</cell><cell>5/1/12</cell></row><row><cell>15</cell><cell>CoSP2</cell><cell></cell><cell>1/29/15</cell><cell>70</cell><cell>Scale</cell><cell>5.33</cell><cell>2/6/19</cell></row><row><cell>16</cell><cell>Code_Saturne</cell><cell>5.3.2</cell><cell>1/29/19</cell><cell>71</cell><cell>SimpleMOC</cell><cell>4</cell><cell>7/31/18</cell></row><row><cell>17</cell><cell>Comb</cell><cell>0.1.1</cell><cell>1/8/19</cell><cell>72</cell><cell>TCLB</cell><cell>6</cell><cell>1/30/19</cell></row><row><cell>18</cell><cell>CoreNeuron</cell><cell>0.14</cell><cell>2/28/19</cell><cell>73</cell><cell>Trilinos</cell><cell cols="2">release-12-14-1 2/27/19</cell></row><row><cell>19</cell><cell>E3SM</cell><cell>v1.0.0</cell><cell>2/28/19</cell><cell>74</cell><cell>Tycho2</cell><cell></cell><cell>3/9/19</cell></row><row><cell>20</cell><cell>EigenExa</cell><cell>2.4b</cell><cell>8/20/18</cell><cell>75</cell><cell>VMD</cell><cell>1.9.3</cell><cell>11/30/16</cell></row><row><cell>21</cell><cell>Elemental</cell><cell>v0.87.7</cell><cell>2/6/17</cell><cell>76</cell><cell>VPFFT</cell><cell></cell><cell>3/5/15</cell></row><row><cell>22</cell><cell>Enzo</cell><cell cols="2">branch_dev-bd5ddbbcb6ad 2/5/19</cell><cell>77</cell><cell>WRF</cell><cell>4</cell><cell>6/8/18</cell></row><row><cell>23</cell><cell>ExaMiniMD</cell><cell>1</cell><cell>3/14/18</cell><cell>78</cell><cell>abinit</cell><cell>8.10.2</cell><cell>10/15/18</cell></row><row><cell>24</cell><cell>FLASH</cell><cell>4.5</cell><cell>3/1/19</cell><cell>79</cell><cell>amgcl</cell><cell>1.2.0</cell><cell>5/10/18</cell></row><row><cell>25</cell><cell>GTC-P</cell><cell>gtcp_apex-c5bf52e7cfe5</cell><cell>9/18/18</cell><cell>80</cell><cell>arbor</cell><cell>0.2</cell><cell>3/3/19</cell></row><row><cell>26</cell><cell>Gadget</cell><cell>2.0.7</cell><cell>5/1/05</cell><cell>81</cell><cell>ascent</cell><cell>0.4.0</cell><cell>10/1/18</cell></row><row><cell>27</cell><cell>Gamess</cell><cell>R3-Public-Release</cell><cell>9/30/18</cell><cell>82</cell><cell>cp2k</cell><cell>6.1</cell><cell>10/2/18</cell></row><row><cell>28</cell><cell>Genesis</cell><cell>1.3.0</cell><cell>6/18/18</cell><cell>83</cell><cell>elmerfem</cell><cell>release-8.4</cell><cell>3/20/19</cell></row><row><cell>29</cell><cell>Gizmo</cell><cell></cell><cell>3/25/19</cell><cell>84</cell><cell>faunus</cell><cell>2.2.0</cell><cell>2/20/18</cell></row><row><cell>30</cell><cell>Gromacs</cell><cell>2019.1</cell><cell>2/15/19</cell><cell>85</cell><cell>feltor</cell><cell>v5.0</cell><cell>6/15/18</cell></row><row><cell>31</cell><cell>HPCG</cell><cell>3</cell><cell>11/11/15</cell><cell>86</cell><cell>m_mpi</cell><cell></cell><cell>12/3/17</cell></row><row><cell>32</cell><cell>HPGMG</cell><cell></cell><cell>2/1/18</cell><cell>87</cell><cell>horovod</cell><cell>0.16.1</cell><cell>3/19/19</cell></row><row><cell>33</cell><cell>HYPRE</cell><cell>2.11.2</cell><cell>3/13/17</cell><cell>88</cell><cell>meep</cell><cell>1.8.0</cell><cell>2/13/19</cell></row><row><cell>34</cell><cell>HemeLB</cell><cell>0.2.6</cell><cell>3/7/14</cell><cell>89</cell><cell>metag_partitioning</cell><cell></cell><cell>9/29/16</cell></row><row><cell>35</cell><cell>Kratos</cell><cell>7</cell><cell>3/20/19</cell><cell>90</cell><cell>miniAMR</cell><cell>1.4.3</cell><cell>2/14/19</cell></row><row><cell>36</cell><cell>Kripke</cell><cell>1.2.3</cell><cell>10/23/18</cell><cell>91</cell><cell>miniAero</cell><cell>1.0.0</cell><cell>7/5/16</cell></row><row><cell>37</cell><cell>LAMMPS</cell><cell>12-Dec-18</cell><cell>12/11/18</cell><cell>92</cell><cell>miniFE</cell><cell>2.2</cell><cell>11/22/17</cell></row><row><cell>38</cell><cell>LULESH</cell><cell>2.1</cell><cell>8/30/17</cell><cell>93</cell><cell>miniMD</cell><cell>1.2</cell><cell>2/28/19</cell></row><row><cell>39</cell><cell>Laghos</cell><cell>2</cell><cell>11/19/18</cell><cell>94</cell><cell>miniSMAC2D</cell><cell>2.0.0</cell><cell>7/5/16</cell></row><row><cell>40</cell><cell>MACSio</cell><cell>1.1</cell><cell>10/2/18</cell><cell>95</cell><cell>miniTri</cell><cell>1</cell><cell>10/23/17</cell></row><row><cell>41</cell><cell>MCB</cell><cell>1</cell><cell>1/6/14</cell><cell>96</cell><cell>miniVite</cell><cell>1</cell><cell>9/26/18</cell></row><row><cell>42</cell><cell>MITgcm</cell><cell>cp67g</cell><cell>1/7/19</cell><cell>97</cell><cell>miniXyce</cell><cell>1.0.0</cell><cell>7/5/16</cell></row><row><cell>43</cell><cell>MLSL</cell><cell>v2018.2</cell><cell>10/1/18</cell><cell>98</cell><cell>mxx</cell><cell></cell><cell>1/4/19</cell></row><row><cell>44</cell><cell>MOAB</cell><cell>5.1.0</cell><cell>3/27/19</cell><cell>99</cell><cell>nest-simulator</cell><cell>v2.16.0</cell><cell>8/21/18</cell></row><row><cell>45</cell><cell>MUMPS</cell><cell>5.1.2</cell><cell>10/1/17</cell><cell cols="2">100 ntchem-mini</cell><cell>1.2</cell><cell>3/15/19</cell></row><row><cell>46</cell><cell>MeshKit</cell><cell>1.5.0</cell><cell>3/4/19</cell><cell cols="2">101 phyml</cell><cell>v3.3.20190321</cell><cell>4/3/19</cell></row><row><cell>47</cell><cell>NAMD</cell><cell>2.13</cell><cell>4/3/19</cell><cell cols="2">102 pism</cell><cell>1.1</cell><cell>3/29/19</cell></row><row><cell>48</cell><cell>NWChem</cell><cell>6.8.1</cell><cell>6/14/18</cell><cell cols="2">103 primecount</cell><cell>4.5</cell><cell>2/23/19</cell></row><row><cell>49</cell><cell>Neckbone</cell><cell>2.3.4.1</cell><cell>1/6/14</cell><cell cols="2">104 pypar</cell><cell></cell><cell>11/10/16</cell></row><row><cell>50</cell><cell>Nek5000</cell><cell>17</cell><cell>12/17/17</cell><cell cols="2">105 rocALUTION</cell><cell>1.4.1</cell><cell>3/17/19</cell></row><row><cell>51</cell><cell>Nyx</cell><cell>18.1</cell><cell>10/2/18</cell><cell cols="2">106 siesta</cell><cell>4.0.2</cell><cell>7/20/18</cell></row><row><cell>52</cell><cell>OpenFOAM</cell><cell>18.12</cell><cell>12/20/18</cell><cell cols="2">107 soue</cell><cell>1.5.1</cell><cell>1/20/19</cell></row><row><cell>53</cell><cell>OpenMD</cell><cell></cell><cell>3/26/19</cell><cell cols="2">108 splatt</cell><cell>1.1.0</cell><cell>9/5/18</cell></row><row><cell>54</cell><cell>PENNANT</cell><cell>0.9</cell><cell>3/2/16</cell><cell cols="2">109 thornado-mini</cell><cell>1</cell><cell>9/24/18</cell></row><row><cell>55</cell><cell>PICSAR</cell><cell></cell><cell>2/7/19</cell><cell cols="2">110 yambo</cell><cell>4.3.2</cell><cell>2/2/19</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_0"><p>Authorized licensed use limited to: Univ Politecnica de Madrid. Downloaded on March 10,2026 at 16:34:26 UTC from IEEE Xplore. Restrictions apply.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="1" xml:id="foot_1"><p>Persistent Collective communication, which is expected to be part of MPI-4, is not considered in this survey.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2" xml:id="foot_2"><p>While the MPI Standard often uses the term routines, in this paper we use the terms 'MPI routines' and 'MPI calls' interchangeably.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="3" xml:id="foot_3"><p>We only detect usage of these languages in the programs since these are the languages formally supported by the MPI Standard.</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="4" xml:id="foot_4"><p>No C++ interface exists after MPI 2.1</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>ACKNOWLEDGMENTS</head><p>We thank the anonymous reviewers for their suggestions and comments on the paper. This work was performed under the auspices of the <rs type="funder">U.S. Department of Energy</rs> by <rs type="funder">Lawrence Livermore National Laboratory</rs> under Contract <rs type="grantNumber">DE-AC52-07NA27344</rs> (<rs type="grantNumber">LLNL-CONF-771757</rs>). This work also was supported in part by the <rs type="funder">National Science Foundation</rs> under grants <rs type="grantNumber">1821431</rs>, <rs type="grantNumber">1812404</rs>, <rs type="grantNumber">1925603</rs>, and <rs type="grantNumber">1918987</rs>. Any opinions, ndings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reect the views of the National Science Foundation or <rs type="institution">Lawrence Livermore National Laboratory</rs>.</p></div>
+			</div>
+			<div type="funding">
+<div><head>An</head><p>thony <rs type="person">Skjellum</rs>, and <rs type="person">Nawrin Sultana</rs>. <rs type="grantNumber">2019</rs>. <rs type="projectName">A Large-Scale Study</rs> of <rs type="affiliation">MPI Usage in Open-Source HPC Applications. In The International Conference for High Performance Computing, Networking, Storage</rs>, and Analysis (SC '<rs type="grantNumber">19</rs>), November <rs type="grantNumber">17-22</rs>, <rs type="grantNumber">2019</rs>, <rs type="institution">Denver, CO, USA. ACM, New York, NY, USA</rs>, <rs type="grantNumber">12</rs> pages.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_Dhf5w4h">
+					<idno type="grant-number">DE-AC52-07NA27344</idno>
+				</org>
+				<org type="funding" xml:id="_k6VgFZc">
+					<idno type="grant-number">LLNL-CONF-771757</idno>
+				</org>
+				<org type="funding" xml:id="_UxW2h7Q">
+					<idno type="grant-number">1821431</idno>
+				</org>
+				<org type="funding" xml:id="_fjMDs8Z">
+					<idno type="grant-number">1812404</idno>
+				</org>
+				<org type="funding" xml:id="_dktQZK3">
+					<idno type="grant-number">1925603</idno>
+				</org>
+				<org type="funding" xml:id="_aMbXARM">
+					<idno type="grant-number">1918987</idno>
+				</org>
+				<org type="funded-project" xml:id="_68jq3Mr">
+					<idno type="grant-number">2019</idno>
+					<orgName type="project" subtype="full">A Large-Scale Study</orgName>
+				</org>
+				<org type="funding" xml:id="_qkaEJmA">
+					<idno type="grant-number">19</idno>
+				</org>
+				<org type="funding" xml:id="_NjwH2Nj">
+					<idno type="grant-number">17-22</idno>
+				</org>
+				<org type="funding" xml:id="_GBsTaAq">
+					<idno type="grant-number">2019</idno>
+				</org>
+				<org type="funding" xml:id="_Zwcscmz">
+					<idno type="grant-number">12</idno>
+				</org>
+			</listOrg>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Appendix: Artifact Description/Artifact Evaluation</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>SUMMARY OF THE EXPERIMENTS REPORTED</head><p>We ran mpiusage.py, which parses the source code of MPI programs. The input of this artifact is a directory containing the source code of a program, and the output is metrics of MPI usage.</p><p>The MPI Usage program will by default output statistics in a json format in standard output, for example: $ ./mpiusage.py /path/lulesh/src/ { "MPI_COMM_SIZE": 3, "MPI_REDUCE": 3, "MPI_WAITALL": 2, "MPI_WAIT": 116, "MPI_COMM_RANK": 15, "MPI_ALLREDUCE": 3, "MPI_INIT": 3, "MPI_FINALIZE": 3, "MPI_ABORT": 12, "MPI_WTIME": 3, "MPI_IRECV": 26, "MPI_ISEND": 52, "MPI_BARRIER": 3, "OPENMP": 0, "OPENACC": 0, "CUDA": 168, "OPENCL": 0, "C_LINES": 0, "CPP_LINES": 297, "C_CPP_H_LINES": 365, "FORTRAN_LINES": 0, "LINES_OF_CODE": 14574 }</p><p>The user can specify an output file using the -o. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>ARTIFACT AVAILABILITY</head><p>Software Artifact Availability: All author-created software artifacts are maintained in a public repository under an OSI-approved license.</p><p>Hardware Artifact Availability: There are no author-created hardware artifacts.</p><p>Data Artifact Availability: There are no author-created data artifacts.</p><p>Proprietary Artifacts: None of the associated artifacts, authorcreated or otherwise, are proprietary. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>List of</head></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">A survey of MPI usage in the US exascale computing project</title>
+		<author>
+			<persName><forename type="first">Swen</forename><surname>David E Bernholdt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">George</forename><surname>Boehm</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Bosilca</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gorentla</forename><surname>Manjunath</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><forename type="middle">E</forename><surname>Venkata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Grant</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Howard</forename><forename type="middle">P</forename><surname>Naughton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Pritchard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Geoffroy R</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Vallee</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Concurrency and Computation: Practice and Experience</title>
+		<imprint>
+			<biblScope unit="page">4851</biblScope>
+			<date type="published" when="2017">2017. 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Characterization of MPI Usage on a Production Supercomputer</title>
+		<author>
+			<persName><forename type="first">S</forename><surname>Chunduri</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Parker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Balaji</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Harms</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Kumaran</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/SC.2018.00033</idno>
+		<ptr target="https://doi.org/10.1109/SC.2018.00033" />
+	</analytic>
+	<monogr>
+		<title level="m">SC18: International Conference for High Performance Computing, Networking, Storage and Analysis</title>
+		<imprint>
+			<date type="published" when="2018">2018</date>
+			<biblScope unit="page" from="386" to="400" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<monogr>
+		<author>
+			<persName><forename type="first">Al</forename><surname>Danial</surname></persName>
+		</author>
+		<ptr target="https://github.com/AlDanial/cloc.Online" />
+		<title level="m">CLOC: Count Lines of Code</title>
+		<imprint>
+			<date type="published" when="2019-01-10">2019. Jan/10/2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Kokkos: Enabling manycore performance portability through polymorphic memory access patterns</title>
+		<author>
+			<persName><forename type="first">Carter</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><forename type="middle">R</forename><surname>Trott</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Sunderland</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Parallel and Distrib. Comput</title>
+		<imprint>
+			<biblScope unit="volume">74</biblScope>
+			<biblScope unit="page" from="3202" to="3216" />
+			<date type="published" when="2014">2014. 2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">MPI: A Message-passing Interface Standard, Version 3.1</title>
+		<ptr target="https://books.google.com/books?id=Fbv7jwEACAAJ" />
+	</analytic>
+	<monogr>
+		<title level="m">High-Performance Computing Center Stuttgart, University of Stuttgart</title>
+		<imprint>
+			<publisher>Message Passing Interface Forum</publisher>
+			<date type="published" when="2015-06-04">2015. June 4, 2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Practical software metrics for project management and process improvement</title>
+		<author>
+			<persName><forename type="first">Grady</forename><surname>Robert</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1992">1992</date>
+			<publisher>Prentice-Hall, Inc</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">The RAJA portability layer: overview and status</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Richard</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jerey</forename><forename type="middle">A</forename><surname>Hornung</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Keasler</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+			<pubPlace>Livermore, CA (United States</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Lawrence Livermore National Lab.(LLNL)</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">An overview of MPI characteristics of exascale proxy applications</title>
+		<author>
+			<persName><forename type="first">Benjamin</forename><surname>Klenk</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Holger</forename><surname>Fröning</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">International Supercomputing Conference</title>
+		<imprint>
+			<publisher>Springer</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="217" to="236" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">A Survey of Scientic Software Development</title>
+		<author>
+			<persName><forename type="first">Luke</forename><surname>Nguyen-Hoan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Shayne</forename><surname>Flint</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ramesh</forename><surname>Sankaranarayana</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/1852786.1852802</idno>
+		<ptr target="https://doi.org/10.1145/1852786.1852802" />
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 2010 ACM-IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM &apos;10)</title>
+		<meeting>the 2010 ACM-IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM &apos;10)<address><addrLine>New York, NY, USA, Article</addrLine></address></meeting>
+		<imprint>
+			<publisher>ACM</publisher>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="volume">12</biblScope>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">A survey of the practice of computational science</title>
+		<author>
+			<persName><forename type="first">Prakash</forename><surname>Prabhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hanjun</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Taewook</forename><surname>Oh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Nick</forename><forename type="middle">P</forename><surname>Thomas B Jablin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arun</forename><surname>Zoufaly</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Feng</forename><surname>Raman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yun</forename><surname>Walker</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">SC&apos;11: Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and Analysis</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2011">2011</date>
+			<biblScope unit="page" from="1" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">An empirical comparison of seven programming languages</title>
+		<author>
+			<persName><forename type="first">L</forename><surname>Prechelt</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/2.876288</idno>
+		<ptr target="https://doi.org/10.1109/2.876288" />
+	</analytic>
+	<monogr>
+		<title level="j">Computer</title>
+		<imprint>
+			<biblScope unit="volume">33</biblScope>
+			<biblScope unit="page" from="23" to="29" />
+			<date type="published" when="2000-10">2000. Oct 2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">Automatic MPI counter proling of all users: First results on a CRAY T3E 900-512</title>
+		<author>
+			<persName><forename type="first">Rolf</forename><surname>Rabenseifner</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the message passing interface developer&apos;s and user&apos;s conference</title>
+		<meeting>the message passing interface developer&apos;s and user&apos;s conference</meeting>
+		<imprint>
+			<date type="published" when="1999">1999</date>
+			<biblScope unit="volume">1999</biblScope>
+			<biblScope unit="page" from="77" to="85" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Understanding the Usage of MPI in Exascale Proxy Applications</title>
+		<author>
+			<persName><forename type="first">Nawrin</forename><surname>Sultana</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Anthony</forename><surname>Skjellum</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Purushotham</forename><surname>Bangalore</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ignacio</forename><surname>Laguna</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kathryn</forename><surname>Mohror</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Workshop on Exascale MPI (ExaMPI)</title>
+		<imprint>
+			<date type="published" when="2018">2018. 2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">Complexity and performance in parallel programming languages</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Steven</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daphna</forename><surname>Vanderwiel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">David</forename><forename type="middle">J</forename><surname>Nathanson</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Lilja</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings Second International Workshop on High-Level Parallel Programming Models and Supportive Environments</title>
+		<meeting>Second International Workshop on High-Level Parallel Programming Models and Supportive Environments</meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="1997">1997</date>
+			<biblScope unit="page" from="3" to="12" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<analytic>
+		<title level="a" type="main">An investigation of the relationships between lines of code and defects</title>
+		<author>
+			<persName><forename type="first">H</forename><surname>Zhang</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">2009 IEEE International Conference on Software Maintenance</title>
+		<imprint>
+			<date type="published" when="2009">2009</date>
+			<biblScope unit="page" from="274" to="283" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

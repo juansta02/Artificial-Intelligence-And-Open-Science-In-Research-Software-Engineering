@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Kokkos: Enabling performance portability across manycore architectures</title>
+				<funder ref="#_QENQ6Fw">
+					<orgName type="full">U.S. Department of Energy&apos;s National Nuclear Security Administration</orgName>
+				</funder>
+				<funder ref="#_3WfvZqu">
+					<orgName type="full">unknown</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">H</forename><forename type="middle">Carter</forename><surname>Edwards</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Sandia National Laboratories</orgName>
+								<address>
+									<postBox>PO Box 5800</postBox>
+									<postCode>1318 87185</postCode>
+									<settlement>Albuquerque</settlement>
+									<region>NM</region>
+									<country>MS</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christian</forename><forename type="middle">R</forename><surname>Trott</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="department">Sandia National Laboratories</orgName>
+								<address>
+									<postBox>PO Box 5800</postBox>
+									<postCode>1318 87185</postCode>
+									<settlement>Albuquerque</settlement>
+									<region>NM</region>
+									<country>MS</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Kokkos: Enabling performance portability across manycore architectures</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">041AC98A9A641AB8C21914B14CBCCE5C</idno>
+					<idno type="DOI">10.1109/XSW.2013.7</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The manycore revolution in computational hardware can be characterized by increasing thread counts, decreasing memory per thread, and architecture specific performance constraints for memory access patterns. High performance computing (HPC) on emerging manycore architectures requires codes to exploit every opportunity for thread-level parallelism and satisfy conflicting performance constraints. We developed the Kokkos C++ library to provide scientific and engineering codes with a user accessible manycore performance portable programming model. The two foundational abstractions of Kokkos are (1) dispatch work to a manycore device for parallel execution and (2) manage multidimensional arrays with polymorphic layouts. The integration of these abstractions enables users' code to satisfy multiple architecture specific memory access pattern performance constraints without having to modify their source code. In this paper we describe the Kokkos abstractions, summarize its application programmer interface (API), and present performance results for a molecular dynamics computational kernel and finite element mini-application.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>The Kokkos library <ref type="bibr" target="#b0">[1]</ref>- <ref type="bibr" target="#b2">[3]</ref> provides scientific and engineering codes with a user accessible programming model that enables performance portability across diverse manycore architectures. We define user accessibility by the degree to which we can minimize (1) users' need to have architecture specific knowledge and (2) pollution of users' code with parallel directives. We define performance portability by the amount of user code which can be compiled for diverse manycore architectures and obtain the same, or nearly the same, performance as an architecture specialized version of that code.</p><p>The vision for Kokkos has evolved from a hidden portability layer for sparse linear algebra kernels in Trilinos <ref type="bibr" target="#b3">[4]</ref> to a hierarchy of broadly usable libraries. The current core library and programming model provides two fundamental capabilities: (1) thread parallel execution on manycore devices and (2) multidimensional arrays. Plans for higher level libraries include sparse linear algebra, tensor algebra, containers (e.g., unordered maps), and finite elements. Kokkos' thread parallel execution follows the parallel dispatch pattern used by Intel Threaded Building Blocks (TBB) <ref type="bibr" target="#b4">[5]</ref>, NVIDIA Thrust <ref type="bibr" target="#b5">[6]</ref>, C++ AMP <ref type="bibr" target="#b6">[7]</ref>, and others. Kokkos' multidimensional arrays serve the same role as multidimensional arrays intrinsic to many programming language (e.g., FORTRAN and C), and are similar in concept to the flexible storage ordering in Boost.MultiArray <ref type="bibr" target="#b7">[8]</ref>. By combining parallel dispatch and flexible storage ordering in a single programming model we can portably achieve the optimal data access pattern for disparate manycore devices. This concept allows Kokkos to supersede the contemporary manycore programming dilemma of array of structures (AoS) versus structure of arrays (SoA) by choosing the best storage ordering for the given device without having to modify computational kernels. Kokkos provides a minimal overhead API that isolates user code from device specific programming models. This allows us to choose the most performant programming model for each manycore device and optimize our use of that programming model without impacting user code. Current back-ends for this API are Cuda <ref type="bibr" target="#b8">[9]</ref>, pthreads <ref type="bibr" target="#b9">[10]</ref>, and OpenMP <ref type="bibr" target="#b10">[11]</ref>. Pthreads and OpenMP back-ends use the portable hardware locality (hwloc) library <ref type="bibr" target="#b11">[12]</ref> for explicit thread placement. Back-ends for the Intel Xeon Phi co-processor use the self hosted modeprocesses run exclusively on this "device" as opposed to using the offload model.</p><p>We evaluate user accessibility and performance portability through unit-level performance tests and miniapplications. Mantevo <ref type="bibr" target="#b12">[13]</ref> miniFE and miniMD (finite elements and molecular dynamics) miniapplications <ref type="bibr" target="#b13">[14]</ref> have been ported to Kokkos for comparison with architecture-specialized versions. We have found that when using portable Kokkos kernels we typically obtain within 90% of the performance of specialized implementations.</p><p>In this paper we describe the semantics of Kokkos' programming model, summarize the API, and present performance results for the Lennard-Jones force kernel from miniMD and scaling results for miniFE.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. MANYCORE DEVICE</head><p>Our abstraction of a modern HPC environment is a network of compute nodes where each compute node contains one or more manycore devices. An HPC application executing in this environment has two levels of parallelism: (1) distributed memory parallelism typically supported through a Message Passing Interface (MPI) library and (2) thread level parallelism on the manycore device. We assume that each MPI process uses at most one manycore device so that Kokkos does not have to manage the interaction of multiple devices.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Processes and Devices</head><p>Our abstraction of a single MPI process is a master thread that dispatches parallel work to a manycore device. This work dispatch (a.k.a., asynchronous callback) abstraction is common to numerous programming models; for example, function objects are dispatched to C++ Standard Template Library (STL) algorithms <ref type="bibr" target="#b14">[15]</ref>, Intel Threading Building Blocks, and Thrust. A key element in this abstraction is that the master thread executes in the CPU host space and worker threads execute in the manycore device space. Note that these spaces are the same when executing on a multicore CPU or self-hosted manycore device.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Execution and Memory Spaces</head><p>Threads execute in an execution space and data resides a memory space. Execution spaces have accessibility and performance relationships with a memory spaces. For example, code executing in the Cuda space can access pinned memory in the Host space but with degraded performance compared to accessing memory in the Cuda space.</p><p>We address memory accessibility and performance concerns through (1) an explicit execution/memory space abstraction and (2) a design policy to never hide expensive memory copy operations. Each space is defined by a type (a C++ class) so that the execution space of a computation and the memory space of an array are known at compile-time. This enables Kokkos to, at compile time, prevent code executing in the host space from accessing memory in the device space, as opposed to generating a runtime memory fault. When manycore hardware and runtime systems provide virtual unified addressing across memory spaces (e.g., NVIDIA's use of pinned host memory) we can define additional memory spaces that clearly communicate the execution-memory performance relationship.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. MULTIDIMENSIONAL ARRAY</head><p>A Kokkos multidimensional array consists of a homogeneous set of values residing in a memory space, an index space defined by the Cartesian product of integer ranges, and a layout -a bijective map between the index space and the set of values.</p><p>Programming languages with multidimensional arrays (e.g., FORTRAN and C) prescribe a layout. As a consequence a computation's memory access pattern is dictated by array declarations and loop ordering. Thus changing a memory access pattern requires modification of source code.</p><p>In contrast, Kokkos multidimensional array layouts are chosen at compile-time resulting in the associated index calculations being inserted at every array access. As such changing the memory access pattern does not require modification of users' code as long as (1) their code does not assume a particular layout and (2) conforms to the Kokkos API. Lifting the layout from the programming language into Kokkos defines a separation of concerns between user defined index spaces and memory access patterns. A similar separation of concerns is provided by the Boost.MultiArray library.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Allocation and Access</head><p>Kokkos multidimensional arrays are implemented by the C++ View template class. As shown in Figure <ref type="figure" target="#fig_1">1</ref>  // This View constructor allocates an // array in 'Device' memory space with // dimensions (N,M,8,3). The label "a" // is used in runtime warning or error // messages regarding this array. View&lt;double ** <ref type="bibr" target="#b7">[8]</ref>[3],Device&gt; a("a",N,M); // The parentheses operator implements // the layout mapping. a(i,j,k,l) = value ; The View parentheses operator implements the integer arithmetic of the layout and returns a reference to a member value. This operation is valid only if the memory space is accessible to the execution space in which the operator is invoked and the indices are within the index space. A mix of static and dynamic dimensions is supported so that the parentheses operator can be optimized in the presence of static dimensions. For example, the integer arithmetic associated with a static dimension and literal value index can be performed at compiletime.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. View and Deep Copy Semantics</head><p>The class name View is selected to inform and remind users that these objects have view, or shared ownership, semantics as shown in Figure <ref type="figure" target="#fig_3">2</ref>. In contrast to C++ standard container semantics, multiple View objects can reference the same allocated array. The allocated array is deallocated when the last view of it is destroyed or reassigned. These semantics are analogous the C++ shared pointer semantics <ref type="bibr" target="#b15">[16]</ref>.  In view semantics an assignment operator is a shallow copy operation -only the memory reference and array dimensions are copied. A deep copy operation copies member values between two compatible arrays. The deep copy operation is typically used to copy array values between memory spaces, from host to device and vice-versa.</p><p>Deep copying between arrays with different layouts has a performance penalty of remapping data and additional penalty of allocating a temporary array when copying between memory spaces. Since the layouts chosen by default for a GPU view and a CPU view are different this performance penalty would occur frequently. We address this problem by defining HostMirror views (Figure <ref type="figure">3</ref>) which are in the host memory space but have the device's layout. Figure <ref type="figure">3</ref> shows how an array in device memory space is most efficiently deep copied to/from an array in the host memory space.</p><p>typedef View&lt;double ** [8][3],Device&gt; my_array_type; my_array_type a("a",N,M); // Allocate on Device // 'my_array_type::HostMirror' defines an array // in host space with a layout mirroring // 'my_array_type'. If the device != host then // 'create_mirror_view' allocates a compatible // array, otherwise the input view is returned. my_array_type::HostMirror host_a = create_mirror_view( a ); // Deep copy to a mirror does not require remap. // If a == a_host deep copy is skipped. deep_copy( a , host_a ); // Copy device &lt;-host deep_copy( host_a , a ); // Copy host &lt;-device Fig. 3. Deep copy performance penalties associated with remapping array layouts are avoided by using HostMirror views that have the same layout as a device view but with member values residing in the host space.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Advanced Performance Tuning Features</head><p>In the previous sections we described fundamental capabilities for device-aware multidimensional arrays. Kokkos supports additional data access performance tuning features through an optional advanced API. These features leverage extension points in Kokkos' software design.</p><p>Multidimensional arrays have a default layout chosen for each type of device. A user may override this default layout by instantiating a View template with a specified layout. In addition an advanced user may develop and specialize their arrays with their own layouts.</p><p>A device may provide special hardware or runtime features to tune memory access performance. For example, NVidia devices have texture cache which can improve performance of random read access of an array. We define traits for the functional characteristic of the memory access pattern and then specialize the View class to use appropriate hardware / runtime features when available.</p><p>In Figure <ref type="figure" target="#fig_4">4</ref> arrays are declared with both a specified layout and a memory access trait. In this example the read_x view has const members and RandomRead traits. If the Device is Cuda then the implementation of read_x is specialized to use NVIDIA texture cache to speed up random memory read access. Otherwise the default implementation will enforce the const condition but will not use special hardware.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. PARALLEL EXECUTION</head><p>Parallel execution patterns <ref type="bibr" target="#b16">[17]</ref> are divided into two categories: (1) data parallel or single instruction multiple data (SIMD) and ( <ref type="formula">2</ref>) task parallel or multiple instruction multiple data (MIMD). Kokkos currently implements data parallel execution via parallel for and parallel reduce operations. We plan to enhance Kokkos to include parallel scan operation and</p><p>// Specify the layout and allocate an array: typedef View&lt; double ** , LayoutRight , Device &gt; my_multivector ; my_multivector x("x",N,M); // Define a View which is optimized for // random read operations. // Perform a shallow-copy to that view. typedef View&lt; const double ** , LayoutRight , Device , RandomRead &gt; read_x = x ; // If Device == Cuda then the access operator // uses NVIDIA texture cache functionality. value = read_x(i,j); hierarchical task-data parallelism where interdependent data parallel tasks are scheduled to execute on the manycore device.</p><p>A data parallel operation maps NWork independent units of work onto threads for execution on the manycore device. Units of work are completely independent if they do not depend upon data updated by a different unit of work and do not update the same data. For example, adding two vectors of length N can be performed in parallel by independently adding its N members.</p><p>Units of work may update the same data via global or local reduction operations. In Kokkos global reductions (e.g., an inner product) are supported by the parallel reduce operation. Local reductions (e.g., a map reduce) are supported through atomic updates.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Parallel For Functor API</head><p>In C++ a functor is an instance of a C++ class that contains a callback function, shared parameters, and references to data upon which the callback function operates. A parallel for functor has a work callback, shared input parameters, and views to arrays that are operated on. A data parallel work functor is called to perform NWork independent units of work where each unit is identified by a unique work index in the range [0..NWork). Default array layouts are chosen assuming that the leading (left-most) index of an array is the parallel work index.</p><p>The C++ implementation of a parallel for functor must conform to two simple requirements illustrated in Figure <ref type="figure" target="#fig_5">5:</ref> (1) identify the execution space of the functor and (2) provide a work callback. It is recommended that the functor has the execution space as a template parameter for portability.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Parallel Reduce Functor API</head><p>A parallel reduce functor has a work callback, a reduction callback, shared input parameters, views that are operated on, and reduction parameters. Each call to a parallel reduce work callback generates a contribution to the reduction parameters that must be reduced by a commutative and mathematically associative reduction callback. The numerical implementation of a reduction callback could be non-associative due to numerical round-off in floating point operations.</p><p>// Templating on the Device space allows the // functor to be compiled for different devices. template&lt; class Type , class Device &gt; class AXPY_Functor { public: // The execution space of this functor // is defined by 'device_type'. typedef Device device_type ; // The work callback is defined by an // 'void operator()( integer_type iw ) const' // where 'iw' is the work index. // KOKKOS_INLINE_FUNCTION is a #define macro // for compiler directives such as // 'inline __device__' for Cuda. KOKKOS_INLINE_FUNCTION void operator()( int iw ) const { y(iw) = alpha * x(iw) + y(iw) ; } View&lt; Type * ,Device&gt; const y ; View&lt;const Type * ,Device&gt; const x ; Type alpha ; }; // Call the functor NWork times on up to NWork // worker threads. Each call is passed a unique // work index in the range [0..NWork). parallel_for( NWork , AXPY_Functor&lt;double,Cuda&gt;( a , X , Y ) ); The parallel reduce functor API is designed so that Kokkos can provide scalable and deterministic global reductions. For large thread counts the global reduction follows a traditional log 2 (NT ) fan-in algorithm (NT = number of threads). The fan-in algorithm requires thread-local copies of the reduction parameters which are reduced to a single global value through an ordered sequence of concurrent pair-wise reductions. This ordered sequence is derived from the number of threads NT and number of work items NWork, and guarantees a deterministic result given the same NT and NWork.</p><p>Requirements for a reduction callback API are given by example in Figure <ref type="figure" target="#fig_6">6</ref>. First, the reduction parameters must be defined through a C++ type satisfying the plain old data type conditions; e.g., a bit-wise copy of values will yield the correct result. This is typically a simple intrinsic type such as 'double'. Second, the reduction callback consists of two functions with interface requirements to support correct inter-thread communication. These requirements are defined by example in Figure <ref type="figure" target="#fig_6">6</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Local Parallel Reductions via Atomics</head><p>Kokkos supports local parallel reductions through atomic reduction operations; e.g., atomic addition. An atomic operation serializes concurrent updates to a values but does not guarantee the ordering of these updates among threads. Thus a non-associative reduction operation (e.g., floating point addition) can yield non-deterministic results for local parallel reductions.</p><p>Atomic operations' serialization can introduce scalability bottlenecks. Typically atomic operations should only be used when the number of atomic updates to a particular variable is much smaller than the number of work items. Otherwise</p><p>template&lt; class Scalar , class Device &gt; class CentroidFunctor { public: typedef Device device_type ; // Reduction parameters are a plain-old-data // type defined via a 'value_type' declaration. struct value_type { Scalar point[3], mass ; }; View&lt;Scalar * , Device&gt; mass ; View&lt;Scalar * [3],Device&gt; point ; // A work callback contributes to the reduction // result via the 'update' argument. KOKKOS_INLINE_FUNCTION void operator()( int iw , value_type &amp; update ) const { update.mass += mass(iw); update.point[0..2] += point(iw,0..2) * mass(iw); } // A reduction callback joins an input value // to the update value from a different thread. // These arguments are 'volatile' to force // communication of values among threads. KOKKOS_INLINE_FUNCTION static void join( volatile value_type &amp; update , const volatile value_type &amp; input ) { update.mass += input.mass ; update.point[0..2] += input.point[0..2]; } // Initialized thread-local contributions // to the reduction parameters. KOKKOS_INLINE_FUNCTION static void init( value_type &amp; update ) { update.mass = 0 ; update.point[0..2] = 0 ; } }; // Reduction parameter is output in 'result'. parallel_reduce( NWork, CentroidFunctor&lt;double,Cuda&gt;(mass,point), result); functors with reductions should be implemented with atomicfree algorithms where feasible, such as using parallel reduce.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>V. PERFORMANCE EVALUATION</head><p>We use the Lennard Jones force calculation (LJ-kernel) extracted from our molecular dynamics mini-application MiniMD and the finite element proxy code miniFE for two performance evaluation tests. All tests are carried out on our Compton and Shannon testbed clusters, with details of their respective configurations given in Table <ref type="table">I</ref>. Compton is used for Xeon and Xeon Phi tests and Shannon is used for Kepler GPU tests.</p><p>Results presented in this paper are for pre-production Intel Xeon Phi co-processors (codenamed Knights Corner) and pre-production versions of Intel's Xeon Phi software stack. Performance and configuration of the co-processors may be different in final production releases.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><figDesc>the first template argument specifies the value type, number of dynamic dimension denoted by the number of '*' tokens, and static dimensions denoted by '[#]' expressions. A second template argument defines the memory space in which the values of the array are allocated.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Fig. 1 .</head><label>1</label><figDesc>Fig. 1. Syntax for defining, allocating, and accessing members of a Kokkos multidimensional array.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><figDesc>typedef View&lt;double ** [8][3],Device&gt; my_type ; // parentheses operator returns 'const double &amp;'. typedef View&lt;const double ** [8][3],Device&gt; my_const_type ; my_array_type a("a",N,M); // Allocate an array { // More views of the same array my_type a2 = a ; my_const_type a3 = a2 ; // 'a' and 'a2' are cleared (set to 'null') // 'a3' still views the array a = my_type(); a2 = my_type(); } // View 'a3' goes out of scope and its // destructor is called. It was the last // view so the array is deallocated.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 2 .</head><label>2</label><figDesc>Fig. 2. View's shared ownership semantics with last-view delete responsibility.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 4 .</head><label>4</label><figDesc>Fig.4. A View with special memory access traits will use available device hardware or runtime features to optimize access for that trait.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 5 .</head><label>5</label><figDesc>Fig. 5. Interface requirements for parallel for functors are illustrated through an example AXPY functor that performs the "Y = αX + Y " basic linear algebra operation.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Fig. 6 .</head><label>6</label><figDesc>Fig.6. Interface requirements for parallel reduce functors are illustrated through an example centroid computation functor that sums the mass and mass-weighted coordinates of arrays of points and masses. The example code is abbreviated by omitting the constructor and implying a loop with 0..2.</figDesc></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_0"><p>978-1-4799-3691-5/14 $31.00 © 2014 IEEE DOI 10.1109/XSW.2013.7</p></note>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_1"><p>Authorized licensed use limited to: Univ Politecnica de Madrid. Downloaded on March 10,2026 at 16:45:57 UTC from IEEE Xplore. Restrictions apply.</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>ACKNOWLEDGMENT</head><p>Sandia National Laboratories is a multi-program laboratory managed and operated by <rs type="institution">Sandia Corporation</rs>, a wholly owned subsidiary of <rs type="affiliation">Lockheed Martin Corporation</rs>, for the <rs type="funder">U.S. Department of Energy's National Nuclear Security Administration</rs> under contract <rs type="grantNumber">DE-AC04-94AL85000</rs>. This paper is crossreferenced at <rs type="institution">Sandia</rs> as <rs type="grantNumber">SAND2013-5221C</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_QENQ6Fw">
+					<idno type="grant-number">DE-AC04-94AL85000</idno>
+				</org>
+				<org type="funding" xml:id="_3WfvZqu">
+					<idno type="grant-number">SAND2013-5221C</idno>
+				</org>
+			</listOrg>
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Molecular Dynamics Force Kernel</head><p>The LJ-kernel shown in Figure <ref type="figure">7</ref> loops over atoms and calculates the forces between neighboring pairs of atoms with a distance d ij being smaller than a cutoff r cut . To that end a list of neighbors j for each atom i is precomputed and then used in the kernel.</p><p>// Parallel iteration of all atoms in the system for(i=0;i&lt;natoms;i++) { double x_i <ref type="bibr" target="#b2">[3]</ref>, f_i <ref type="bibr" target="#b2">[3]</ref>;  We ran miniMD's default performance test problem with on average 77 neighbors of which 55 pass the distance check. This results in an average of 1408 Flops and 311 memory accesses per atom i. In the computation neighbors(i,jj) has a regular memory access pattern and x(j,0-2) has a random memory access pattern. Even so, when atoms are ordered in memory according to spatial location, it is possible to achieve a very high cache reuse for x(j,0-2). This reuse drastically limits the actual number of loads from main memory.</p><p>The importance of layouts in Kokkos is highlighted in the load of the neighbor index j = neighbors(i,jj). On Xeon (and Xeon Phi) this should be a LayoutRight (row major ordering) so that the loaded cache line contains the values for the next iteration step of the inner loop over jj. On a Kepler GPU LayoutLeft (column major ordering) should be used so that the load is contiguous for threads working on different atoms i. Furthermore on Kepler GPUs it is important to use texture fetches (via RandomRead attribute) for x(j,0-2) random accesses.</p><p>Figure <ref type="figure">8</ref> shows performance in GFlop/s for the kernel on our Compton and Shannon testbeds using a single node for both the optimal code and when using the wrong memory layout on each hardware. The latter causes a performance drop of 1.9x, 3.4x and 6.6x on the Xeon, Xeon Phi, and Kepler GPU testbeds. Also, using the correct layout but not using texture fetches results in a 3.6x slowdown for the Kepler GPU.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Xeon</head><p>Xeon Phi Kepler . LJ-kernel performance in miniMD on a dual Intel Xeon (Sandy Bridge), a pre-production Intel Xeon Phi co-processors (57 cores), and a NVIDIA Kepler GPU (K20x) for the miniMD default test problem with 864,000 atoms. The solid bars show performance with optimal access patterns, the striped bars show performance with the wrong data layout for the neighbors array, and the checkerboard bar shows performance on the Kepler GPU with the correct layout but without using texture cache.</p><p>We achieve similar fractions of theoretical peak floprate on both Xeon (14%) and Kepler (17%) testbeds; however, on the Xeon Phi we achieve only 5% of peak. This small percentage of peak on the Xeon Phi is obtained even with a well optimized OpenMP-based version of miniMD.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. MiniFE</head><p>MiniFE is a hybrid parallel (MPI+X) finite element miniapplication that constructs a linear system of equations for a 3D heat diffusion problem and performs 200 iterations of a conjugate gradient (CG) solver on that linear system. It is designed to capture a number of important characteristics of implicit parallel finite element codes. MiniFE has been implemented in various programming models some of which are available at mantevo.org.</p><p>We compare the performance of miniFE-Kokkos (portable variant) with miniFE-OpenMP running on the Xeon and Xeon Phi testbeds, and with miniFE-Cuda running on the Kepler GPU testbed. The miniFE-Kokkos back-end for Xeon and Xeon Phi is OpenMP and the back-end for Kepler GPUs is Cuda. The miniFE-Cuda variant is based upon miniFE-Kokkos where all linear algebra subprogram functions are replaced with calls to NVidia's cuBLAS and cuSparse functions. Since the majority of miniFE optimization efforts have concentrated on the CG-solver, we focus on this phase of miniFE performance.</p><p>Our miniFE test case is a weak scaling problem with 8M elements per compute node or device and requires 3.3GB of main memory per node. Tests are run with a single MPI process per device, except for Xeon tests with miniFE-OpenMP which run with one MPI process per NUMA region. We make this exception because when miniFE-OpenMP is run with one MPI process per node the execution time more than doubles. This slowdown is due to the problem construction phase performing an implicit NUMA first touch on the linear system that is incompatible with the access pattern of the CGsolve phase. Consequently threads regularly access memory in the wrong NUMA domain with the associated bandwidth penalty. Kokkos transparently handles this NUMA issue by running a parallel for first touch initialization of each new data allocation that is compatible with typical data parallel kernels. For Kepler tests we use the MVAPICH2 1.9 [18], <ref type="bibr" target="#b17">[19]</ref> implementation of MPI to enable GPU-Direct capabilities; i.e., MPI can directly access GPU memory. Thus no explicit data copies are necessary between device and host during the CGsolve.</p><p>In Fig. <ref type="figure">9</ref> timings for the CG-solve phase are shown from a weak-scaling study on our Xeon, Xeon Phi, and Kepler GPU testbeds (Table <ref type="table">I</ref>). For each data point the best time out of 12 runs was used. Overall, Kokkos delivers similar performance as the native implementations. It is faster than miniFE-Cuda in Kepler tests by roughly 13%, it is marginally slower than miniFE-OpenMP in Xeon tests, and it is about 10% slower than miniFE-OpenMP on Xeon Phi. Both on Xeon and Kepler GPU testbeds excellent scaling is observed, with miniFE-Kokkos having about 95% parallel efficiency with 32 MPI ranks. MiniFE-OpenMP shows slightly worse scaling efficiency, which is likely due to using twice as many MPI ranks. The scaling issue on Xeon Phi can be attributed to the poor MPI performance on our Xeon Phi testbed. Peak bandwidth between two Xeon Phi co-processors is as low as 300 MB/s if at least one of the co-processors sits in a socket without an Infiniband adapter. In comparison the Xeon and Kepler GPU runs peak MPI bandwidth is about 3.5 GB/s. This Xeon Phi MPI issue is expected to be solved soon with a new runtime software stack, so that Xeon Phi based systems should see similar scaling behavior as the Kepler GPU based system. Another problem with the Xeon Phi runs were occasional outliers in the performance. Some of the tests produced timings which were twice as large as the one from the fastest run. The cause for this behavior is currently under investigation. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>VI. CONCLUSION</head><p>The Kokkos C++ library implements our strategy for manycore performance portable HPC applications and libraries. Two foundational abstractions are implemented: (1) dispatching parallel functors to a manycore device and (2) managing the layout of multidimensional arrays so that those functors have device optimal memory access patterns. We have described these abstractions in detail, summarized the API, and presented performance portability results for a molecular dynamics computational kernels and finite element mini-application. Our test cases achieve at least 90% of the performance of architecture specific, optimized variants of those test cases. Kokkos will update existing, or adopt new, back-end implementations as manycore architectures and their programming models evolve. In this way HPC applications and libraries using Kokkos can immediately benefit from new manycore capabilities. Furthermore, our ongoing analysis of manycore architectures' performance drives continued optimization of back-end implementations.</p><p>Kokkos is under active research and development to incorporate new manycore capabilities, array layouts, aggregate "scalar" data types, parallel operations, and higher level libraries of data structures and kernels. For example, tiled layouts can be transparently introduced into dense matrices without modification of user code. Similarly, automatic differentiation or stochastic variable types are transparently incorporated into array layouts. Plans for new parallel operations include parallel scan and hierarchical task-data parallelism. Finally, development has begun for higher level libraries such as sparse linear algebra and array-based containers (e.g., hashmaps).</p><p>Kokkos is publicly available through the Trilinos repository at <ref type="url" target="www.trilinos.org">www.trilinos.org</ref> and is being used to migrate the Trilinos suite of libraries to manycore architectures. MiniMD and miniFE are available through the Mantevo repository at <ref type="url" target="www.mantevo.org">www.mantevo.org</ref>.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Multicore/gpgpu portable computational kernels via multidimensional arrays</title>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sunderland</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Amsler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mish</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Cluster Computing (CLUSTER)</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2011-09">2011. Sep. 2011</date>
+			<biblScope unit="page" from="363" to="370" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Manycore performance-portability: Kokkos multidimensional array library</title>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sunderland</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><surname>Porter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">C</forename><surname>Amsler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Mish</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Scientific Computing</title>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+			<biblScope unit="page" from="89" to="114" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Kokkos array performance-portable manycore programming model</title>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Sunderland</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">PMAM</title>
+		<imprint>
+			<biblScope unit="page" from="1" to="10" />
+			<date type="published" when="2012-02">Feb. 2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">A Light-weight API for Portable Multicore Programming</title>
+		<author>
+			<persName><forename type="first">C</forename><forename type="middle">G</forename><surname>Baker</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Heroux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">B</forename><surname>Williams</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Parallel, Distributed and Network-Based Processing (PDP), 2010 18th Euromicro International Conference on</title>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2010">2010</date>
+			<biblScope unit="page" from="601" to="606" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Intel Threading Building Blocks</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Reinders</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2007-07">Jul. 2007</date>
+			<pubPlace>O&apos;Reilly</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<monogr>
+		<title level="m" type="main">Cuda Toolkit Thrust documentation</title>
+		<ptr target="docs.nvidia.com/cuda/thrust/" />
+		<imprint>
+			<date type="published" when="2013-06">Jun. 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<author>
+			<persName><forename type="first">K</forename><surname>Gregory</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Miller</surname></persName>
+		</author>
+		<title level="m">C++ Amp, Accelerated Massive Parallelism with Microsoft Visual C++</title>
+		<imprint>
+			<publisher>Microsoft Press</publisher>
+			<date type="published" when="2012-09">Sep. 2012</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">R</forename><surname>Garcia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Siek</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Lumsdaine</surname></persName>
+		</author>
+		<ptr target="www.boost.org/libs/multiarray" />
+	</analytic>
+	<monogr>
+		<title level="j">Boost.MultiArray</title>
+		<imprint>
+			<date type="published" when="2013-06">Jun. 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<monogr>
+		<title level="m" type="main">CUDA home page</title>
+		<ptr target="www.nvidia.com/object/cudahomenew.html" />
+		<imprint>
+			<date type="published" when="2013-06">Jun. 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">IEEE Std 1003.1, 2004 Edition, &lt;pthread.h&gt;</title>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">The OpenMP API Specification for Parallel Programming</title>
+	</analytic>
+	<monogr>
+		<title level="j">openmp.org</title>
+		<imprint>
+			<date type="published" when="2013-06">Jun. 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">hwloc: a Generic Framework for Managing Hardware Affinities in HPC Applications</title>
+		<author>
+			<persName><forename type="first">F</forename><surname>Broquedis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Clet-Ortega</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Moreaud</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">N</forename><surname>Furmento</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Goglin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Mercier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Thibault</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><surname>Namyst</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">PDP 2010 -The 18th Euromicro International Conference on Parallel, Distributed and Network-Based Computing</title>
+		<meeting><address><addrLine>Pisa, Italie</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2010-02">Feb. 2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<monogr>
+		<title level="m" type="main">Mantevo project home page</title>
+		<ptr target="www.mantevo.org/" />
+		<imprint>
+			<date type="published" when="2013-06">Jun. 2013</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<monogr>
+		<title level="m" type="main">Improving Performance via Mini-applications</title>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">A</forename><surname>Heroux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">W</forename><surname>Doerfler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">S</forename><surname>Crozier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><forename type="middle">M</forename><surname>Willenbring</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">C</forename><surname>Edwards</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Williams</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Rajan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">R</forename><surname>Keiter</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><forename type="middle">K</forename><surname>Thornquist</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">R</forename><forename type="middle">W</forename><surname>Numrich</surname></persName>
+		</author>
+		<idno>SAND2009-5574</idno>
+		<imprint>
+			<date type="published" when="2009-09">September 2009</date>
+			<biblScope unit="volume">87185</biblScope>
+			<pubPlace>Sandia National Laboratories, Albuquerque, New Mexico</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Technical report</note>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<title level="m" type="main">Programming Languages -C++, International Standard ISO/IEC 14882, 1st ed. 11 West 42nd Street</title>
+		<author>
+			<orgName type="collaboration">Information Technology Industry Council</orgName>
+		</author>
+		<imprint>
+			<date type="published" when="1998">10036. 1998</date>
+			<publisher>American National Standards Institute</publisher>
+			<pubPlace>New York, New York</pubPlace>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<monogr>
+		<title level="m" type="main">Draft Technical Report on C++ Library Extensions</title>
+		<ptr target="www.openstd.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf" />
+		<imprint>
+			<date type="published" when="2005-06">Jun. 2005</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<monogr>
+		<title level="m" type="main">Patterns for parallel programming, 1st ed</title>
+		<author>
+			<persName><forename type="first">T</forename><surname>Mattson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Sanders</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Massingill</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2004">2004</date>
+			<publisher>Addison-Wesley Professional</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<analytic>
+		<title level="a" type="main">High performance rdma-based mpi implementation over infiniband</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Wu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><forename type="middle">K</forename><surname>Panda</surname></persName>
+		</author>
+		<idno type="DOI">10.1023/B:IJPP.0000029272.69895.c1</idno>
+		<ptr target="http://dx.doi.org/10.1023/B:IJPP.0000029272.69895.c1" />
+	</analytic>
+	<monogr>
+		<title level="j">Int. J. Parallel Program</title>
+		<imprint>
+			<biblScope unit="volume">32</biblScope>
+			<biblScope unit="issue">3</biblScope>
+			<biblScope unit="page" from="167" to="198" />
+			<date type="published" when="2004-06">Jun. 2004</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

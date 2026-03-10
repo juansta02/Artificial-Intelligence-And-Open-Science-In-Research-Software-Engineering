@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">Providing High-Speed Data Access for Parallel Computing in the HPC Cluster †</title>
+				<funder>
+					<orgName type="full">Shared Research Facilities &quot;High Performance Computing and Big Data&quot; (CKP &quot;Informatics&quot;) of FRC CSC RAS (Federal Research Center &quot;Computer Science and Control&quot; of the Russian Academy of Sciences</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2023-07-21">21 July 2023</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Ivan</forename><surname>Zelinka</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Arutun</forename><surname>Avetisyan</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Alexander</forename><surname>Ilin</surname></persName>
+						</author>
+						<author>
+							<persName><forename type="first">Sergey</forename><surname>Denisov</surname></persName>
+							<email>sdenisov@frccsc.ru</email>
+						</author>
+						<author>
+							<persName><forename type="first">Konstantin</forename><surname>Volovich</surname></persName>
+							<email>kvolovich@frccsc.ru</email>
+						</author>
+						<author>
+							<persName><forename type="first">Alexander</forename><surname>Zatsarinny</surname></persName>
+							<email>azatsarinny@ipiran.ru</email>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">Federal Research Center &quot;Computer Science</orgName>
+								<orgName type="institution">Russian Academy of Sciences</orgName>
+								<address>
+									<addrLine>44, Build. 2, Vavilova Str.</addrLine>
+									<postCode>119333</postCode>
+									<settlement>Moscow</settlement>
+									<country>Russia;</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="department">15th International Conference &quot;Intelligent Systems&quot; (INTELS&apos;22)</orgName>
+								<address>
+									<postCode>14-16 2022</postCode>
+									<settlement>Moscow December</settlement>
+									<country key="RU">Russia</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">Providing High-Speed Data Access for Parallel Computing in the HPC Cluster †</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2023-07-21">21 July 2023</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">3AF5A9B6CFB60870B218CEABD026BD8A</idno>
+					<idno type="DOI">10.3390/engproc2023033054</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>HPC cluster</term>
+					<term>parallel file system</term>
+					<term>Lustre</term>
+					<term>NVMe</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The article discusses approaches to building parallel data storage systems in highperformance clusters. The features of building data structures in parallel file systems for various applied tasks are analyzed. Approaches are proposed to improve the efficiency of access to data by computing nodes of the cluster due to the correct distribution of data in parallel file storage.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>The growing need of scientific teams, industrial enterprises, and commercial firms in solving problems that require high-performance computing resources demands the creation of computing tools provided to users using cloud and platform technologies. At present, such computing resources are supercomputers and HPC clusters that make it possible to carry out calculations using parallel computing technologies. So, the tasks of mathematical modeling, global optimization, big data analysis, and the training of neural networks cannot be solved using a single server; powerful multi-node clusters united by high-performance computing networks are required. The workflow management in such clusters is a research task aimed at optimizing the computing resources load, minimizing the waiting and computing time, managing job priorities, and providing computing jobs with initial data.</p><p>Based on HPC clusters, it is possible to create a research infrastructure that provides tools for miscellaneous scientific calculations to teams of scientists, industry, and developers of high-tech commercial products <ref type="bibr" target="#b0">[1]</ref>. The creation of shared research facilities on the basis of scientific centers, enterprises, organizations of the Russian Academy of Sciences and universities makes it possible to increase the efficiency of using computing facilities and expand the circle of consumers of high-performance computing resources <ref type="bibr" target="#b1">[2]</ref>. This approach to the use of computational tools involves the parallel execution of miscellaneous types of computational tasks within a single high-performance cluster. In this case, in order to efficiently use computing resources and minimize the loss of time and money for re-configuring the HPC cluster, it is necessary to develop a technology that allows creating individual software environments for various computing tasks and ensuring their parallel execution in a HPC cluster <ref type="bibr" target="#b2">[3]</ref>, wherein each computational task obtains access to the parallel processing information means and inter-process communication. The means of HPC cluster workflow management create an individual profile for inter-process interaction in a dynamic virtual environment for each computational task.</p><p>The optimization of the loading of the shared research HPC cluster is generally aimed at ensuring the maximum loading of computing modules, reducing the waiting time for tasks in the queue, and minimizing equipment downtime.</p><p>To implement such requirements for a HPC cluster, it is of particular importance to provide computing tasks with initial data. The performance of the means of providing data to computational jobs should, for example, minimize the processing downtime by waiting for data to be provided. The tasks of providing data to computational tasks in multi-node computing systems are solved by creating a specialized file storage that provides parallel access to cluster computing nodes and data. Thus, the data exchange height speed is ensured in the conditions of parallel operation of virtual software environments for the execution of miscellaneous types of computational tasks.</p><p>The classical scheme for organizing parallel file access is the use of a group of data storage nodes connected to computing nodes by a high-speed network. A parallel file system deployed on storage nodes creates a single data space, ensures information consistency, the duplication of information on different nodes, and control of access to files by computing nodes.</p><p>Both proprietary and open-source implementations of parallel file systems are available today. For example, proprietary solutions include</p><formula xml:id="formula_0">• General Parallel File System (GPFS)-developed by IBM; • Google File System.</formula><p>IBM GPFS is used by the manufacturer as part of a commercial product, the elastic storage system, which is a scalable hardware and software data storage system. The Google File System is used by Google in the company's high-performance computing clusters.</p><p>Among open source parallel file systems, the Lustre project is currently actively developing, originating from Carnegie University, now supervised by Intel Corporation. Another open-source project is the Ceph parallel file system supervised by RedHat (IBM).</p><p>The direction of providing parallel access to data is currently an actively developing area of informatics <ref type="bibr" target="#b3">[4]</ref><ref type="bibr" target="#b4">[5]</ref><ref type="bibr" target="#b5">[6]</ref>. The main efforts of developers and researchers are concentrated in the following areas:</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>•</head><p>Maximizing the volume of data storage; • Ensuring the required performance during data transfer, taking into account the number of computing nodes and data storage nodes; • Development of methods for scaling the file system while maintaining or increasing performance; • Development of methods for improving the reliability of parallel file systems.</p><p>The architectures and ways of representing data in parallel file systems are discussed below.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Parallel File System Architecture</head><p>Consider the architecture of a parallel file system using the Lustre project as an example. Lustre is a high-performance file system composed of servers and storage. The Metadata Server (MDS) keeps track of metadata (such as ownership and access rights to a file or directory). Object storage servers provide file I/O services for object storage targets that host the actual data store. The storage targets are typically a single disk array. Lustre's parallel file system achieves its performance by automatically splitting data into chunks known as "stripes" and writing the stripes in a round-robin fashion across multiple storage objects. This process, called "striping", can significantly increase file I/O speed by eliminating single disk bottlenecks <ref type="bibr" target="#b6">[7]</ref>.</p><p>A parallel storage system consists of many components, including drives, storage controllers, I/O cards, storage servers, SAN switches, and related management software. Combining all of these components together and tuning them for optimal performance comes with significant challenges. Figure <ref type="figure" target="#fig_0">1</ref> shows the Lustre parallel file system architecture. Metadata servers (MDSs) are the control components of a parallel file system that store information about all the data in the system, as well as serving client requests for access to data. Metadata are stored on information resources called metadata targets (MDTs), implemented either as physical disks or as block devices in a data storage system. To ensure fault tolerance, metadata servers can be duplicated.</p><p>Access to parallel file system clients data is carried out through the metadata server. When servicing requests, the metadata server identifies the client and selects one of the nodes for storing and providing data-OSS. The choice is made based on meta-information about the availability of the requested data on storage elements available to this OSS, as well as based on information about OSS loading by requests from other clients. After that, the interaction between the client and the selected OSS is carried out directly through a high-performance data network. This solves the problem of the formation of "bottlenecks" in the access of computing nodes to a single data storage <ref type="bibr" target="#b7">[8]</ref>.</p><p>Data storage elements are disk drives directly connected to the OSS as well as logical drives formed by storage systems based on disk arrays. Data storage and provision nodes provide the caching of information contained on disks and high-speed exchange with the data transmission network.</p><p>Thus, the architecture of a parallel file system makes it possible to provide data for a group of computational tasks due to the parallel operation of a group of storage nodes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Data Storage Structure in A Parallel File System</head><p>As noted above, the parallel file storage architecture allows you to provide computing nodes with access to different storage nodes, which allows you to avoid "bottlenecks" and prevent performance degradation.</p><p>Note that different application tasks may have different requirements for the data structure stored in the file system.</p><p>For big data-processing tasks-telemetry streams, the analysis of accumulated information arrays in order to obtain new knowledge (data mining)-where parallel processes of one computing task performed on different computing nodes require access to independent data arrays, it is enough to place one application data copy on each storage node and ensure the interaction of each pair of "computing node-storage node" over a high-speed data transmission network.</p><p>For data-intensive tasks (e.g., preparing training sets for neural networks, and training neural networks <ref type="bibr" target="#b8">[9]</ref>), a more complex structure data storage is required, allowing different computing nodes to access the same file from several computing nodes. This feature is supported by the parallel file system by fragmenting files into separate blocks (stripes) <ref type="bibr" target="#b9">[10]</ref>.</p><p>The term "number of stripes" refers to the number of fragments into which a file is divided; in other words, the number of OSTs that are used to store the file. So, each stripe of the file will be in a different OST. The "stripe size" refers to the size of a stripe recorded as a single block in the OST.</p><p>The benefits of striping include the following:</p><p>• Increased I/O throughput due to multiple file areas being read or written in parallel; • Helping to balance the use of the OST pool.</p><p>However, striping has disadvantages if performed incorrectly, such as increased overhead due to internal network operations and contention between servers, and throughput degradation due to inappropriate striping settings.</p><p>The default number and sizes of stripes are chosen to balance the I/O performance needs of multiple parallel execution scales and file sizes. Small files should be striped at a value of 1. However, setting the stripe number too low can degrade I/O performance for large files and parallel I/O. Thus, the user must carefully select strip specifications according to application data.</p><p>The striping must be compatible with the application's I/O strategy and output size. The increase in the number of stripes and/or the size of the stripes should be proportional to the number of nodes used for I/O. As a general rule, an application should try to use as many OSTs as possible. Thus, when writing a large single file in parallel, the maximum allowable value for the stripe counter is set. Alternatively, when writing a large number of small files in parallel, set the interleave counter to 1. The intermediate number of concurrent output files may work better if the number of stripes is greater than 1. An experimental estimate of the number of stripes is advisable for best performance. Note that for a number of tasks, the file size correlates with the number of computing nodes that perform parallel writing to it. Therefore, adjusting interleaving based on file size is usually sufficient, and a simpler starting point for estimating the number of lanes for subsequent processing optimization. Figure <ref type="figure" target="#fig_1">2</ref> shows an example of file distribution across six storage elements. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Experience of Application of Parallel File Systems in The Shared Research Facilities "Informatics"</head><p>To conduct research in the field of application of parallel file systems, taking into account the diversity of tasks solved by a HPC cluster, the parallel file storage stand was created using the infrastructure of the Shared Research Facilities "High Performance Computing and Big Data" (CKP "Informatics") of FRC CSC RAS (Moscow, Russia), which allows you to provide the data for different types of computational tasks functioning on the basis of virtual computing environments <ref type="bibr" target="#b10">[11]</ref>.</p><p>During the creation of the stand, the Lustre file system version 2.14.50 was deployed on six servers of the ARM architecture manufactured by Huawei.</p><p>During the experiments carried out on the created stand, the following scientific and practical work was carried out:</p><p>• Deployment of the Lustre parallel file system by compiling open-source software; • Assessment of the performance and quality of functioning of the parallel file system in the base case when performing computational tasks of various types; • Implementation of the developed storage system architecture, data models, access scenarios by setting up various data storage scenarios; • Evaluation of performance and quality of functioning of a parallel file system for test computing tasks that have different requirements for data storage (size and number of files, multiple access to one file by a group of computing nodes);</p><p>• Design of recommendations on "fine tuning" of Lustre file storage in high-performance computing systems of scientific organizations when solving applied problems of various types.</p><p>The basic approach for configuration parallel data storage is the approach in which the user creates his own structure of files and directories to store files of various sizes and maps certain storage patterns to these directories that describe the number and size of stripes. Tools for such configuration are provided to the user in the form of executable scripts.</p><p>Users have the ability to customize the size and number of stripes for any file they use or create during a computational job. Determining the best settings sometimes requires experimentation, but there are general rules of thumb.</p><p>Let us consider the basic process of writing a file to a Lustre parallel file system as an example.</p><p>Let us assume that 200 MB is to be written to a file that is created with 10 stripes and a 1 MB stripe. When the file is initially recorded, 10 1 MB blocks will be simultaneously written to 10 different OSTs. Once those 10 blocks are full, Lustre writes another 10 1 MB blocks to those 10 OSTs. This process is repeated a total of 20 times until the entire file is written. When completed, the file will exist as 20 1 MB data blocks in each of 10 separate OSTs.</p><p>One of the key factors behind the high performance of Lustre file systems is the ability to stripe data across multiple storage targets (OSTs) in a round robin fashion. Essentially, files can be divided into multiple fragments, which are then stored in different OSTs in the Lustre system.</p><p>Larger files benefit from more stripes. By distributing a large file across multiple OSTs, the system's throughput for accessing the file increases, which improves efficiency when multiple processes are working on the same file in parallel. Conversely, a very large file that is interleaved in only one or two OSTs can degrade the performance of the entire Lustre system due to unnecessary OST padding. It is good practice to have dedicated directories with lots of stripes for writing very large files to.</p><p>Note that the following method of dividing a file into stripes should be avoided: dividing small files with a large number of stripes. This can negatively impact performance due to the unnecessary overhead of communicating with multiple OSTs. In this case, it is good practice to write small files to a directory with stripes equal to 1, i.e., without striping.</p><p>Thus, to configure striping, its main advantages and disadvantages should be considered:</p><p>• Advantage 1: increased throughput because multiple processes can access the same file at the same time; • Advantage 2: the ability to store large files that take up more space than one OST; • Disadvantage 1: increased overhead due to network operations and server conflicts; • Disadvantage 2: increased risk of file corruption due to hardware failure.</p><p>Methods for improving reliability are the use of RAID of various levels in data storage nodes (OSS). At the same time, RAID can be implemented both by means of storage systems that provide block disk devices to storage nodes, and by means of RAID controllers located directly on storage nodes. Both methods improve the reliability and fault tolerance of the parallel file system. At the same time, as the experience of using such configurations in the CKP "Informatics" shows, the bandwidth for accessing drives increases compared to accessing single disks due to parallel access to drives.</p><p>A separate task is to ensure the reliability and fault tolerance of NVMe SSD drives connected directly to the PCI bus. The absence of a RAID controller in this case makes it necessary to take special measures to build fault-tolerant arrays. One such measure is the use of software RAID by means of the operating system. Another method is to use specialized storage systems that include NVMe SSD drives and RAID controllers that combine these drives into arrays of various levels.</p><p>Note that due to the use of specialized controllers, creating RAID using storage systems is more productive than using software RAID.</p><p>Experiments in the CKP "Informatics" using Huawei OceanStore Dorado 3000 v6 storage systems showed that the speed of access to block devices on RAID5 based on NVMe SSD, provided via the iSCSI interface over a 100 Gb Ethernet network, is about 2 GBps. The access speed to a similar SSD NVMe drive installed in the OSS server is about 1.2-1.4 GBps.</p><p>Thus, the use of high-speed storage systems equipped with SSD NVMe drives and RAID controllers as OST allows you to simultaneously increase the throughput of the Lustre parallel file system and improve reliability and fault tolerance.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5.">Conclusions</head><p>A parallel file system is an integral part of a high-performance computing system designed to solve a wide range of scientific and scientific-practical problems. The parallel file system effectively prevents the formation of "bottlenecks" that reduce the performance of the HPC clusters due to delays in disk operations. Its application in the shared research facilities, providing high-performance computing services, allows to provide sufficient throughput of the disk subsystem for all scientific tasks performed in parallel by the HPC cluster.</p><p>The tasks of processing big data, extracting knowledge, and mathematical modeling impose different requirements on the organization of data exchange with disk storage when performed on a group of computing nodes.</p><p>At the same time, in order to optimize and increase the efficiency of the functioning of the HPC cluster as a whole, it is necessary to take measures to adapt data storage patterns in a parallel file system to the specifics of the applied problems being solved.</p><p>An analysis of computational tasks from various fields of science and technology shows that the requirements for the throughput of access to the file system for various applied tasks differ significantly. So the tasks of optimization, quantum mechanical calculations, aerodynamics do not require significant resources of the file system while loading the computing unit.</p><p>The tasks of training neural networks are more demanding on the performance of the file system, which ensures the timely loading of training data on computing nodes, but the ratio between data volumes and calculations is not the maximum.</p><p>The greatest requirements for the performance of the file system are observed in the tasks of preparing data for training neural networks and in the tasks of extracting knowledge (data mining). These tasks require a high-speed exchange of large data arrays between a large number of data storage and processing nodes.</p><p>Depending on the task type and file storage characteristics, a data storage template is selected. In general, maximizing file system performance requires maximizing the number of storage objects used.</p><p>Thus, when deploying projects designed to solve computing problems that require high disk efficiency, you should allocate the maximum number of storage elements, mainly NVMe SSD.</p><p>For tasks with medium and low disk intensity, it is enough to allocate a small number of SAS or SATA storage elements.</p><p>Ensuring reliability and fault tolerance through the use of a redundant storage architecture is provided on data object storage servers or storage systems.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Figure 1 .</head><label>1</label><figDesc>Figure 1. Lustre parallel file system architecture. The elements of architecture are as follows: • Control nodes-meta data servers (MDSs); • Data storage and provision nodes-object storage servers (OSSs); • Data storage elements-object storage target (OST); • Metadata storage elements-meta data targets (MDTs); • High-speed data-processing network.</figDesc><graphic coords="3,40.95,94.86,513.13,312.11" type="bitmap" /></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 2 .</head><label>2</label><figDesc>Figure 2. The file distribution example.</figDesc><graphic coords="5,166.39,94.86,388.99,408.35" type="bitmap" /></figure>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>Acknowledgments:</head><p>The research was carried out using the infrastructure of the <rs type="funder">Shared Research Facilities "High Performance Computing and Big Data" (CKP "Informatics") of FRC CSC RAS (Federal Research Center "Computer Science and Control" of the Russian Academy of Sciences</rs>, Moscow).</p></div>
+			</div>
+			
+			<div type="funding">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Funding: This research received no external funding.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Institutional Review Board Statement: Not applicable.</head><p>Informed Consent Statement: Not applicable.</p></div>
+			</div>
+
+
+			<listOrg type="funding">
+			</listOrg>
+
+			<div type="availability">
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Data Availability Statement: Not applicable.</head><p>Eng. Proc. 2023, 33, 54</p></div>
+			</div>
+
+			<div type="annex">
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>Author Contributions: Conceptualization, S.D., K.V. and A.Z.; methodology, S.D., K.V. and A.Z.; validation, S.D.; formal analysis, K.V.; investigation, S.D., K.V. and A.Z.; writing-original draft preparation, S.D. and K.V.; writing-review and editing, S.D. and K.V.; supervision, A.Z. All authors have read and agreed to the published version of the manuscript.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Conflicts of Interest:</head><p>The authors declare no conflict of interest.</p></div>			</div>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Current problems of creation of research infrastructure for synthesis of new materials in the framework of the digital transformation of society</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Zatsarinnyy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">K</forename><surname>Abgaryan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the II International Conference Mathematical Modeling in Materials Science of Electronic Components</title>
+		<meeting>the II International Conference Mathematical Modeling in Materials Science of Electronic Components</meeting>
+		<imprint>
+			<date type="published" when="2020-10-20">Online, 19-20 October 2020</date>
+			<biblScope unit="page" from="8" to="13" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Methodological approaches to evaluating the effectiveness of the center collective use &quot;Informatics</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">A</forename><surname>Zatsarinny</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">I</forename><surname>Volovich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><forename type="middle">A</forename><surname>Denisov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Y</forename><forename type="middle">S</forename><surname>Ionenkov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">V</forename><forename type="middle">A</forename><surname>Kondrashev</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Highly Available Syst</title>
+		<imprint>
+			<biblScope unit="volume">16</biblScope>
+			<biblScope unit="page" from="44" to="51" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">High Performance Computing in a Shared Virtual Infrastructure</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Volovich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Zatsarinnyy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Frenkel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Denisov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the VI International Conference on Information Technologies and High-Performance Computing (ITHPC 2021)</title>
+		<meeting>the VI International Conference on Information Technologies and High-Performance Computing (ITHPC 2021)<address><addrLine>Khabarovsk, Russia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021-09">September 2021</date>
+			<biblScope unit="volume">2930</biblScope>
+			<biblScope unit="page" from="38" to="46" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Study of the performance and scalability of the Quantum ESPRESSO package in the study of low-dimensional systems on hybrid computing systems</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kartsev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Malkovsky</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">K</forename><surname>Volovich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><surname>Sorokin</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the I International Conference Mathematical Modeling in Materials Science of Electronic Components</title>
+		<meeting>the I International Conference Mathematical Modeling in Materials Science of Electronic Components<address><addrLine>Moscow, Russia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2019-10-23">21-23 October 2019</date>
+			<biblScope unit="page" from="18" to="21" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Information technology is the construction of multi-scale models in problems of computational materials science</title>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">K</forename><surname>Abgaryan</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Highly Available Syst</title>
+		<imprint>
+			<biblScope unit="volume">14</biblScope>
+			<biblScope unit="page" from="9" to="15" />
+			<date type="published" when="2018">2018</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Multiscale modeling for composite materials computer simulation support</title>
+		<author>
+			<persName><forename type="first">K</forename><forename type="middle">K</forename><surname>Abgaryan</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><forename type="middle">S</forename><surname>Gavrilov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">M</forename><surname>Marasanov</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Int. J. Open Inf. Technol</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="page" from="24" to="28" />
+			<date type="published" when="2017">2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<analytic>
+		<title level="a" type="main">Data storage systems of &quot;hybrilit&quot; heterogeneous computing platform for scientific research carried out in JINR: Filesystems and raids performance research CEUR Workshop Proceedings</title>
+		<author>
+			<persName><forename type="first">A</forename><surname>Kokorev</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Belyakov</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Lyubimova</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 9th International Conference &quot;Distributed Computing and Grid Technologies in Science and Education&quot; (GRID&apos;2021)</title>
+		<meeting>the 9th International Conference &quot;Distributed Computing and Grid Technologies in Science and Education&quot; (GRID&apos;2021)<address><addrLine>Dubna, Russia</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2021-07">July 2021</date>
+			<biblScope unit="volume">3041</biblScope>
+			<biblScope unit="page" from="296" to="303" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title level="a" type="main">Lustre I/O performance investigations on Hazel Hen: Experiments and heuristics</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Seiz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><surname>Offenhäuser</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">S</forename><surname>Andersson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">J</forename><surname>Hötzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">H</forename><surname>Hierl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Nestler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><surname>Resch</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s11227-021-03730-7</idno>
+	</analytic>
+	<monogr>
+		<title level="j">J. Supercomput</title>
+		<imprint>
+			<biblScope unit="volume">77</biblScope>
+			<biblScope unit="page" from="12508" to="12536" />
+			<date type="published" when="2021">2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Applying neural networks to predict HPC-I/O bandwidth over seismic data on lustre file system for ExSeisDat</title>
+		<author>
+			<persName><forename type="first">A</forename><forename type="middle">J S</forename><surname>Tipu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">P</forename><forename type="middle">Ó</forename><surname>Conbhuí</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">E</forename><surname>Howley</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s10586-021-03347-8</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Clust. Comput</title>
+		<imprint>
+			<biblScope unit="volume">25</biblScope>
+			<biblScope unit="page" from="2661" to="2682" />
+			<date type="published" when="2022">2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title level="a" type="main">Optimizing the parameters of the Lustre-file-system-based HPC system for reverse time migration</title>
+		<author>
+			<persName><forename type="first">V</forename><surname>Rybintsev</surname></persName>
+		</author>
+		<idno type="DOI">10.1007/s11227-019-03054-7</idno>
+	</analytic>
+	<monogr>
+		<title level="j">J. Supercomput</title>
+		<imprint>
+			<biblScope unit="volume">76</biblScope>
+			<biblScope unit="page" from="536" to="548" />
+			<date type="published" when="2020">2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Estimation of the workload of a hybrid computing cluster in tasks of modeling in materials science</title>
+		<author>
+			<persName><forename type="first">K</forename><surname>Volovich</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the II International Conference Mathematical Modeling in Materials Science of Electronic Components</title>
+		<meeting>the II International Conference Mathematical Modeling in Materials Science of Electronic Components</meeting>
+		<imprint>
+			<date type="published" when="2020-10-20">Online, 19-20 October 2020</date>
+			<biblScope unit="page" from="30" to="33" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<title level="m" type="main">The statements, opinions and data contained in all publications are solely those of the individual author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to people or property resulting from any ideas, methods</title>
+		<imprint>
+			<publisher>Disclaimer/Publisher&apos;s Note</publisher>
+		</imprint>
+	</monogr>
+	<note>instructions or products referred to in the content</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">UCX: An Open Source Framework for HPC Network APIs and Beyond</title>
+				<funder>
+					<orgName type="full">United States Government purposes</orgName>
+				</funder>
+				<funder ref="#_v8awkKh">
+					<orgName type="full">Office of Science of the U.S. Department of Energy</orgName>
+				</funder>
+				<funder ref="#_xYxNxjk">
+					<orgName type="full">United States Department of Defense</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">U.S. Department of Energy</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Pavel</forename><surname>Shamis</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Oak Ridge National Laboratory</orgName>
+								<orgName type="institution" key="instit2">NVIDIA Corporation Sameer Kumar</orgName>
+								<address>
+									<addrLine>Craig Stunkel IBM George Bosilca</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Manjunath</forename><surname>Gorentla Venkata</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Oak Ridge National Laboratory</orgName>
+								<orgName type="institution" key="instit2">NVIDIA Corporation Sameer Kumar</orgName>
+								<address>
+									<addrLine>Craig Stunkel IBM George Bosilca</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">M</forename><surname>Graham Lopez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Oak Ridge National Laboratory</orgName>
+								<orgName type="institution" key="instit2">NVIDIA Corporation Sameer Kumar</orgName>
+								<address>
+									<addrLine>Craig Stunkel IBM George Bosilca</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Matthew</forename><forename type="middle">B</forename><surname>Baker</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Oak Ridge National Laboratory</orgName>
+								<orgName type="institution" key="instit2">NVIDIA Corporation Sameer Kumar</orgName>
+								<address>
+									<addrLine>Craig Stunkel IBM George Bosilca</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Oscar</forename><surname>Hernandez</surname></persName>
+							<affiliation key="aff0">
+								<orgName type="institution" key="instit1">Oak Ridge National Laboratory</orgName>
+								<orgName type="institution" key="instit2">NVIDIA Corporation Sameer Kumar</orgName>
+								<address>
+									<addrLine>Craig Stunkel IBM George Bosilca</addrLine>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yossi</forename><surname>Itigin</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mike</forename><surname>Dubman</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Gilad</forename><surname>Shainer</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Richard</forename><forename type="middle">L</forename><surname>Graham</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Liran</forename><surname>Liss</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Yiftah</forename><surname>Shahar</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Mellanox</forename><surname>Technologies</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Sreeram</forename><surname>Potluri</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Davide</forename><surname>Rossetti</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Donald</forename><surname>Becker</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Duncan</forename><surname>Poole</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<persName><forename type="first">Christopher</forename><surname>Lamb</surname></persName>
+							<affiliation key="aff1">
+								<orgName type="institution">Aurelien Bouteiller University of Tennessee</orgName>
+								<address>
+									<settlement>Knoxville</settlement>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">UCX: An Open Source Framework for HPC Network APIs and Beyond</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+					<idno type="MD5">B0F85C9585C84D481AC0401899B2A50B</idno>
+					<idno type="DOI">10.1109/HOTI.2015.13</idno>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>This paper presents Unified Communication X (UCX), a set of network APIs and their implementations for high throughput computing. UCX comes from the combined effort of national laboratories, industry, and academia to design and implement a high-performing and highly-scalable network stack for next generation applications and systems. UCX design provides the ability to tailor its APIs and network functionality to suit a wide variety of application domains and hardware. We envision these APIs to satisfy the networking needs of many programming models such as Message Passing Interface (MPI), OpenSHMEM, Partitioned Global Address Space (PGAS) languages, task-based paradigms and I/O bound applications. To evaluate the design we implement the APIs and protocols, and measure the performance of overhead-critical network primitives fundamental for implementing many parallel programming models and system libraries. Our results show that the latency, bandwidth, and message rate achieved by the portable UCX prototype is very close to that of the underlying driver. With UCX, we achieved a message exchange latency of 0.89 us, a bandwidth of 6138.5 MB/s, and a message rate of 14 million messages per second. As far as we know, this is the highest bandwidth and message rate achieved by any network stack (publicly known) on this hardware.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>I. INTRODUCTION</head><p>Given the importance of parallel programming models for developing successful scientific applications on high-performance computing (HPC), system vendors typically provide customized network hardware along with low-level interfaces optimized to meet the functionality and performance requirements of these programming models. Some examples include Cray's Gemini network hardware with its proprietary uGNI and DMAPP interfaces; the IBM Torus network exposed through their Parallel Active Message Interface (PAMI); and InfiniBand hardware from multiple vendors which uses the Open Fabrics Alliance (OFA) Verbs and the emerging Libfabrics low-level interfaces. Because of the variety of network technology drivers ecosystem, it is a challenging task to design and implement portable high performance programming models that can be map efficiently to the current and next generation hardware. Furthermore, augmenting this with a portability capability extending the life-expectancy of these programming models and their corresponding communication libraries to span over multiple generations of hardware only deepen this challenge. This lead to a situation where a significant amount of duplicated efforts are spend, at all levels of the software stack, to design, tailor and optimize higherlevel communication libraries to multiple low-level interface. This situation can be clearly seen in many open software efforts supporting multiple hardware, such as with Open MPI, implemented using proprietary interfaces including, Cray's uGNI, Mellanox's MXM, and Qlogic's PSM.</p><p>There have been multiple efforts to provide a common, high-performance networking interface, but typically they are either optimized for a single programming model or limited to a particular network hardware. These efforts includes GAS-Net <ref type="bibr" target="#b0">[1]</ref>, ARMCI <ref type="bibr" target="#b1">[2]</ref>, MXM, PSM, CCI <ref type="bibr" target="#b2">[3]</ref>, DMAPP <ref type="bibr" target="#b3">[4]</ref>, and Portals <ref type="bibr" target="#b4">[5]</ref>. PSM and MXM are proprietary communication interfaces provided by InfiniBand vendors Qlogic and Mellanox respectively, while the Portals network architecture is geared towards MPI but was recently extended to support PGAS based models. GASNet and ARMCI are tailored towards PGAS programming models including UPC and OpenSH-MEM <ref type="bibr" target="#b5">[6]</ref>, and CCI was developed to provide a uniform UC-T (Hardware Transports) -Low Level API RMA, Atomic, Tag-matching, Send/Recv, Active Message Transport for InfiniBand VERBs driver RC UD XRC DCT Transport for intra-node host memory communication SYSV POSIX KNEM CMA XPMEM Transport for Accelerator Memory communucation GPU Transport for Gemini/Aries drivers GNI UC-S (Services) Common utilities UC-P (Protocols) -High Level API Transport selection, cross-transrport multi-rail, fragmentation, operations not supported by hardware Message Passing API Domain: tag matching, randevouze PGAS API Domain: RMAs, Atomics Task Based API Domain: Active Messages I/O API Domain: Stream Utilities Data stractures Hardware MPICH, Open-MPI, etc. OpenSHMEM, UPC, CAF, X10, Chapel, etc. Parsec, OCR, Legions, etc. Burst buffer, ADIOS, etc. Applications UCX Memory Management OFA Verbs Driver Cray Driver OS Kernel Cuda interface for scientific applications' I/O needs. DMAPP was specifically designed with distributed global memory as a target programming model and supports both compiler-based (CAF and UPC) or library-based (e.g. Cray SHMEM) onesided programming models.</p><p>To address the functionality and performance portability challenges, in this paper we present UCX, a framework for network APIs and stacks. Our approach is to unify the APIs, protocols, and implementation into a single framework, while providing the ability to tailor the functionality for particular programming model without sacrificing efficiency. For this we are leveraging on expertise of University of Tennessee Knoxville (UTK) on Open MPI and PaRSEC, ORNL and the University of Houston (UH) on OpenSHMEM and PGAS languages such as Co-Array Fortran, NVIDIA's on highly multi-threading models on GPUs (CUDA, OpenACC), and IBM expertise on MPI, OpenSHMEM and X10 programming models and runtimes.</p><p>Besides addressing the portability challenges, UCX focuses on providing APIs and network stacks for next generation applications and emerging architectures such as systems with massively threaded nodes, heterogeneous hierarchal memories, computing accelerators (GPUs), and applications using hybrid programming models. For example, we consider the typical use case of an application employing both MPI and OpenACC or OpenMP programming models, executing on Titan <ref type="bibr" target="#b6">[7]</ref> -a Cray XK7 system with AMD CPUs, NVIDIA GPUs and Gemini network-moving to Summit [8] -an IBM system with POWER CPUs, NVIDIA GPUs, and InfiniBand network. With the unified low level UCX interface, multiple programming models, managed in their own separate runtime, can communicate between multiple devices and with a better orchestration of communication. The benefit is then twofold: the high level programming runtimes, relying on an unified communication infrastructure, better interoperate with one another and the application, if it itself uses UCX, and the portability of the entire software stack is greatly improved: when new hardware is delivered, implementing the small UCX interface is sufficient to implement support for multiple programming paradigms and applications.</p><p>Another goal of UCX is to develop production grade software, while also providing a platform for researchers to innovate and continually add novel elements to the implementation. To achieve these competing goals, UCX is co-designed by researchers and engineers from national laboratories, industry and academia. This collaboration includes ORNL, UTK, UH, Mellanox, NVIDIA, and IBM. The UCX design and implementation incorporates ideas from, and can be seen as a continuation and unification of Mellanox's MXM, IBM's PAMI, and the UCCS <ref type="bibr" target="#b8">[9]</ref>. In the remainder of this paper, we go into further details about the design of UCX and present some preliminary results.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>II. DESIGN</head><p>UCX is a network API framework for modern interconnects. The goal of the API is to establish a set of interfaces for implementing multiple programming model libraries and languages that are portable, scalable, and efficient.</p><p>The framework is designed with careful consideration for emerging exascale technologies such as massively parallel computing nodes, accelerators, and hierarchical memories. The UCX architecture exposes software constructs for manythread driven high-performance communications, communications within heterogeneous memory hierarchies, and hybrid programming models including I/O and data centric libraries. Rather than building a single interface as a "one-size-fits-all" solution, we design a framework that provides the necessary components for building various communication protocols using different levels of abstraction. Such a design delivers a high degree of flexibility enabling the implementation of new network protocols for emerging and future programming models.</p><p>For example, accelerators are expected to be a key component in exascale system design. New capabilities like GPUDi-rect RDMA <ref type="bibr" target="#b9">[10]</ref> and GPUDirect Async <ref type="bibr" target="#b10">[11]</ref> allow GPUbased workflows to operate with minimal CPU intervention, leaving the CPU for other, more generic, tasks. The hierarchies that evolve in connecting GPUs to the node using PCIe and NVLink, and the performance characteristics they entail, need special consideration when designing a runtime for communications to/from/within GPU memory. More specifically, performance in highly-threaded environments is critical in order to realize a vision of supporting communication from inside GPU kernels <ref type="bibr" target="#b11">[12]</ref>. UCX provides a separate transport for accelerator memory which allows implementations to be customized to the inter-GPU communication design need.</p><p>The UCX framework consists of the three main components: UC-Services (UCS), UC-Transports (UCT), and UC-Protocols (UCP). Each one of these components exposes a public API and can be used as a stand-alone library (Figure <ref type="figure" target="#fig_0">1</ref>).</p><p>UCS is a service layer that provides the necessary functionality for implementing portable and efficient utilities. This layer exposes the following services:</p><p>• an abstraction for accessing platform specific functionality (atomic operations, thread safety, etc.) • tools for efficient memory management (memory pools, memory allocators, and memory allocators hooks) • commonly used data structures (hashes, trees, lists) UCT is a transport layer that abstracts the differences across various hardware architectures and provides a low-level API that enables the implementation of communication protocols. The primary goal of the layer is to provide direct and efficient access to hardware network resources with minimal software overhead. For this purpose UCT relies on low-level drivers provided by vendors such as InfiniBand Verbs, Cray's uGNI, libfabrics, etc. In addition, the layer provides constructs for communication context management (thread-based and application level), and allocation and management of devicespecific memories including those found in accelerators. In terms of communication APIs, UCT defines interfaces for immediate (short), buffered copy-and-send (bcopy), and zerocopy (zcopy) communication operations. The short operations are optimized for small messages that can be posted and completed in place. The bcopy operations are optimized for medium size messages that are typically sent through a socalled bouncing-buffer. Finally, the zcopy operations expose zero-copy memory-to-memory communication semantics.</p><p>UCP implements higher-level protocols that are typically used by message passing (MPI) and PGAS programming models by using lower-level capabilities exposed through the UCT layer. UCP is responsible for the following functionality: initialization of the library, selection of transports for communication, message fragmentation, and multi-rail communication. Currently, the API has the following classes of interfaces: Initialization, Remote Memory Access (RMA) communication, Atomic Memory Operations (AMO), Active Message, Tag-Matching, and Collectives.</p><p>Initialization: This subset of interfaces defines the communication context setup, queries the network capabilities, and initializes the local communication endpoints. The context represented by the UCX context is an abstraction of the network transport resources. The communication endpoint setup interfaces initialize the UCP endpoint, which is an abstraction of all the necessary resources associated with a particular connection. The communication endpoints are used as input to all communication operations to describe the source and destination of the communication.</p><p>RMA: This subset of interfaces defines one-sided communication operations such as PUT and GET, required for implementing low overhead, direct memory access communications constructs needed by both distributed and shared memory programming models. UCP includes a separate set of interfaces for communicating non-contiguous data. This functionality was included to support various programming models' communication requirements and leverage the scatter/gather capabilities of modern network hardware.</p><p>AMO: This subset of interfaces provides support for atomically performing operations on the remote memory, an important class of operations for PGAS programming models, particularly OpenSHMEM.</p><p>Tag Matching: This interface supports tag-matching for send-receive semantics which is a key communication semantic defined by the MPI specification.</p><p>Active Message: A subset of functionality where the incoming packet invokes a sender-specified callback in order to be processed by the receiving process. As an example, the two-sided MPI interface can easily be implemented on top of such a concept <ref type="bibr" target="#b12">[13]</ref>. However, these interfaces are more general and suited for other programming paradigms where the receiver process does not prepost receives, but expects to react to incoming packets directly. Like RMA and tag-matching interfaces, the active message interface provides separate APIs for different messages types and non-contiguous data.</p><p>Collectives: This subset of interfaces defines group communication and synchronization operations. The collective operations include Barrier, All-to-one, All-to-all, and reduction operations. When possible, we will take advantage of hardware acceleration for collectives, e.g. InfiniBand Switch collective acceleration.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>III. RESULTS</head><p>This evaluation demonstrates preliminary functionality of the UCT layer within the UCX framework. In this context, we use the InfiniBand transport layer, although UCT currently fully supports InfiniBand, uGNI, and shared memory interfaces, with comparable performance overheads. At this point, these results are considered preliminary and do not yet fully represent our expected performance overheads.</p><p>The evaluation system is equipped with two HP ProLiant DL380p Gen8 servers, each with two Intel Xeon E5-2697 2.7GHz CPUs for a total of 24 CPU cores. The servers are connected to a Mellanox SX6036 switch using a singleport Mellanox Connect-IB FDR host channel adapter (HCA) running firmware version 10.10.5056 and Mellanox OFED 2.4-1.0.4. In addition, we used a prototype implementation of To measure the message rate, the bandwidth, and the latency of various operations, we implemented a set of UCT microbenchmarks. The latency of PUT operations is measured using the ping-pong communication pattern where the initiator of the communication sends a short or bcopy PUT request from one node to another. Then, the target of the PUT operation replies with a response message. The latency is then the average of half of the round-trip time. The latency of the GET operation is measured using a one-sided benchmark where the initiator reads memory from the target process and reports the average of a full round-trip time. From Fig. <ref type="figure" target="#fig_1">2a</ref> we can see that the UCT short operation achieves 0.89μs latency for a one byte message using Accelerated Verbs and 0.91μs latency with regular Verbs driver. The UCT bcopy latencies are higher due to an overhead imposed by a memcpy operation, used for the message transfer to the bouncing buffer. For a one byte GET operation, we observe 1.79 and 1.83μs latency for the accelerated and regular Verbs, respectively. A similar benchmark is used to measure bandwidth, with the difference that a UCT zcopy operation is used; the operations are optimized for bandwidth-bounded operations. Fig. <ref type="figure" target="#fig_1">2b</ref> highlights that the zcopy operation achieves 6138.5 MB/s bandwidth, which is the maximum practical peak supported at the hardware level for a single FDR (4x) InfiniBand port. Moreover, similar bandwidths can be observed for both onesided communication, PUT and GET. The message rate is measured by initiating multiple short or bcopy PUT requests from one node to another. From Fig. <ref type="figure" target="#fig_1">2c</ref> we can see that UCT short and bcopy operations with the Accelerated Verbs driver outperforms the same operations on top of the regular Verbs driver by more than a factor of two and reaches the rate of 14 million operations per second for a single CPU core.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>IV. CONCLUSION AND FUTURE WORK</head><p>UCX is a framework for network APIs, protocols, and implementations. In this paper, we have described the design and architecture of the framework, the interfaces, and protocols for implementing parallel programming models. Further, we evaluated our design decisions by providing a prototype implementation, and analyzing the performance characteristics of important basic primitives required for implementing MPI and OpenSHMEM. Our future work will initially focus on implementing MPI and OpenSHMEM using proposed interfaces and protocols, and later extend UCX to accommodate hybrid programming models and support I/O applications.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_0"><head>Fig. 1 :</head><label>1</label><figDesc>Fig. 1: UCX Architecture</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Fig. 2 :</head><label>2</label><figDesc>Fig. 2: UCX operations using VERBS RC (VERBS) and Accelerated VERBS RC (AVERBS) interfaces the Accelerated Verbs driver developed in the context Open Fabrics Alliance (OFA) Verbs working group.To measure the message rate, the bandwidth, and the latency of various operations, we implemented a set of UCT microbenchmarks. The latency of PUT operations is measured using the ping-pong communication pattern where the initiator of the communication sends a short or bcopy PUT request from one node to another. Then, the target of the PUT operation replies with a response message. The latency is then the average of half of the round-trip time. The latency of the GET operation is measured using a one-sided benchmark where the initiator reads memory from the target process and reports the average of a full round-trip time. From Fig.2awe can see that the UCT short operation achieves 0.89μs latency for a one byte message using Accelerated Verbs and 0.91μs latency with regular Verbs driver. The UCT bcopy latencies are higher due to an overhead imposed by a memcpy operation, used for the message transfer to the bouncing buffer. For a one byte GET operation, we observe 1.79 and 1.83μs latency for the accelerated and regular Verbs, respectively. A similar benchmark is used to measure bandwidth, with the difference that a UCT zcopy operation is used; the operations are optimized for bandwidth-bounded operations. Fig.2bhighlights that the zcopy operation achieves 6138.5 MB/s bandwidth, which is the maximum practical peak supported at the hardware level for a single FDR (4x) InfiniBand port. Moreover, similar bandwidths can be observed for both onesided communication, PUT and GET. The message rate is measured by initiating multiple short or bcopy PUT requests from one node to another. From Fig.2cwe can see that UCT short and bcopy operations with the Accelerated Verbs driver outperforms the same operations on top of the regular Verbs driver by more than a factor of two and reaches the rate of 14 million operations per second for a single CPU core.</figDesc></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_0"><p>Authorized licensed use limited to: Univ Politecnica de Madrid. Downloaded on March 10,2026 at 16:37:34 UTC from IEEE Xplore. Restrictions apply.</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>V. ACKNOWLEDGMENTS</head><p>We want to thank <rs type="person">Stephen Poole</rs>, a co-founder of this project, who helped us with countless hours of technical discussions that made this project a reality. We also want to thank the UH, including <rs type="person">Tony Curtis</rs>, <rs type="person">Pengfei Hao</rs> and <rs type="person">Aaron Welch</rs> for their feedback.</p></div>
+			</div>
+			<div type="funding">
+<div><p>This work was supported by the <rs type="funder">United States Department of Defense</rs> and used resources of the <rs type="institution">Extreme Scale Systems Center</rs> located at the <rs type="institution">Oak Ridge National Laboratory (ORNL)</rs>. This manuscript has been authored by <rs type="institution">UT-Battelle, LLC</rs> under Contract No. <rs type="grantNumber">DE-AC05-00OR22725</rs> with the <rs type="funder">U.S. Department of Energy</rs>. The United States Government retains and the publisher, by accepting the article for publication, acknowledges that the United States Government retains a non-exclusive, paid-up, irrevocable, world-wide license to publish or reproduce the published form of this manuscript, or allow others to do so, for <rs type="funder">United States Government purposes</rs>. The Department of Energy will provide public access to these results of federally sponsored research in accordance with the <rs type="institution">DOE Public Access Plan</rs> (<ref type="url" target="http://energy.gov/downloads/doepublicaccessplan">http://energy.gov/downloads/doepublicaccessplan</ref>). This research used resources of the <rs type="institution" subtype="infrastructure">Oak Ridge Leadership Computing Facility</rs> at the <rs type="institution">Oak Ridge National Laboratory</rs>, which is supported by the <rs type="funder">Office of Science of the U.S. Department of Energy</rs> under Contract No. <rs type="grantNumber">DE-AC05-00OR22725</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funding" xml:id="_xYxNxjk">
+					<idno type="grant-number">DE-AC05-00OR22725</idno>
+				</org>
+				<org type="funding" xml:id="_v8awkKh">
+					<idno type="grant-number">DE-AC05-00OR22725</idno>
+				</org>
+			</listOrg>
+
+			<listOrg type="infrastructure">
+				<org type="infrastructure">					<orgName type="extracted">Oak Ridge Leadership Computing Facility</orgName>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<title level="m" type="main">GASNet Specification, v1.1</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Bonachea</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2002">2002</date>
+			<pubPlace>Berkeley, CA, USA</pubPlace>
+		</imprint>
+	</monogr>
+	<note type="report_type">Tech. Rep</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">ARMCI: A Portable Remote Memory Copy Libray for Ditributed Array Libraries and Compiler Run-Time Systems</title>
+		<author>
+			<persName><forename type="first">J</forename><surname>Nieplocha</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">B</forename><surname>Carpenter</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the 11 IPPS/SPDP&apos;99 Workshops</title>
+		<meeting>the 11 IPPS/SPDP&apos;99 Workshops<address><addrLine>UK</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="1999">1999</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<author>
+			<persName><forename type="first">S</forename><surname>Atchley</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Dillow</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">The Common Communication Interface (CCI)</title>
+		<imprint>
+			<date type="published" when="2011">2011</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">DMAPP-An API for One-sided Program Models on Baker Systems</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Bruggencate</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">D</forename><surname>Roweth</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">CUG Conference</title>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<title level="m" type="main">Portals 3.3 on the Sandia/Cray Red Storm System</title>
+		<author>
+			<persName><forename type="first">R</forename><surname>Brightwell</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Hudson</surname></persName>
+		</author>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Introducing OpenSHMEM: SHMEM for the PGAS community</title>
+		<author>
+			<persName><forename type="first">B</forename><surname>Chapman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">T</forename><surname>Curtis</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings of the Fourth Conference on Partitioned Global Address Space Programming Model, ser. PGAS &apos;10</title>
+		<meeting>the Fourth Conference on Partitioned Global Address Space Programming Model, ser. PGAS &apos;10<address><addrLine>New York, NY, USA</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2010">2010</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<title level="m" type="main">Titan: A Cray XK System at the ORNL</title>
+		<author>
+			<persName><surname>Doe</surname></persName>
+		</author>
+		<ptr target="https://www.olcf.ornl.gov/titan/" />
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<monogr>
+		<title level="m" type="main">Summit: IBM&apos;s OpenPOWER-based Data Centric System at the ORNL</title>
+		<ptr target="https://www.olcf.ornl.gov/summit/" />
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Universal Common Communication Substrate (UCCS) Specification. Version 0.1</title>
+		<author>
+			<persName><forename type="first">P</forename><surname>Shamis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">M</forename><forename type="middle">G</forename><surname>Venkata</surname></persName>
+		</author>
+		<idno>ORNL/TM-2012/339</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Oak Ridge National Laboratory (ORNL)</title>
+		<imprint>
+			<date type="published" when="2012">2012</date>
+		</imprint>
+	</monogr>
+	<note type="report_type">Tech Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<analytic>
+		<title/>
+		<author>
+			<persName><forename type="first">N</forename><surname>Corp</surname></persName>
+		</author>
+		<ptr target="https://developer.nvidia.com" />
+	</analytic>
+	<monogr>
+		<title level="j">NVIDIA GPUDirect RDMA</title>
+		<imprint/>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">GPUDIRECT: Integrating the GPU with a Network Interface</title>
+		<author>
+			<persName><forename type="first">D</forename><surname>Rossetti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">GPU Technology Conference</title>
+		<imprint>
+			<date type="published" when="2015">2015</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<analytic>
+		<title level="a" type="main">TOC-centric Communication: A Case Study with NVSHMEM</title>
+		<author>
+			<persName><forename type="first">Sreeram</forename><surname>Potluri</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">OpenSHMEM User Group Meeting</title>
+		<imprint>
+			<date type="published" when="2014">2014</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Open MPI: Goals, Concept, and Design of a Next Generation MPI Implementation</title>
+		<author>
+			<persName><forename type="first">E</forename><surname>Gabriel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><forename type="middle">E</forename><surname>Fagg</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">Proceedings, 11th European PVM/MPI Users&apos; Group Meeting</title>
+		<meeting>11th European PVM/MPI Users&apos; Group Meeting<address><addrLine>Budapest, Hungary</addrLine></address></meeting>
+		<imprint>
+			<date type="published" when="2004-09">September 2004</date>
+			<biblScope unit="page" from="97" to="104" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>

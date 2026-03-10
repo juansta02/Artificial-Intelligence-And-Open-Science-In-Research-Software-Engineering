@@ -1,0 +1,1433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xml:space="preserve" xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 https://raw.githubusercontent.com/kermitt2/grobid/master/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">CUNQA: a Distributed Quantum Computing emulator for HPC</title>
+				<funder>
+					<orgName type="full">Plan de Recuperación</orgName>
+				</funder>
+				<funder ref="#_uQmCM5Q">
+					<orgName type="full">Ministerio de Transformación Digital y Función Pública of Spain&apos;s Government</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">the Galician Supercomputing Center (CESGA)</orgName>
+				</funder>
+				<funder>
+					<orgName type="full">Axencia Galega de Innovación (Xunta de Galicia)</orgName>
+				</funder>
+				<funder ref="#_TcumWJh">
+					<orgName type="full">unknown</orgName>
+				</funder>
+				<funder ref="#_6NUurU9 #_BHHxDxr #_Crjh5gS">
+					<orgName type="full">European Union</orgName>
+				</funder>
+				<funder ref="#_fPqRRcd">
+					<orgName type="full">Programa de axudas á etapa predoutoral</orgName>
+				</funder>
+				<funder ref="#_FsEhfJf">
+					<orgName type="full">European Regional Development Fund</orgName>
+					<orgName type="abbreviated">ERDF</orgName>
+				</funder>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability  status="unknown">
+					<licence/>
+				</availability>
+				<date type="published" when="2025-11-07">7 Nov 2025</date>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName><forename type="first">Jorge</forename><surname>Vázquez-Pérez</surname></persName>
+							<idno type="ORCID">0009-0002-1442-4181</idno>
+						</author>
+						<author>
+							<persName><forename type="first">Daniel</forename><surname>Expósito-Patiño</surname></persName>
+							<idno type="ORCID">0009-0007-8376-4733</idno>
+						</author>
+						<author>
+							<persName><forename type="first">Marta</forename><surname>Losada</surname></persName>
+							<email>mlosada@cesga.es</email>
+							<idno type="ORCID">0009-0005-3153-0578</idno>
+						</author>
+						<author>
+							<persName><forename type="first">Álvaro</forename><surname>Carballido</surname></persName>
+							<email>acarballido@cesga.es</email>
+							<idno type="ORCID">0009-0005-9570-2420</idno>
+						</author>
+						<author>
+							<persName><forename type="first">Andrés</forename><surname>Gómez</surname></persName>
+							<email>agomez@cesga.com</email>
+							<idno type="ORCID">0000-0001-7272-8488</idno>
+						</author>
+						<author>
+							<affiliation key="aff0">
+								<orgName type="department">Galicia Supercomputing Center (CESGA)</orgName>
+								<orgName type="institution">TOMÁS F. PENA</orgName>
+								<address>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff1">
+								<orgName type="department">Galicia Supercomputing Center (CESGA)</orgName>
+								<orgName type="institution">Universidad de Santiago de Compostela</orgName>
+								<address>
+									<addrLine>Santiago de Compostela</addrLine>
+									<country>Spain Spain;</country>
+								</address>
+							</affiliation>
+						</author>
+						<author>
+							<affiliation key="aff2">
+								<orgName type="institution">Universidad de Santiago de Compostela</orgName>
+								<address>
+									<settlement>Santiago de Compostela</settlement>
+									<country key="ES">Spain</country>
+								</address>
+							</affiliation>
+						</author>
+						<title level="a" type="main">CUNQA: a Distributed Quantum Computing emulator for HPC</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date type="published" when="2025-11-07">7 Nov 2025</date>
+						</imprint>
+					</monogr>
+					<idno type="MD5">B9A2AE015A8532E265F81C1E563BB2AE</idno>
+					<idno type="arXiv">arXiv:2511.05209v1[quant-ph]</idno>
+					<note type="submission">Manuscript submitted to ACM Manuscript submitted to ACM</note>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc>
+			<appInfo>
+				<application version="0.8.2" ident="GROBID" when="2026-03-10T18:04+0000">
+					<desc>GROBID - A machine learning software for extracting information from scholarly documents</desc>
+					<label type="revision">0c5e0cf</label>
+					<label type="parameters">startPage=-1, endPage=-1, consolidateCitations=0, consolidateHeader=0, consolidateFunders=0, includeRawAffiliations=false, includeRawCitations=false, includeRawCopyrights=false, generateTeiIds=false, generateTeiCoordinates=[], sentenceSegmentation=false, flavor=null</label>
+					<ref target="https://github.com/kermitt2/grobid"/>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<profileDesc>
+			<textClass>
+				<keywords>
+					<term>Quantum Computing</term>
+					<term>Distributed Quantum Computing</term>
+					<term>High-Performance Computing</term>
+					<term>Simulated Quantum Computing</term>
+				</keywords>
+			</textClass>
+			<abstract>
+<div xmlns="http://www.tei-c.org/ns/1.0"><p>The challenge of scaling quantum computers to gain computational power is expected to lead to architectures with multiple connected quantum processing units (QPUs), commonly referred to as Distributed Quantum Computing (DQC). In parallel, there is a growing momentum toward treating quantum computers as accelerators, integrating them into the heterogeneous architectures of highperformance computing (HPC) environments. This work combines these two foreseeable futures in CUNQA, an open-source DQC emulator designed for HPC environments that allows testing, evaluating and studying DQC in HPC before it even becomes real. It implements the three DQC models of no-communication, classical-communication and quantum-communication; which will be examined in this work. Addressing programming considerations, explaining emulation and simulation details, and delving into the specifics of the implementation will be part of the effort. The well-known Quantum Phase Estimation (QPE) algorithm is used to demonstrate and analyze the emulation of the models. To the best of our knowledge, CUNQA is the first tool designed to emulate the three DQC schemes in an HPC environment. CCS Concepts: • Software and its engineering → Software libraries and repositories; • Computer systems organization → Multicore architectures; • Applied computing → Physics; • Computing methodologies → Distributed algorithms.</p></div>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1">Introduction</head><p>Quantum computing is a rather unpredictable and fast-changing field of research, both due to its immaturity-intrinsic to its current stage of development-and the fact that the field is dominated by large private companies in a race to be the first to achieve quantum advantage or, even, supremacy. However, one can analyze the trends driving the field through the currents of most scientific work and by the promises and forecasts issued by the very corporations that own the technology. There are two topics of growing interest that are worth mentioning in relation to this work: first, the integration of quantum processing units (QPUs) into high-performance computing (HPC) environments, envisioning them as GPU-like accelerators; second, the development of a multicore structure in quantum computing, analogous to that found in classical computing, which typically falls under the umbrella of so-called distributed quantum computing</p><p>(a) Standalone. (b) Co-located. (c) On-node.</p><p>Fig. <ref type="figure">1</ref>. All the possible integrations of QPUs in an HPC environment, a variation of the classification done by Elsharkawy et al. <ref type="bibr" target="#b15">[16]</ref> that combines the two co-located models into one.</p><p>(DQC). In fact, the multicore architecture is supported by the roadmaps of several companies (IBM <ref type="bibr" target="#b21">[22]</ref> or Google <ref type="bibr" target="#b17">[18]</ref>,</p><p>for example), where they hint at the necessity of such architectures. This work takes these two perspectives as its starting point and aims to bring the two domains together. To do so, it is essential to establish a distinct context for each in order to clarify the logic for their integration.</p><p>With regard to quantum computing and HPC, in 2008 the work of Devitt et al. <ref type="bibr" target="#b11">[12]</ref> marked the first attempt to consider QPUs within HPC environments. However, at that time, the goal was not to integrate quantum devices into such environments, but rather to envision the environments themselves as purely quantum. This model is called standalone and can be visualized in Figure <ref type="figure">1a</ref>. The shift toward an integration perspective began with the work of Svore and Troyer <ref type="bibr" target="#b39">[40]</ref> in 2016. They were the first ones envisioning QPUs as accelerators, a vision that has steadily gained traction over the years to the point where they are now treated outright as accelerators in many studies <ref type="bibr" target="#b30">[31]</ref>.</p><p>Secondly, they anticipated cloud-based access to these devices, which would reside within HPC environments. This conceptualization of QPUs corresponds to the co-located model shown in Figure <ref type="figure">1b</ref>. Later that year, Humble and</p><p>Britt <ref type="bibr" target="#b19">[20]</ref> began to explore what such integration might look like and their article stands as one of the first ones to raise the central question of what the software stack for quantum computing in an HPC environment would be. In 2017, the theoretical exploration of how QPUs could fit into HPC centers continued <ref type="bibr" target="#b2">[3,</ref><ref type="bibr" target="#b3">4]</ref>, but it was not until 2021, with the work of Humble et al. <ref type="bibr" target="#b20">[21]</ref>, that the idea of a software stack in a HPCQC context came to the forefront. A further step was taken in subsequent years with the works of Schulz et al. <ref type="bibr" target="#b35">[36]</ref> and Seitz et al. <ref type="bibr" target="#b36">[37]</ref>, who began to examine how the preexisting classical software stack could be combined with the requirements imposed by quantum computing. Almost contemporaneously, the first well-defined example of such software stack appears <ref type="bibr" target="#b8">[9]</ref>, in which the GCC compilation stack was modified to include quantum features in the register allocation process. From 2023 to the present, both quantum computing and HPC have become rapidly expanding fields <ref type="bibr" target="#b16">[17]</ref> and, naturally, the combination of the two-usually referred to as HPCQC-also has, as shown in the work done by Döbler and Jattana <ref type="bibr" target="#b14">[15]</ref>. During this period, the integration of QPUs into classical nodes in a GPU-like fashion began to be explored, giving rise to the on-node integration model-depicted in Figure <ref type="figure">1c</ref>. The reader is referred to two comprehensive reviews of the state of the art on the relationship between quantum computing and HPC for further details <ref type="bibr" target="#b32">[33,</ref><ref type="bibr" target="#b34">35]</ref>. Following the one developed by Rallis et al. <ref type="bibr" target="#b34">[35]</ref>, a summary of the software stacks presented so far can be seen in Figure <ref type="figure" target="#fig_8">2a</ref>. In this scheme, resource management-both classical and quantum-is handled within the middleware. An alternative scheme,</p><p>Manuscript submitted to ACM Application Layer HPC system QC system Middleware Layer Resource Management Compilation Runtime Management</p><p>(a) Resource management in the middleware <ref type="bibr" target="#b34">[35]</ref>.  shown in Figure <ref type="figure" target="#fig_8">2b</ref>, considers resource management as an user responsibility, thereby releasing the middleware from it.</p><p>The relevance of this second scheme will become clear when CUNQA is introduced.</p><p>When it comes DQC, a few explanations must be done in order to understand the context in which CUNQA is presented. Broadly speaking, two DQC schemes can be distinguished: distribution with communication and distribution without communication. The no-communication scheme, also referred to as embarrassingly parallel, can be seen in Figure <ref type="figure" target="#fig_3">3a</ref> and corresponds to a classical distribution of quantum tasks, i.e., assigning different quantum tasks to different QPUs with the aim of parallelizing their execution. Hereafter, quantum tasks refers to any task of purely quantum nature together with its execution properties-such as the number of shots and, in the case of simulation, the corresponding simulation parameters. Regarding the communications scheme, there are two possible scenarios: having only classical connections between the QPUs, called classical-communication model, or having also quantum ones, called quantumcommunication model. In the first case, shown in Figure <ref type="figure" target="#fig_3">3b</ref>, the same classical distribution of quantum tasks used in the no-communication model is applied, with the key difference that a QPU can receive classical information during execution. This introduces a synchronization problem-previously absent-, but enables the classical control of an instruction executed on a QPU based on results obtained from another QPU. In the second scenario, shown in Figure <ref type="figure" target="#fig_3">3c</ref>, QPUs are connected through a quantum channel while maintaining the classical link from the previous model. Here, synchronization issues persist, together with additional challenges related to the physical layer, such as entanglement generation and distribution, the management of communication qubits dedicated to inter-QPU links and the underlying QPU connectivity. Despite these difficulties, this scheme enables larger computations by combining multiple QPUs, each with limited individual capability. This is also the strategy proposed in the aforementioned roadmaps to scale up the computational capacity of quantum systems. For a more detailed treatment of the subject, the reader is referred to two comprehensive reviews <ref type="bibr" target="#b0">[1,</ref><ref type="bibr" target="#b5">6]</ref>. It is under this whole scenario that CUNQA can be properly introduced. CUNQA is a DQC emulator for HPC, that is, CUNQA emulates DQC architectures within an HPC environment using its resources for this purpose. This approach involves several technical considerations, which are discussed in Section 2. The discussion is complemented with use-case examples demonstrating the tool in operation, presented in Section 3. Section 4 then compares CUNQA with existing tools to highlight its main contributions. Finally, Sections 5 and 6 outline future directions for improvement and summarize the conclusions drawn from this work, respectively.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2">CUNQA</head><p>The terms emulation and simulation are often used interchangeably, yet they are not the same. Emulation seeks to faithfully replicate a system, whereas simulation aims to reproduce its behavior. In classical computing, emulating a device typically involves translating the original program's instructions from the emulated device into native ones understood by the host machine. If a quantum computer was to be emulated by a classical computer, no quantum instructions could be translated to classical ones because the computation paradigms are completely different. The natural approach is to follow what Willisch <ref type="bibr" target="#b41">[42]</ref> proposed: the classical counterpart should solve the physical equations governing the quantum system in order to replicate faithfully its behavior, therefore, emulating it.</p><p>Describing CUNQA as a DQC emulator for HPC may suggest that the emulation focuses on the QPUs themselves, but this is not the case. What CUNQA aims to emulate are the three DQC models shown in Figure <ref type="figure" target="#fig_3">3</ref>, not the QPUs individually. Accordingly, an extended definition would be: CUNQA is a DQC emulator for HPC with simulated QPUs.</p><p>The "for HPC" part also implies some considerations as shows that CUNQA was conceived from the outset within an HPC context. Specifically, CUNQA supports the emulation of the co-located scheme, shown in Figure <ref type="figure">1b</ref>, and the on-node scheme, shown in Figure <ref type="figure">1c</ref>, while discarding the standalone model of Figure <ref type="figure">1a</ref> as obsolete and incompatible with the accelerator paradigm.</p><p>CUNQA is the first tool to emulate the three DQC schemes in an HPC environment following the co-located and onnode models. To clarify how this is accomplished, each layer of the software stack is described in this section. It has to be noted that the software stack structure follows the scheme shown in Figure <ref type="figure" target="#fig_8">2b</ref>, where resource management is the user's responsibility. The lowest layer of the stack, presented in Section 2.1, corresponds to the simulated QPUs-hereafter referred to as virtual QPUs (vQPUs). Section 2.2 then describes resource management, focusing primarily on how vQPUs are handled. Once the vQPUs and their management are established, Section 2.3 introduces the interface through which users interact with them and, therefore, describing the application layer. Finally, Section 2.4 explains how the interface and the vQPUs are connected by explaining the middleware layer.</p><p>From a programming perspective, CUNQA is implemented in both Python and C++, and each of the aforementioned sections specifies which language is used in each case.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.1">System layer: Virtual QPUs (vQPUs)</head><p>A vQPU is a classical process running on a HPC environment with an allocated set of classical resources responsible of simulating the behavior of a real QPU. As a result, it is entirely independent of the quantum tasks executed on it. Users can interact with it as if it was a real QPU available in the system: they can query its status, check its availability and submit quantum tasks for execution. In essence, it behaves as an actual accelerator, that is, a device that communicates with the CPU to receive tasks, execute them and return the results. This concept is not entirely new, as instances of its use can be found in the literature <ref type="bibr" target="#b10">[11]</ref>. In this work, a vQPU comprises two main components that can be replaced or extended, making them decoupled of any specific third-party implementation:</p><p>• Server component: responsible for the communications of the vQPUs with the user. This component handles the reception of quantum tasks, their storage in a queue and the delivery of their results back to the user. Given their classical client-server structure, a standard socket library is employed-in the current version of CUNQA these can be Asio or ZMQ. • Simulator component: performs the actual execution of quantum tasks. At present, three simulators are supported: AerSimulator 0.16.0 <ref type="bibr" target="#b22">[23]</ref>, a specific commit of MQT-DDSIM <ref type="bibr" target="#b40">[41]</ref> and CunqaSimulator-a simple own simulator developed for testing purposes <ref type="bibr" target="#b33">[34]</ref>. In the no-communication case, the simulator is left to do all the simulation work, being a black box from CUNQA perspective. However, when there is communications between vQPUs, either classical or quantum, the way the simulation is performed had to be modified. In such cases, the simulator process iterates over all shots, each shot applying the circuit instructions extracted from the simulator one after the other and finally all shots' results are manually assembled to return the post-processed result to the user. This method allows maximum control for adding the new custom communication instructions at low level. This extraction of gates outside the simulator canonical path causes the additional complexity of simulating the noise, so, the version of CUNQA presented in this work only supports noise in the no-communication model.</p><p>Each vQPU operates through two threads: one in charge on server component and and another in charge on the simulation. This vQPU architecture and execution flow is illustrated in Figure <ref type="figure" target="#fig_5">5a</ref> and they remain valid across the no-communication and classical-communication models presented in Figure <ref type="figure" target="#fig_3">3</ref>. When a vQPU supports classical communications, the simulator component has an additional element: the classical communications channel. This channel, available with ZMQ and MPI, is the responsible of sharing classical bits between vQPUs at runtime using a classical send-receive scheme.</p><p>A difference arises for the quantum-communication case: quantum links may generate entanglement between qubits located in different vQPUs. Then, quantum tasks that involve quantum communications cannot be simulated independently on each vQPU: they have to be simulated within a unique process. Figure <ref type="figure" target="#fig_5">5b</ref> shows what does this mean at low level: vQPUs does not have a proper simulator component anymore, but they are now just responsible of send their quantum task part to a new executor process and receive back the result. The simulation component falls on the executor which is also responsible for receiving and correctly coordinating their joint execution. The result is returned vQPU RECV EXEC T3 T2 T1 (a) vQPUs for no-and classical-communication models. executor vQPU vQPU Execute Aggregate tasks (b) vQPUs for quantum-communication model. to the user as if the circuit had been executed on a single vQPU-that is, with aggregated counts. This approach reflects how execution would take place in a quantum multicore architecture.</p><formula xml:id="formula_0">|𝑎⟩ 𝐻 |Φ + ⟩ 𝑋 𝑍 |0⟩ (a) Teledata. |𝑎⟩ 𝑍 |Φ + ⟩ 𝑋 𝐻 |𝑡 1 ⟩ (b) Telegate.</formula><p>The main difference between this executor process with respect to the execution of an usual vQPU, is that its associated simulator will execute a single circuit with as many qubits as the sum of the qubits of all the circuits sent to be executed, plus two qubits reserved for the communication protocols. These two qubits come from the two communication protocols implemented: teledata and telegate. Figure <ref type="figure" target="#fig_4">4</ref> shows how these protocols employ two qubits to generate an EPR pair shared between the two QPUs. This way, each time a protocol is executed, an EPR pair is created using the same two qubits. Recycling communication qubits allows for indefinite quantum communications without having to increase the number of qubits to be simulated.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.2">Resource management</head><p>As vQPUs are classical resources with the goal of simulating a real QPU, CUNQA implements a set of commands that handle their life cycle-launching, checking availability, terminating and releasing their associated resources. The classical nature of a vQPU within an HPC environment implies that these commands are implemented as SLURM wrappers with a set of additional options. This is coherent with the software stack structure selected for CUNQA at the beginning of the section: the resource management is a user responsibility as the user must first reserve the necessary resources by launching the vQPUs. In other words, by the time the user executes the program defined at the application layer, both the classical and quantum resources-represented here by the vQPUs-must already be managed.</p><p>For launching vQPUs, CUNQA provides the qraise bash command, which allows fine-tuning of the vQPUs' characteristics through several configurable flags. A generic example of the qraise command is shown below:</p><p>qraise -n 4 -t 00:10:00 (MORE OPTIONAL FLAGS)</p><p>The two flags shown are mandatory and specify the number of vQPUs to launch (-n) and the maximum time they remain available (-t). Each exeution of the qraise command deploys vQPUs in a group referred to as family.</p><p>Each family defines a homogeneous set of vQPUs that share the same configuration. The optional flags help the user tune additional vQPU properties, classical resources configuration, DQC model and the integration with the HPC environment.</p><p>• Simulated QPU characteristics. In order to model the behavior of a real QPU, the number of qubits, their coupling graph, supported quantum instructions and many other traits are needed. All those are commonly grouped and referred to as backend, which will be provided via the --backend flag, taking the path to a JSON file describing it. A key feature of a QPU backend is the set of noise properties of its qubits, which can be differently specified by the --noise-prop option, which also expects the path to a JSON file. From these noise properties, CUNQA builds the noise model according to the simulator instructions via Qiskit, justified by the fact that the purpose of CUNQA is to emulate DQC and not focus on simulating vQPUs. By default, the backend is noiseless with 32 qubits. For a more detailed example of the JSON describing the backend and for additional noise-related flags, the reader is referred to the CUNQA documentation <ref type="bibr" target="#b27">[28]</ref>. • Simulator. Using the --sim flag, the user can specify the simulator to be used by the vQPU. The default selection is AerSimulator, which for the current version is the only one that supports noise models.</p><p>• Classical resources. Flags such as -c, --mem-per-qpu and -n_nodes are supported. These are related to the resource management options provided by the standard SLURM commands.</p><p>• DQC model. Flags --classical_comm and --quantum_comm are used to enable these communications among the raised vQPUs, this way users are allowed to build the classical-and quantum-communication models, respectively.</p><p>If none of them is specified, the no-communication scheme is deployed.</p><p>• QC and HPC integration scheme. This option determines whether the user can access the deployed vQPUs only if located on the same node or whether it can access to them independently the located node, i.e., on-node and co-located schemes. Default option is the first one and the latter is activated through the --co-located flag.</p><p>• Name. A name can be assigned to a family of vQPUs for its identification.</p><p>Other implemented commands include qdrop and qinfo. The former, a wrapper of SLURM's scancel command, frees the resources allocated to vQPUs. The latter provides information about the vQPUs currently active in the system.</p><p>Although it is not intended to be the main workflow in CUNQA, all these bash commands are also available through the user interface that, as it is presented in the next section, is a Python API. This allows users to launch and terminate vQPUs before and after executing specific tasks. This enables both execution and resource management to be handled at once, while still sticking with the model described in Figure <ref type="figure" target="#fig_8">2b</ref>.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3">Application layer: cunqa package</head><p>To interact with the vQPUs, CUNQA provides a Python API to design, submit to vQPUs and receive the results of quantum tasks. These functionalities can be summarized in two main concepts: design and execution. The design is handled by the CunqaCircuit Python class, which provides the necessary tools to model quantum tasks within CUNQA's capabilities. The execution, in turn, relies on a set of methods and classes, each with a clearly defined role within the execution chain.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3.1">CunqaCircuit.</head><p>Starting with the circuit creation capabilities, CUNQA provides its own circuit class, CunqaCircuit, bearing a strong resemblance in syntax to Qiskit's QuantumCircuit <ref type="bibr" target="#b23">[24]</ref>. Together with QASM2, they are the three circuit formats supported by CUNQA. CunqaCircuit's main purpose is to implement the distributed instructions, in line with the DQC framework that CUNQA operates under. Below there is an example of a CunqaCircuit instance circuit = CunqaCircuit(num_qubits = 3, num_clbits = 3, id = "cunqacircuit")</p><p>where num_qubits is the number of quantum registers of the circuit, num_clbits is the number of classical registers and id is a circuit identifier, the basic tool to create distributed instructions.</p><p>To illustrate how to communicate circuits between each other, hereafter, send_circuit and recv_circuit are two different instances of CunqaCircuit having "send_circuit" and "recv_circuit" as identifiers, respectively.</p><p>• Classical communications. To send the measurement result from a circuit to another, the method send_circuit.measure_and_send(control_qubit, target_circuit) must be applied to the sending circuit, where the control_qubit argument means the qubit index where the measurement will be performed and target_circuit the identifier of the receiving circuit. This circuit must be waiting for the classical bit, and to do this the method recv_circuit.remote_c_if(gate, target_qubits, control_circuit) must be applied by it. In this case, the argument gate is the name of the gate to be applied if the receiving bit is equal to one, target_qubits are the index of the qubits where the gate will be applied, control_circuit is the identifier of the sending circuit and params are the parameters in case the applied gate is parametric.</p><p>• Quantum communications: teledata. In this protocol, the qubit's state in the sending circuit is transferred to the state of a qubit on the receiving circuit. The state is destroyed on the sending circuit, so no copy of states occurs, in agreement with the no-cloning theorem. To implement the teledata, the method send_circuit.qsend(send_qubit, target_circuit) must be applied on the sending circuit, specifying with the send_qubit argument the index of the qubit in which the state will be transmitted and target_circuit as the identifier of the receiving circuit. On this receiving side, the method recv_circuit.qrecv(recv_qubit, control_circuit) must be applied with the recv_qubit argument as the index of the receiving qubit and the control_circuit identifier of the circuit that is sending the qubit.</p><p>• Quantum communications: telegate. In this protocol, a qubit from the sending circuit remotely controls gates in a receiving circuit without transferring its state completely, which allows the recovery of the initial state of the control qubit. Therefore, this protocol can be thought of in three blocks: the first, known as cat-entanglement, transfers the necessary information from one circuit to another; the second consists of applying the controlled gates to the receiving circuit and, the third, known as cat-disentanglement, in which the control qubit recovers its initial state, see <ref type="bibr" target="#b0">[1]</ref>. Thus, the implementation that best fits this protocol is a Python context manager, which applies the cat-entangler upon entering and the cat-disentangler upon exit. Explicitly, with send_circuit.expose(control_qubit, target_circuit) as rcontrol:</p><p>recv_circuit.controlled_gate(rcontrol, target_qubit)</p><p>where the qubits indexes, the controlled gates and circuit identifier of the receiving circuit must be specified.</p><p>Additionally, CunqaCircuit implements convenient operators to build large circuits out of smaller ones. The sum of two CunqaCircuit objects, written as circ 0 +circ 1 , returns a deeper circuit with the instructions of the first summand followed by those of the second. The union of two CunqaCircuit objects, written as circ 0 |circ 1 , returns a new circuit with its first quantum registers with their gates being those of the circ 0 and and similarly the last quantum registers with their gates being those of the circ 1 . On the other direction, it is possible to extract pieces of a given circuit using the methods hor_split and vert_split, which divide a circuit with horizontally or vertically cuts, after a given qubit or after a given position respectively. Other methods like len, which returns the circuit depth, or contains, which returns a boolean specifying if a gate is present in the circuit, are available, while more functionalities are constantly being added. See CUNQA documentation <ref type="bibr" target="#b27">[28]</ref> for further details.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.3.2">Job submission and results reception.</head><p>To run the created quantum circuits on a vQPUs, firstly is needed to access to the deployed QPUs. This is obtained through the get_QPUs function, which returns a list of instances of the QPU class with each one containing a client connected to the server of a vQPU. This function allows two arguments: one for disabling the on-node through the boolean argument on_node and the other to filter the vQPUs through its family name, both introduced in Section 2.2.</p><p>To run a circuit on the no-communication model, the user chooses one of the QPU instances and calls its method QPU.run(circuit, options), where the options argument includes number of shots, simulation method, circuit compilation settings, etc. This call sends the information in an asynchronous way, making possible the parallelization of the executions when using more than one vQPU.</p><p>On the other hand, to run a circuit in a model with communications-either classical or quantum-the function run_distributed(circuits, qpus, options) must be used, where circuits and qpus are lists of quantum circuits and QPU instances, respectively. The number of QPU instances must be greater or equal than the number of circuits to submit. Additionally, the associated vQPUs to the QPU instances must have been deployed with the desired communications on.</p><p>Both methods, run and run_distributed, return instances of the class QJob which handles the interaction with the asynchronous simulation taking place in the vQPUs. The results of the circuit execution are attained using the attribute QJob.result, a Python dictionary including the counts of the measures (counts) and the time taken to perform the simulation (time_taken). The result attribute provokes a blocking call where the system must wait for the execution to finish before continuing to the next line. For convenient extraction of results of multiple simulation jobs the function gather was created, taking as inputs a list of QJob instances and returning a list of Result objects.</p><p>Finally, it must be noted that the QJob class possesses the upgrade_parameters. Some algorithms-such as Variational Quantum Algorithms (VQAs)-include a quantum part consisting of a parametric circuit executed iteratively with a Manuscript submitted to ACM different set of parameters each time. In such cases, each new circuit differs from the previous one only in the values of certain parameters, not in its overall structure. The upgrade_parameters method enables the update of these values, thereby avoiding the transmission of redundant information in each iteration of the algorithm.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.4">Middleware</head><p>The middleware is commonly understood as the "software glue" that connects two software layers, but this definition lacks precision. In this work, middleware is meant to be the set of software tools dedicated to connect the Python interface with the vQPUs, written in C++. In CUNQA, this connection is carried out mainly by two procedures: transforming the quantum circuits into an intermediate representation (IR) and connecting the user with the vQPUs. On the one hand, CUNQA Python package converts the supported circuit representations-described in Section 2.3-into a JSON format with a predefined scheme. JSON was the chosen IR of quantum circuits motivated by the fact that simulators such as AerSimulator already rely on such a representation. On the other hand, the communications between the user and the vQPUs are implemented in C++. The user side is also compiled for its use in Python, combining C++ performance with Python-level accessibility through the API. The connection between this interface and the lower level is made through a single point: the vQPU client presented above in Section 2.1. This unique contact point has the great advantage of decoupling both Python and C++ layers. An user can use CUNQA through the Python interface without worrying about the low-level part.</p><p>It may be inferred from the previous description of the middleware that the compilation stage-which usually comprises several optimization steps of the circuit-is, simply, transforming the circuit representations to JSON format with a predefined scheme. But this is not the case, as CUNQA supports Qiskit transpilation of circuits, leveraging its circuit optimization as part of the API. No optimization method, nor any advance compilation tool is developed as a core part of CUNQA. This is due to the fact that CUNQA's purpose is not the optimal compilation of quantum circuits, but the integration of DQC into HPC environments. Overall, the middleware's simplicity is a deliberate design decision intended to concentrate development efforts on the emulation process and on the orchestration of the DQC architectures implemented in CUNQA.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3">CUNQA on display: the QPE algorithm</head><p>To prove that CUNQA can emulate the three DQC schemes introduced, it was decided to run the same algorithm adapted to each of the three schemes. The Quantum Phase Estimation algorithm (QPE) was selected for this purpose.</p><p>The selection of only one algorithm is based on the idea of being able to faithfully compare the models, avoiding the external differences brought by the selection of different algorithms.</p><p>The QPE-first introduced in 1995 by Kitaev <ref type="bibr" target="#b26">[27]</ref>-aims to estimate eigenvalues from unitary operators. Specifically, the algorithm will approximate the phase 𝜙 ∈ [0, 1) of the eigenvalue 𝑒 2𝜋𝑖𝜙 of a unitary operator 𝑈 . Hereafter, 𝑈 will be an arbitrary unitary operator and |𝜓 ⟩ one of its eigenvectors such that 𝑈 |𝜓 ⟩ = 𝑒 2𝜋𝑖𝜙 |𝜓 ⟩. The quantum circuit-displayed in Figure <ref type="figure">6</ref>-is composed by two quantum registers: one for the 𝑛 ancilla qubits that will store the phase information and another where the controlled 𝑈 2 𝑡 operators are applied, for 𝑡 ∈ {0, ..., 𝑛 -1}. The phase 𝜙 is the estimated as</p><formula xml:id="formula_1">𝜙 ≃ φ = 𝜉 2 𝑛 with an error of 1 2 𝑛 ,</formula><p>where 𝜉 is the decimal representation of the most frequent outcome bit string of the former quantum register.</p><p>For obtaining a result with high precision, one can increase the number 𝑛 of ancilla qubits increasing the number of possible outcomes up to 2 𝑛 , which forces to increase the number of shots required by the algorithm. This conforms</p><p>Manuscript submitted to ACM 𝑚 . . . . . . . . . . . . . . . . . . |0⟩ 𝐻 QFT † |0⟩ 𝐻 |0⟩ 𝐻 |𝜓 ⟩ 𝑈 2 0 𝑈 2 1 𝑈 2 𝑛-1 Fig. 6. QPE circuit a clear case were de no-communication model of CUNQA can be applied: distribution of shots among the vQPUs.</p><p>The classical communication model fits on the so called Iterative Quantum Phase Estimation Algorithm (IPEA), that leverages classical communications between QPUs to reduce the number of ancilla qubits. Finally, the fact that the QPE is separated in two quantum registers allows to easily separate the QPE into two sets with a well known number of controlled gates affected. This fits in the quantum-communication model as the controlled gates required to be distributed are perfectly delimited.</p><p>The rest of this section will show how the QPE is implemented under the aforementioned three models with a final discussion of the results. The selected unitary operator 𝑈 is the 𝑅 𝑧 operator described as</p><formula xml:id="formula_2">𝑅 𝑧 (2𝜃 ) = 𝑒 -𝑖𝜃 0 0 𝑒 𝑖𝜃 ,</formula><p>and its selected eigenvector is |𝜓 ⟩ = |1⟩. The 𝑅 𝑧 was chosen because the simple preparation of its eigenvectors {|0⟩, |1⟩}, one of the major bottlenecks of QPE. The chosen eigenvector is |1⟩ because it allows to know the result in advance through the simple relationship 𝜃 = 2𝜋𝜙.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1">No-communication: distribution of shots</head><p>The no-communication case, as previously noted, is the most straightforward one: classical distribution is applied to quantum tasks. In this case, the distribution consists of dividing the total number of shots by the number of available vQPUs and assigning each vQPU its corresponding share. This naive technique is referred to as distribution of shots.</p><p>By applying it, a quantum task that would otherwise execute all shots sequentially can now parallelize execution in proportion to the number of vQPUs available. Figure <ref type="figure" target="#fig_6">7</ref> presents the Python code that implements this case, employing all the different methods presented in Section 2.3. From lines 1-12, the circuit is constructed; after this, in line 15, get_QPUs is employed to get the vQPUs available as a list of QPU objects; finally, in line 19, the asynchronous run method is called iteratively to send the quantum tasks to the corresponding vQPUs.</p><p>1 # Defining the QPE circuit 2 qpe = CunqaCircuit(num_qubits + 1, num_qubits) 3 qpe.x(num_qubits) 4 5 for i in range(num_qubits): 6 qpe.h(i) 7 for _ in range(2**i): 8 qpe.crz(phase, i, num_qubits) 9 10 # Inverse QFT on first n-1 qubits (not available in the API, abbreviated for clarity) 11 qpe.IQFT(0, num_qubits -2) 12 qpe.measure_all() 13 14 # Obtaining available QPUs and distributing the shots 15 qpus = get_QPUs() 16 shots_per_qpu = [shots / size(qpus) for i in range(size(qpus))] 17 18 # Submitting the jobs and gathering results 19 qjobs = [qpu.run(qpe, shots_per_qpu) for qpu, qpu_shots in zip(qpus, shots_per_qpu)] 20 results = gather(qjobs) </p><formula xml:id="formula_3">|0⟩ 𝐻 𝑅 𝑧 (-𝜋 2 2 ) 𝑅 𝑧 (-𝜋 2 ) 𝐻 |0⟩ 𝐻 𝑅 𝑧 (-𝜋 2 ) 𝐻 |0⟩ 𝐻 𝐻 |𝜓 ⟩ 𝑈 2 2 𝑈 2 1 𝑈 2 0</formula><p>Fig. <ref type="figure">8</ref>. QPE with measures before the QFT controls, revealing the IPEA structure.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.2">Classical-communication: Iterative Phase Estimation Algorithm (IPEA)</head><p>The Iterative Phase Estimation Algorithm (IPEA) <ref type="bibr" target="#b12">[13]</ref> addresses the problem of increasing the number of qubits for gaining precision in the QPE. IPEA reduces the amount of ancilla qubits by sequentially computing each bit of the binary expansion of the phase. The size of the circuits employed is of (1 + 𝑚) qubits versus the 𝑛 + 𝑚 qubits required in the QPE-where 2 𝑚 is the dimension of the unitary matrix 𝑈 . This reduction is achieved through the introduction of classical communications, which allow a circuit to transmit its computed bit to all successive circuits, keeping all information available at each step.</p><p>To obtain the IPEA structure from the QPE, first notice that the last operation on the ancilla qubits before measurement is the inverse QFT block, which consisted on a ladder of Hadamards and controlled rotations. By the Deferred Measurement Principle <ref type="bibr" target="#b18">[19]</ref>, <ref type="bibr">[32, §4.4]</ref> this is equivalent to measuring before the controlled rotations, resulting on the circuit shown in Figure <ref type="figure">8</ref> with classically controlled gates. These classical controls suggest a circuit partition in several vQPUs with classical communications. This partition is shown in Figure <ref type="figure">8</ref> with blue dotted lines, determining the distributed IPEA that this section focuses on. Notice that the partition is possible as in the controlled unitary register each gate returns the eigenvector making each step independent of the others -if the eigenvector can be reliably prepared.</p><p>Manuscript submitted to ACM</p><p>1 # Getting the available vQPUs 2 qpus_QPE = get_QPUs() 3 4 # Defining the IPEA circuits 5 circuits = [] 6 for i in range(num_qpus): 7 theta = 2 * pi * 2**(num_qpus -i -1) * phase # pi = 3,141592... 8 9 circuits[i] = CunqaCircuit(qubits=2, cbits=2, id= f"circuit_{i}") 10 circuits[i].h(0) 11 circuits[i].x(1) 12 circuits[i].crz(theta, 0, 1) # Powers of the controlled unitary 13 14 # Receiving bits from previous circuits 15 for j in range(i): 16 qpe_angle = -pi * 2**(j -i) 17 circuits[i].remote_c_if("rz", qubits = 0, 18 param = qpe_angle, control_circuit = f"circuit_{j}") 19 20 circuits[i].h(0) 21 22 # Sending bits to upcoming circuits 23 for k in range(num_qpus -i -1): 24 circuits[i].measure_and_send(qubit = 0, target_circuit = f"circuit_{i + k + 1}") 25 26 circuits[i].measure_all() 27 28 # Submitting the jobs and gathering results 29 distributed_jobs = run_distributed(circuits, qpus_QPE) 30 results = gather(distributed_jobs) Figure 9 shows Python code implementing the IPEA using CUNQA. It retrieves the available QPUs with get_QPUs</p><p>in line 2, creates as many IPEA circuits as QPUs are deployed in lines 5 to 25, runs them using run_ditributed in line 28 and collects the results using gather in line 29. The circuit creation logic is abstracted away in the generic Figure <ref type="figure">10a</ref>: a Hadamard gate is applied to the unique ancilla qubit to enter superposition, the controlled unitary is performed 2 𝑛-𝑖 -1 times and the bits from all the previous circuits are received through the remote_c_if method in lines 15-17.</p><p>Then, a Hadamard gate is performed and the bit is measured and transmitted to all subsequent circuits through the measure_and_send method in lines 22-23. The flow of information between the circuits in different QPUs is depicted in Figure <ref type="figure">10b</ref>. Finally, note that the application of several classical controlled gates on each subcircuit is not optimal.</p><p>The optimal way would be to receive all classical bits of previous circuits, then computing the rotation angle from them and finally apply a unique rotation gate. As this flow is not yet supported on CUNQA, the first but suboptimal case was implemented.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.3">Quantum communications: distributed QPE</head><p>The QPE has two quantum registers: the ancilla qubits and the qubits where the controlled 𝑈 2 𝑡 are applied. To execute each part in a different QPU, the controlled 𝑈 gates will be transformed into distributed gates. The telegate and teledata procotols allow the execution of a controlled gate with the control and the target qubits being from different QPUs.</p><p>In the use case here presented, the telegate protocol is the one employed but the algorithm could be also distributed through the teledata one. Fig. <ref type="figure">10</ref>. The bit 𝑏 𝑖 in the binary expansion of φ is the most frequent bit b𝑖 after the shots.</p><p>1 # Defining the distributed QPE circuits 2 ancilla_circuit = CunqaCircuit(num_ancilla_qubits, id = "ancilla_circuit")</p><formula xml:id="formula_4">3 register_circuit = CunqaCircuit(1, id = "register_circuit")<label>4</label></formula><p>5 # Initialization of the eigenstate |1&gt; 6 register_circuit.x(0) 7 8 for i in range(num_ancilla_qubits): 9 ancilla_circuit.h(i) 10 11 # Performing the controlled unitary through telegate 12 for i in range(n_ancilla_qubits): 13 with ancilla_circuit.expose(num_ancilla_qubits -1 -i, register_circuit) as rcontrol: 14 theta = 2 * pi * 2**(i + 1) * phase # pi = 3,141592... 15 register_circuit.crz(theta, rcontrol, 0) 16 17 # Inverse QFT (not available in the API, abbreviated for clarity) 18 ancilla_circuit.IQFT(0, num_ancilla_qubits) 19 ancilla_circuit.measure_all() 20 21 circuits = [ancilla_circuit, register_circuit] 22 23 # Getting available vPQUs 24 qpus_QPE = get_QPUs() 25 26 # Submitting the jobs and gathering results 27 distributed_jobs = run_distributed(circuits, qpus_QPE) 28 results = gather(distributed_jobs) The implementation of this case can be seen in the code of Figure <ref type="figure" target="#fig_9">11</ref>. In lines 1 to 18, the construction of the circuits corresponding to each quantum register is performed. Specifically in line 11, the expose method <ref type="bibr" target="#b6">[7]</ref> can be seen in use. This is the one implemented the telegate protocol, as explained in Section 2.3, and the 𝐶𝑅 𝑧 -which is the 𝑈 2 𝑡 gate in this particular case-is the one gate added to the protocol. The rest of the code, from line 21-25, sends the circuits to execute in the same manner than the classical-communication model with the employment of the run_distributed method.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.4">Obtained results</head><p>The purpose of this section is to discuss the results obtained for the three DQC models above in order to gain a better understanding of the platform. In all cases the phase to be estimated was 𝜙 = 1/𝜋, AerSimulator was used as the simulator, and each vQPU was deployed on a CESGA HPC node belonging to the QMIO classical cluster <ref type="bibr" target="#b7">[8]</ref>. Each vQPU was equipped with the same classical resources: 4 cores and 15GB of memory per core. As a base reference the case of no communications with one vQPU and 10 8 shots will be used. This number of shots far exceeds what is necessary for estimating the phase-for instance the quantum-communication case uses 10 4 shots with the same result-yet it was employed to better showcase the time speedup.</p><p>In the no-communication case, a range of vQPUs up to 100 was employed, all of them with 𝑛 = 16 ancilla qubits. Figure <ref type="figure" target="#fig_10">12</ref> illustrates how simulation time decreases with the increment of the number of vQPUs used in the parallelization (navy blue dots, left axis). From 32 vQPUs the time starts growing due to the overhead introduced by the distribution and gathering of the information, making making the increase in the number of vQPUs not profitable. This is also reflected on the acceleration curve (red stars, right axis), that represents the quotient time for 1 vQPU/time for n vQPUs. At the beginning, that curve aligns with the ideal case, but, once overhead takes on, acceleration decreases. The 100 vQPU case is emphasized in Table <ref type="table" target="#tab_5">1</ref> because the number of shots per vQPU is reduced by two orders of magnitude to 10 6 . This is the maximum number of shots that has been tested for classical communications due to limitations in execution time.</p><p>In the classical-communication case, IPEA employs as many subcircuits-depicted in Figure <ref type="figure">10a</ref>-as ancilla qubits in the base QPE, which in this context is 16. Consequently, the natural number of vQPUs required matches the number of subcircuits. Table <ref type="table" target="#tab_5">1</ref> shows that the simulation time in this case improves upon the base scenario, though it does not reach the performance achieved by the no-communication case with 100 vQPUs, even though the latter is not the optimal one. This difference arises from two factors: first, as discussed in Section 2.1, in the no-communication model the circuit is handed over to the simulator as a black box, allowing the simulator to apply its own internal optimizations. In contrast, in the classical-communication model the extraction and modification of gate execution from the simulator removes potential optimizations. Second, the inclusion of classical communication directives introduces inherent synchronization delays, which are absent in standard quantum gate execution and thus contribute to longer simulation times.</p><p>In the quantum-communication case, only two vQPUs were employed, as discussed in Section 3.3. As shown in Table 1. QPE results using the three DQC schemes.</p><p>of a distribution protocol, which introduces a fixed number of extra gates per operation. This, combined with the single-process simulation, implies the simulation time scales proportionally with the number of vQPUs involved.</p><p>Finally, the estimated phase was the same for the three DQC schemes and equal to 𝜙 ≃ 0.3183135986328125 ± 0.000015, which is consistent with the theoretical 1/𝜋 = 0.318309886183790... . This is the main result of this work: CUNQA effectively emulates DQC algorithms under the three communication schemes.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4">Related work</head><p>Several tools have been developed aiming for integrating quantum computing in HPC. It is important to, now that CUNQA has been thoroughly explained and contextualized, explain the differences with these tools in order to understand the novelty of CUNQA.</p><p>• Quantum Framework (QFw) <ref type="bibr" target="#b1">[2,</ref><ref type="bibr" target="#b9">10,</ref><ref type="bibr" target="#b37">38,</ref><ref type="bibr" target="#b38">39]</ref>. The QFw tries to mimic a GPU accelerator stack, as explained in <ref type="bibr" target="#b37">[38]</ref>.</p><p>In this software stack they define two critical components: the Quantum Programming Interface (QPI) and the Quantum Platform Manager (QPM). The QPI mediates the application layer access to the middleware, where it can retrieve information about the resources available, insert compilation passes for the toolchain and more.</p><p>More generally, it simplifies the customization and the interaction with the lower parts of the abstraction model, however, the QPI does not define a programming model-as Qiskit, for instance, does. On the other hand, the QPM, serves as a sort of driver, emerging as the responsible for communicating with the quantum device. It defines an API such that the QPI can interact with every quantum device indistinctively, although this is a current area of research for them. • Munich Quantum Software Stack (MQSS) <ref type="bibr" target="#b4">[5,</ref><ref type="bibr" target="#b24">25]</ref>. The MQSS software stack is very similar to QFw, to the point that they even have a so called QPI <ref type="bibr" target="#b25">[26]</ref>, even though this QPI does define a programming model in C, removing the need of using an external programming language. Moreover, they also define an API that abstracts away the specifics of the quantum devices, called quantum Quantum Device Management Interface (QDMI), which defines an interface that-as they claim in their documentation-is heavily inspired by the design of the OpenCL API for parallel programming of heterogeneous systems.</p><p>• A Co-Execution Environment for Quantum and Classical Resources (CONQURE) <ref type="bibr" target="#b28">[29]</ref>. This work developes two tools: CONQURE cloud, which they claim is an interoperable alternative for AWS' cloud queue for quantum devices; and OpenMP-Q, which extends QpenMP-Q by leveraging its current support for accelerators with the aim of modifying quantum task execution in HPC. These two ways of operating with CONQURE make it a very versatile option, although it has some disadvantages, such as OpenMP-Q model's reliance on a Python script as an intermediate step for execution.</p><p>• QCCP <ref type="bibr" target="#b13">[14]</ref>. This tool defines a programming model that aims to shield the super-heterogeneous nature of HPC environments nowadays, representing a development in the application layer of Figure <ref type="figure" target="#fig_2">2</ref>. This work is completely complementary to the QFw, in which they did not care about the programming model employed.</p><p>• Even though it is not a tool, it is also worth mentioning the work executed by Claudino et al. <ref type="bibr" target="#b10">[11]</ref>, in which they employed the eXtreme-scale Accelerator programming framework (XACC) <ref type="bibr" target="#b29">[30]</ref> in combination to HPC resources to simulate, in the case of their article, the multi-contracted variant of the VQE algorithm (MC-VQE). This work showed that even though XACC is not thought to be an HPC tool explicitly, it can be used in such ways.</p><p>CUNQA distinguishes itself from all other tools in one essential aspect: it treats DQC as a central element of its design, assigning it the same level of importance as integration within HPC environments. It is, to the best of our knowledge, the only tool that explicitly addresses the emulation of DQC architectures in HPC contexts, and specifically, the first to confront the challenge of simulating quantum communication between emulated QPUs.</p><p>Structurally and conceptually, CUNQA shares similarities with QFw and MQSS. However, these works place strong emphasis on the middleware layer within their infrastructures, whereas, as previously discussed, middleware is not a primary concern in CUNQA. This distinction stems from their respective goals: those tools aim to consolidate existing developments in quantum computing and adapt them for HPC, while CUNQA adopts an exploratory approach focused on the future role of quantum computing within HPC, placing DQC at the core of its design. CONQURE, by contrast, provides a cloud-based platform and a modified version of OpenMP capable of supporting quantum accelerators. Both directions diverge from that of CUNQA: the former because a cloud-based system is incompatible with the notion of an accelerator, and the latter because it seeks to adapt a classical framework to the quantum workflow, rather than designing a quantum-oriented approach from the outset. Lastly, QCCP differs fundamentally from CUNQA, as it proposes an entirely new programming model, whereas CUNQA seeks to leverage the most widely adopted model possible to facilitate user adaptation and integration with existing workflows (that is why CunqaCircuit is so similar in use to Qiskit's QuantumCircuit).</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="5">Future work</head><p>The continuous improvement of CUNQA and the implementation of new features requested by users is a sure bet for the future of the tool. Steps in this direction could range from adding new simulators, to improving the efficiency, quality, and design of the application code, to implementing high-level external libraries that exploit CUNQA as a simulation infrastructure.</p><p>One of the ways to this improvement would be the implementation of the dynamic execution of gates without the concept of circuits: following the path set by IBM <ref type="bibr" target="#b21">[22]</ref>, in a few years there will be quantum computers that support circuits with such a large number of gates that the encoding of the circuits would be on the order of hundreds of gigabytes, an obvious problem when having to move such a large amount of data. Anticipating this problem, CUNQA instructions-gates and measurements-would be sent to the vQPU from the client in small blocks of instructions so that the vQPU will update its status as instructions arrive. A final instruction would inform the vQPU that there are no more instructions to execute, opening up two possibilities depending on the characteristics of the vQPU and the instructions sent: the final status before the measurements could be used to sample the necessary shots, or the measurements could be applied like any other instruction and the sending of instructions would start again until all the shots were executed. Furthermore, to optimize the transmission of these instructions, they would be sent in binary format (using a binary converter developed at CUNQA) and would be applied directly to the vQPU via a hash of binary instructions to instructions supported by the vQPU simulator. This conversion to binary not only improves the efficiency of sending instructions through a traditional communications channel, but also completely eliminates the need for intermediate representations of circuits and instructions. This does not imply ending support for the classical circuit execution style. As hinted in Section 2.4, adopting a more efficient IR and expanding middleware functionality are viable paths for future improvement. Using JSON as the IR constrains optimization and poses a memory-efficiency problem compared with representations that avoid string literals.</p><p>Regarding the currently supported simulators, they will be updated to their last version. Moreover, as stated in Section 2.1, in the version of CUNQA presented in this work only the no-communication model supports noise simulation.</p><p>A future improvement is to add noise support to the classical-and quantum-communication models. Beyond simulating the noise of the standard gates supported by the simulator, this will require simulating the noise of the classical and quantum communication directives, which is a challenge in its own. Finally, CUNQA has so far been installed and tested at a single HPC center: Galicia Supercomputing Center (CESGA).</p><p>A natural next step is deployment at other HPC centers to test robustness and expand the user base. This will, in turn, likely lead to additional improvement requests from its users.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="6">Conclusions</head><p>CUNQA was presented as, to the best of our knowledge, the first tool capable of emulating the three DQC schemes in HPC environments. To enable this emulation, the concept of a virtual QPU (vQPU) was introduced: a classical process running in an HPC environment that simulates quantum tasks as if it were a real QPU. These vQPUs constitute the foundational blocks of the DQC models.</p><p>All three DQC models were defined and implemented in this work. The no-communication scheme is a classical distribution of quantum tasks across vQPUs; in this scheme-also called embarrassingly parallel-the vQPUs do not share information at runtime. The classical-communication scheme likewise distributes quantum tasks classically, but includes MPI-like instructions that synchronize vQPUs. Specifically, a measurement result in one vQPU is sent to another vQPU that awaits it to classically control a quantum operation. Finally, the quantum-communication scheme is a purely quantum distribution case, incorporating quantum-communication protocols into the tasks. Its implementation requires a single process to simulate quantum tasks that share quantum information, in contrast to the other two models where each vQPU is responsible of simulating its own task. This architectural change negatively impacts simulation time, making the emulation of quantum-communication models not achieving improvement in times.</p><p>From a software perspective, CUNQA is organized into three layers. The first is a low-level layer that implements DQC emulation in C++ and comprises the vQPUs and their associated components. The second layer is a Python interface that enables the definition and execution of distributed circuits under the three DQC schemes. It is intended to remain applicable when vQPUs are replaced by real QPUs with any form of inter-QPU communication. The third layer represents the middleware, which has the goal of connecting the other two. Each layer is designed to minimize dependencies and decouple CUNQA from third-party libraries.</p><p>In conclusion, CUNQA is a step forward in the growing field of DQC. It is designed for testing the novel architectures this field presents in order to better understand how to work with them and, specially, how to program its problems.</p><p>Ongoing development and adoption of emerging techniques are core goals, with the aim of remaining relevant amid the rapid evolution of quantum computing.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="7">Data availability</head><p>CUNQA is an open-source project and its code can be found in the GitHub repository <ref type="url" target="https://github.com/CESGA-Quantum-Spain/cunqa">https://github.com/CESGA-  Quantum-Spain/cunqa</ref>. The code version presented in this work is 1.0.0.</p></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><figDesc>Resource management out of the middleware.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Fig. 2 .</head><label>2</label><figDesc>Fig. 2. Quantum software stack.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Fig. 3 .</head><label>3</label><figDesc>Fig. 3. All the possible DQC schemes.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_4"><head>Fig. 4 .</head><label>4</label><figDesc>Fig.<ref type="bibr" target="#b3">4</ref>. Quantum communication protocols extracted from the work of Barral et al.<ref type="bibr" target="#b0">[1]</ref> with the communication qubits highlighted.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_5"><head>Fig. 5 .</head><label>5</label><figDesc>Fig.<ref type="bibr" target="#b4">5</ref>. In 5a the vQPUs are responsible for the execution while in 5b the vQPUs delegate in an executor process.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_6"><head>Fig. 7 .</head><label>7</label><figDesc>Fig. 7. Code for the QPE with distributed shots.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_7"><head>Fig. 9 .Figure 9 shows</head><label>99</label><figDesc>Fig. 9. IPEA implementated on CUNQA</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_8"><head>𝑈 2</head><label>2</label><figDesc>𝑛-𝑖 -1 (a) Circuit structure for the 𝑖-th step of the IPEA.Bit flow between vQPUs in the IPEA.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_9"><head>Fig. 11 .</head><label>11</label><figDesc>Fig. 11. Distributed QPE with quantum communications code.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_10"><head>Fig. 12 .</head><label>12</label><figDesc>Fig. 12. Simulation time (navy blue) and acceleration (red) for estimating 𝜙 = 1/𝜋 with the QPE algorithm with 𝑛 = 16 ancilla qubits.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_5"><head>Table 1 ,</head><label>1</label><figDesc>the quantum-communication model exhibits execution times two orders of magnitude greater than those of the base case. Increasing the number of vQPUs would further degrade performance, as it would also increase the number of circuit gates. This occurs because distributing additional controlled gates requires the application</figDesc><table><row><cell></cell><cell cols="3">nº vQPUs Shots/vQPU Phase (𝜙)</cell><cell>Estimated phase</cell><cell>Execution time (s)</cell></row><row><cell></cell><cell>1</cell><cell>10 8</cell><cell>1/𝜋</cell><cell>0.3183135986328125</cell><cell>291.366</cell></row><row><cell>No comm.</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell>100</cell><cell>10 6</cell><cell>1/𝜋</cell><cell>0.3183135986328125</cell><cell>16.641</cell></row><row><cell>Classical comm.</cell><cell>16</cell><cell>10 6</cell><cell>1/𝜋</cell><cell>0.3183135986328125</cell><cell>77.760</cell></row><row><cell>Quantum comm.</cell><cell>2</cell><cell>10 4</cell><cell>1/𝜋</cell><cell>0.3183135986328125</cell><cell>13974.584</cell></row></table></figure>
+			<note xmlns="http://www.tei-c.org/ns/1.0" place="foot" xml:id="foot_0"><p>Manuscript submitted to ACM</p></note>
+		</body>
+		<back>
+
+			<div type="acknowledgement">
+<div><head>Acknowledgments</head><p>This work has been mainly funded by the project <rs type="projectName">QuantumSpain</rs>, financed by the <rs type="funder">Ministerio de Transformación Digital y Función Pública of Spain's Government</rs> through the project call <rs type="projectName">QUANTUM ENIA -Quantum Spain</rs> project, and by the <rs type="funder">European Union</rs> through the <rs type="funder">Plan de Recuperación</rs>, <rs type="person">Transformación y Resiliencia -NextGenerationEU</rs> within the framework of the <rs type="institution">Agenda España Digital 2026</rs>. <rs type="person">J. Vázquez-Pérez</rs> was supported by the <rs type="funder">Axencia Galega de Innovación (Xunta de Galicia)</rs> through the <rs type="funder">Programa de axudas á etapa predoutoral</rs> (<rs type="grantNumber">ED481A &amp; IN606A</rs>). Additionally, this research project was made possible through the access granted by <rs type="funder">the Galician Supercomputing Center (CESGA)</rs> to two key parts of its infrastructure. Firstly, its Qmio quantum computing infrastructure with funding from the <rs type="funder">European Union</rs>, through the <rs type="programName">Operational Programme Galicia 2014-2020 of ERDF_REACT EU</rs>, as part of the <rs type="funder">European Union</rs>'s response to the COVID-19 pandemic. Secondly, The <rs type="institution" subtype="infrastructure">supercomputer FinisTerrae III</rs> and its permanent data storage system, which have been funded by the <rs type="programName">NextGeneration EU 2021 Recovery, Transformation and Resilience Plan</rs>, <rs type="grantNumber">ICT2021-006904</rs>, and also from the <rs type="programName">Pluriregional Operational Programme of Spain 2014-2020</rs> of the <rs type="funder">European Regional Development Fund (ERDF)</rs>, <rs type="grantNumber">ICTS-2019-02-CESGA-3</rs>, and from the <rs type="programName">State Programme for the Promotion of Scientific and Technical Research of Excellence of the State Plan for Scientific and Technical Research and Innovation 2013-2016 State subprogramme for scientific and technical infrastructures and equipment of ERDF</rs>, <rs type="grantNumber">CESG15-DE-3114</rs>.</p></div>
+			</div>
+			<listOrg type="funding">
+				<org type="funded-project" xml:id="_uQmCM5Q">
+					<orgName type="project" subtype="full">QuantumSpain</orgName>
+				</org>
+				<org type="funded-project" xml:id="_6NUurU9">
+					<orgName type="project" subtype="full">QUANTUM ENIA -Quantum Spain</orgName>
+				</org>
+				<org type="funding" xml:id="_fPqRRcd">
+					<idno type="grant-number">ED481A &amp; IN606A</idno>
+				</org>
+				<org type="funding" xml:id="_BHHxDxr">
+					<orgName type="program" subtype="full">Operational Programme Galicia 2014-2020 of ERDF_REACT EU</orgName>
+				</org>
+				<org type="funding" xml:id="_Crjh5gS">
+					<idno type="grant-number">ICT2021-006904</idno>
+					<orgName type="program" subtype="full">NextGeneration EU 2021 Recovery, Transformation and Resilience Plan</orgName>
+				</org>
+				<org type="funding" xml:id="_FsEhfJf">
+					<idno type="grant-number">ICTS-2019-02-CESGA-3</idno>
+					<orgName type="program" subtype="full">Pluriregional Operational Programme of Spain 2014-2020</orgName>
+				</org>
+				<org type="funding" xml:id="_TcumWJh">
+					<idno type="grant-number">CESG15-DE-3114</idno>
+					<orgName type="program" subtype="full">State Programme for the Promotion of Scientific and Technical Research of Excellence of the State Plan for Scientific and Technical Research and Innovation 2013-2016 State subprogramme for scientific and technical infrastructures and equipment of ERDF</orgName>
+				</org>
+			</listOrg>
+
+			<listOrg type="infrastructure">
+				<org type="infrastructure">					<orgName type="extracted">supercomputer FinisTerrae III</orgName>
+				</org>
+			</listOrg>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<monogr>
+		<author>
+			<persName><forename type="first">David</forename><surname>Barral</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><forename type="middle">Javier</forename><surname>Cardama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Guillermo</forename><surname>Díaz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Faílde</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iago</forename><forename type="middle">F</forename><surname>Llovo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Mariamo</forename><surname>Mussa Juane</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Vázquez-Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><surname>Villasuso</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">César</forename><surname>Piñeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Natalia</forename><surname>Costas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><forename type="middle">C</forename><surname>Pichel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Tomás</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrés</forename><surname>Pena</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gómez</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2404.01265</idno>
+		<ptr target="https://arxiv.org/abs/2404.01265" />
+		<title level="m">Review of Distributed Quantum Computing. From single QPU to High Performance Quantum Computing</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Integrating quantum computing resources into scientific HPC ecosystems</title>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Beck</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alessandro</forename><surname>Baroni</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Bennink</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Gilles</forename><surname>Buchs</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eduardo</forename><surname>Antonio Coello</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rafael</forename><surname>Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muralikrishnan</forename><surname>Ferreira Da Silva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kalyan</forename><surname>Gopalakrishnan Meena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Gottiparthi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travis</forename><forename type="middle">S</forename><surname>Groszkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ryan</forename><surname>Humble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ketan</forename><surname>Landfield</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarp</forename><surname>Maheshwari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">A</forename><surname>Oral</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Sandoval</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">In-Saeng</forename><surname>Shehata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><surname>Suh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Zimmer</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.future.2024.06.058</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Future Generation Computer Systems</title>
+		<imprint>
+			<biblScope unit="volume">161</biblScope>
+			<biblScope unit="page" from="11" to="25" />
+			<date type="published" when="2024">2024. 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">High-Performance Computing with Quantum Processing Units</title>
+		<author>
+			<persName><forename type="first">Keith</forename><forename type="middle">A</forename><surname>Britt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travis</forename><forename type="middle">S</forename><surname>Humble</surname></persName>
+		</author>
+		<idno type="DOI">10.1145/3007651</idno>
+	</analytic>
+	<monogr>
+		<title level="j">J. Emerg. Technol. Comput. Syst</title>
+		<imprint>
+			<biblScope unit="volume">13</biblScope>
+			<biblScope unit="page">pages</biblScope>
+			<date type="published" when="2017-03">2017. mar 2017</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<analytic>
+		<title level="a" type="main">Quantum Accelerators for High-Performance Computing Systems</title>
+		<author>
+			<persName><forename type="first">Keith</forename><forename type="middle">A</forename><surname>Britt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Fahd</forename><forename type="middle">A</forename><surname>Mohiyaddin</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travis</forename><forename type="middle">S</forename><surname>Humble</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ICRC.2017.8123664</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2017 IEEE International Conference on Rebooting Computing (ICRC)</title>
+		<meeting><address><addrLine>Washington, DC, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2017">2017</date>
+			<biblScope unit="page" from="1" to="7" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<monogr>
+		<author>
+			<persName><forename type="first">Lukas</forename><surname>Burgholzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Echavarria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Hopf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Stade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Damian</forename><surname>Rovara</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ludwig</forename><surname>Schmid</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ercüment</forename><surname>Kaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Burak</forename><surname>Mete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Nufail Farooqi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Minh</forename><surname>Chung</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marco</forename><forename type="middle">De</forename><surname>Pascale</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Wille</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2509.02674</idno>
+		<ptr target="https://arxiv.org/abs/2509.02674" />
+		<title level="m">The Munich Quantum Software Stack: Connecting End Users, Integrating Diverse Quantum Technologies, Accelerating HPC</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Distributed quantum computing: A survey</title>
+		<author>
+			<persName><forename type="first">Marcello</forename><surname>Caleffi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michele</forename><surname>Amoretti</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Davide</forename><surname>Ferrari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jessica</forename><surname>Illiano</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><surname>Manzalini</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Angela</forename><forename type="middle">Sara</forename><surname>Cacciapuoti</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.comnet.2024.110672</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Computer Networks</title>
+		<imprint>
+			<biblScope unit="volume">254</biblScope>
+			<biblScope unit="page">110672</biblScope>
+			<date type="published" when="2024">2024. 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b6">
+	<monogr>
+		<author>
+			<persName><forename type="first">F</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Javier</forename><surname>Cardama</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Vázquez-Pérez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">César</forename><surname>Piñeiro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">F</forename><surname>Tomás</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><forename type="middle">C</forename><surname>Pena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrés</forename><surname>Pichel</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Gómez</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2408.03712</idno>
+		<ptr target="https://arxiv.org/abs/2408.03712" />
+		<title level="m">NetQIR: An Extension of QIR for Distributed Quantum Computing</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b7">
+	<analytic>
+		<title/>
+		<ptr target="https://cesga-docs.gitlab.io/qmio-user-guide/" />
+	</analytic>
+	<monogr>
+		<title level="j">QMIO User Guide</title>
+		<imprint>
+			<date type="published" when="2022">2022</date>
+			<publisher>Galicia Supercomputer Center (CESGA)</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b8">
+	<analytic>
+		<title level="a" type="main">Experimenting with Hybrid Quantum Optimization in HPC Software Stack for CPU Register Allocation</title>
+		<author>
+			<persName><forename type="first">Brice</forename><surname>Chichereau</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Stéphane</forename><surname>Vialle</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Carribault</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/QCE57702.2023.10197</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2023 IEEE International Conference on Quantum Computing and Engineering (QCE)</title>
+		<meeting><address><addrLine>Bellevue, WA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="volume">02</biblScope>
+			<biblScope unit="page" from="134" to="140" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b9">
+	<monogr>
+		<title level="m" type="main">QFw: A Quantum Framework for Large-scale HPC Ecosystems</title>
+		<author>
+			<persName><forename type="first">Srikar</forename><surname>Chundury</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Shehata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Naughton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Iii</forename></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Seongmin</forename><surname>Kim</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Mueller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">In-Saeng</forename><surname>Suh</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+			<pubPlace>Oak Ridge, TN (United States</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>Oak Ridge National Laboratory (ORNL)</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Technical Report</note>
+</biblStruct>
+
+<biblStruct xml:id="b10">
+	<analytic>
+		<title level="a" type="main">Parallel quantum computing simulations via quantum accelerator platform virtualization</title>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Claudino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Dmitry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexander</forename><forename type="middle">J</forename><surname>Lyakh</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccaskey</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.future.2024.06.007</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Future Gener. Comput. Syst</title>
+		<imprint>
+			<biblScope unit="volume">160</biblScope>
+			<biblScope unit="page" from="264" to="273" />
+			<date type="published" when="2024-11">2024. nov 2024</date>
+		</imprint>
+	</monogr>
+	<note>C</note>
+</biblStruct>
+
+<biblStruct xml:id="b11">
+	<monogr>
+		<author>
+			<persName><forename type="first">Simon</forename><forename type="middle">J</forename><surname>Devitt</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">William</forename><forename type="middle">J</forename><surname>Munro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kae</forename><surname>Nemoto</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:0810.2444</idno>
+		<ptr target="https://arxiv.org/abs/0810.2444" />
+		<title level="m">High Performance Quantum Computing</title>
+		<imprint>
+			<date type="published" when="2008">2008</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b12">
+	<analytic>
+		<title level="a" type="main">Arbitrary accuracy iterative quantum phase estimation algorithm using a single ancillary qubit: A two-qubit benchmark</title>
+		<author>
+			<persName><forename type="first">Miroslav</forename><surname>Dobšíček</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Göran</forename><surname>Johansson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Vitaly</forename><surname>Shumeiko</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Göran</forename><surname>Wendin</surname></persName>
+		</author>
+		<idno type="DOI">10.1103/PhysRevA.76.030306</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Phys. Rev. A</title>
+		<imprint>
+			<biblScope unit="volume">76</biblScope>
+			<biblScope unit="page">30306</biblScope>
+			<date type="published" when="2007-09">2007. Sep 2007</date>
+		</imprint>
+	</monogr>
+	<note>Issue 3</note>
+</biblStruct>
+
+<biblStruct xml:id="b13">
+	<analytic>
+		<title level="a" type="main">QCCP: a taskflow programming model for emerging computing scenario</title>
+		<author>
+			<persName><forename type="first">Qiming</forename><surname>Du</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jinchen</forename><surname>Xu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yu</forename><surname>Zhu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Hang</forename><surname>Lian</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qibing</forename><surname>Xiong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Danyang</forename><surname>Zheng</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yi</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Tu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Zheng</forename><surname>Shan</surname></persName>
+		</author>
+		<idno type="DOI">10.1140/epjqt/s40507-025-00318-5</idno>
+	</analytic>
+	<monogr>
+		<title level="j">EPJ Quantum Technology</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page">23</biblScope>
+			<date type="published" when="2025-02-13">2025. 13 Feb 2025</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b14">
+	<monogr>
+		<author>
+			<persName><forename type="first">Philip</forename><surname>Döbler</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manpreet</forename><surname>Singh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jattana</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:2507.03540[cs.ET</idno>
+		<ptr target="https://arxiv.org/abs/2507.03540" />
+		<title level="m">A Survey on Integrating Quantum Computers into High Performance Computing Systems</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b15">
+	<analytic>
+		<title level="a" type="main">Challenges in HPCQC Integration</title>
+		<author>
+			<persName><forename type="first">Amr</forename><surname>Elsharkawy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiao</forename><forename type="middle">-</forename><surname>Ting</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Michelle</forename><surname>To</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Seitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yanbin</forename><surname>Chen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Yannick</forename><surname>Stade</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Manuel</forename><surname>Geiger</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Qunsheng</forename><surname>Huang</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiaorang</forename><surname>Guo</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><forename type="middle">Arslan</forename><surname>Ansari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Ruefenacht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sven</forename><surname>Karlsson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christian</forename><forename type="middle">B</forename><surname>Mendl</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dieter</forename><surname>Kranzlmüller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/QCE57702.2023.10304</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2023 IEEE International Conference on Quantum Computing and Engineering (QCE)</title>
+		<meeting><address><addrLine>Bellevue, WA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="volume">02</biblScope>
+			<biblScope unit="page" from="405" to="406" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b16">
+	<analytic>
+		<title level="a" type="main">Mapping the Landscape of Quantum Computing and High Performance Computing Research Over the Last Decade</title>
+		<author>
+			<persName><forename type="first">Noelia</forename><surname>Garcia-Buendia</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Antonio</forename><forename type="middle">J</forename><surname>Muñoz-Montoro</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Raquel</forename><surname>Cortina</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Juan</forename><forename type="middle">M</forename><surname>Maqueira-Marín</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">José</forename><surname>Moyano-Fuentes</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/ACCESS.2024.3411307</idno>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Access</title>
+		<imprint>
+			<biblScope unit="volume">12</biblScope>
+			<biblScope unit="page" from="106107" to="106120" />
+			<date type="published" when="2024">2024. 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b17">
+	<monogr>
+		<author>
+			<persName><surname>Google</surname></persName>
+		</author>
+		<ptr target="https://quantumai.google/roadmap" />
+		<title level="m">Quantum Roadmap Google</title>
+		<imprint>
+			<date type="published" when="2019">2019</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b18">
+	<analytic>
+		<title level="a" type="main">Quantum circuits with classical channels and the principle of deferred measurements</title>
+		<author>
+			<persName><forename type="first">Yuri</forename><surname>Gurevich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andreas</forename><surname>Blass</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Theoretical Computer Science</title>
+		<imprint>
+			<biblScope unit="volume">920</biblScope>
+			<biblScope unit="page" from="21" to="32" />
+			<date type="published" when="2022">2022. 2022</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b19">
+	<analytic>
+		<title level="a" type="main">Software systems for high-performance quantum computing</title>
+		<author>
+			<persName><forename type="first">Travis</forename><forename type="middle">S</forename><surname>Humble</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Keith</forename><forename type="middle">A</forename><surname>Britt</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/HPEC.2016.7761628</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2016 IEEE High Performance Extreme Computing Conference (HPEC)</title>
+		<meeting><address><addrLine>Waltham, MA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2016">2016</date>
+			<biblScope unit="page" from="1" to="8" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b20">
+	<analytic>
+		<title level="a" type="main">Quantum computers for high-performance computing</title>
+		<author>
+			<persName><forename type="first">Alexander</forename><surname>Travis S Humble</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Mccaskey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Dmitry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Meenambika</forename><surname>Lyakh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Albert</forename><surname>Gowrishankar</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Frisch</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Monz</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">IEEE Micro</title>
+		<imprint>
+			<biblScope unit="volume">41</biblScope>
+			<biblScope unit="page" from="15" to="23" />
+			<date type="published" when="2021">2021. 2021</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b21">
+	<monogr>
+		<author>
+			<persName><surname>Ibm</surname></persName>
+		</author>
+		<ptr target="https://www.ibm.com/quantum/technology#roadmap" />
+		<title level="m">Quantum Roadmap IBM</title>
+		<imprint>
+			<date type="published" when="2016">2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b22">
+	<monogr>
+		<author>
+			<persName><surname>Ibm</surname></persName>
+		</author>
+		<ptr target="https://github.com/Qiskit/qiskit-aer.GitHubrepository" />
+		<title level="m">Qiskit-AerSimulator</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b23">
+	<monogr>
+		<author>
+			<persName><forename type="first">Ali</forename><surname>Javadi-Abhari</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthew</forename><surname>Treinish</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kevin</forename><surname>Krsulich</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Christopher</forename><forename type="middle">J</forename><surname>Wood</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jake</forename><surname>Lishman</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Julien</forename><surname>Gacon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Simon</forename><surname>Martiel</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Paul</forename><forename type="middle">D</forename><surname>Nation</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lev</forename><forename type="middle">S</forename><surname>Bishop</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Andrew</forename><forename type="middle">W</forename><surname>Cross</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Blake</forename><forename type="middle">R</forename><surname>Johnson</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jay</forename><forename type="middle">M</forename><surname>Gambetta</surname></persName>
+		</author>
+		<idno type="DOI">10.48550/arXiv.2405.08810</idno>
+		<idno type="arXiv">arXiv:2405.08810</idno>
+		<title level="m">Quantum computing with Qiskit</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b24">
+	<analytic>
+		<title level="a" type="main">A Software Platform to Support Disaggregated Quantum Accelerators</title>
+		<author>
+			<persName><forename type="first">Ercüment</forename><surname>Kaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Echavarria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Nufail Farooqi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Aleksandra</forename><surname>Swierkowska</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Patrick</forename><surname>Hopf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Burak</forename><surname>Mete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Lukas</forename><surname>Burgholzer</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Robert</forename><surname>Wille</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/SCW63240.2024.00205</idno>
+	</analytic>
+	<monogr>
+		<title level="m">SC24-W: Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis</title>
+		<meeting><address><addrLine>Atlanta, GA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2024">2024</date>
+			<biblScope unit="page" from="1646" to="1653" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b25">
+	<analytic>
+		<title level="a" type="main">QPI: A Programming Interface for Quantum Computers</title>
+		<author>
+			<persName><forename type="first">Ercüment</forename><surname>Kaya</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Burak</forename><surname>Mete</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muhammad</forename><surname>Nufail Farooqi</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Echavarria</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/QCE60285.2024.10293</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2024 IEEE International Conference on Quantum Computing and Engineering (QCE)</title>
+		<meeting><address><addrLine>Montreal, QC, Canada</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2024">2024</date>
+			<biblScope unit="volume">02</biblScope>
+			<biblScope unit="page" from="286" to="291" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b26">
+	<analytic>
+		<author>
+			<persName><forename type="first">Alexei</forename><surname>Yu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Kitaev</forename></persName>
+		</author>
+		<idno type="arXiv">arXiv:quant-ph/9511026</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Quantum measurements and the Abelian Stabilizer Problem. Ph. D. Dissertation. Moscow Institute of Physics and Technology</title>
+		<imprint>
+			<date type="published" when="1995">1995. 1996</date>
+		</imprint>
+	</monogr>
+	<note>English translation</note>
+</biblStruct>
+
+<biblStruct xml:id="b27">
+	<monogr>
+		<author>
+			<persName><forename type="first">Marta</forename><surname>Losada</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Jorge</forename><surname>Vázquez</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Álvaro</forename><surname>Carballido</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Expósito</surname></persName>
+		</author>
+		<ptr target="https://cesga-quantum-spain.github.io/cunqa/" />
+		<title level="m">CUNQA Documentation</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b28">
+	<monogr>
+		<author>
+			<persName><forename type="first">Atulya</forename><surname>Mahesh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Swastik</forename><surname>Mittal</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Frank</forename><surname>Mueller</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2505.02241</idno>
+		<ptr target="https://arxiv.org/abs/2505.02241" />
+		<title level="m">CONQURE: A Co-Execution Environment for Quantum and Classical Resources</title>
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b29">
+	<analytic>
+		<title level="a" type="main">XACC: a system-level software infrastructure for heterogeneous quantum-classical computing</title>
+		<author>
+			<persName><surname>Alexander J Mccaskey</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">I</forename><surname>Dmitry</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Eugene</forename><forename type="middle">F</forename><surname>Lyakh</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Sarah</forename><forename type="middle">S</forename><surname>Dumitrescu</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Travis</forename><forename type="middle">S</forename><surname>Powers</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Humble</surname></persName>
+		</author>
+		<idno type="DOI">10.1088/2058-9565/ab6bf6</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Quantum Science and Technology</title>
+		<imprint>
+			<biblScope unit="volume">5</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">24002</biblScope>
+			<date type="published" when="2020-02">2020. feb 2020</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b30">
+	<analytic>
+		<title level="a" type="main">Challenges in High-Performance Computing</title>
+		<author>
+			<persName><forename type="first">Philippe</forename><surname>Olivier</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Alexandre</forename><surname>Navaux</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Arthur</forename><surname>Francisco Lorenzon</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matheus</forename><surname>Da</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Silva</forename><surname>Serpa</surname></persName>
+		</author>
+		<idno type="DOI">10.5753/jbcs.2023.2219</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Journal of the Brazilian Computer Society</title>
+		<imprint>
+			<biblScope unit="volume">29</biblScope>
+			<biblScope unit="page" from="51" to="62" />
+			<date type="published" when="2023-08">2023. Aug. 2023</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b31">
+	<monogr>
+		<author>
+			<persName><forename type="first">Michael</forename><forename type="middle">A</forename><surname>Nielsen</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Isaac</forename><forename type="middle">L</forename><surname>Chuang</surname></persName>
+		</author>
+		<title level="m">Quantum Computation and Quantum Information</title>
+		<meeting><address><addrLine>Cambridge, UK.</addrLine></address></meeting>
+		<imprint>
+			<publisher>Cambridge University Press</publisher>
+			<date type="published" when="2000">2000</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b32">
+	<analytic>
+		<title level="a" type="main">Trends in high Performance Computing and Quantum Computing</title>
+		<author>
+			<persName><forename type="first">Adrián</forename><surname>Pousa</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Victoria</forename><forename type="middle">María</forename><surname>Sanz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Marcelo</forename><surname>Naiouf</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Armando</forename><forename type="middle">De</forename><surname>Giusti</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">J. Comput. Sci. Technol</title>
+		<imprint>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="issue">2</biblScope>
+			<biblScope unit="page">11</biblScope>
+			<date type="published" when="2024-10">2024. oct 2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b33">
+	<monogr>
+		<title/>
+		<author>
+			<persName><surname>Cesga Quantum Spain</surname></persName>
+		</author>
+		<ptr target="https://github.com/CESGA-Quantum-Spain/cunqasimulator" />
+		<imprint>
+			<date type="published" when="2025">2025</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b34">
+	<monogr>
+		<author>
+			<persName><forename type="first">Konstantinos</forename><surname>Rallis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Ioannis</forename><surname>Liliopoulos</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Georgios</forename><forename type="middle">D</forename><surname>Varsamis</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Evangelos</forename><surname>Tsipas</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">G</forename><surname>Ioannis</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Karafyllidis</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2509.06205</idno>
+		<ptr target="https://arxiv.org/abs/2509.06205" />
+		<title level="m">Georgios Ch. Sirakoulis, and Panagiotis Dimitrakis. 2025. Interfacing Quantum Computing Systems with High-Performance Computing Systems: An Overview</title>
+		<imprint/>
+	</monogr>
+	<note>quant-ph</note>
+</biblStruct>
+
+<biblStruct xml:id="b35">
+	<analytic>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Ruefenacht</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Dieter</forename><surname>Kranzlmüller</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Laura</forename><forename type="middle">Brandon</forename><surname>Schulz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/MCSE.2022.3221845</idno>
+	</analytic>
+	<monogr>
+		<title level="m">Accelerating HPC With Quantum Computing: It Is a Software Challenge Too</title>
+		<imprint>
+			<date type="published" when="2022">2022. 2022</date>
+			<biblScope unit="volume">24</biblScope>
+			<biblScope unit="page" from="60" to="64" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b36">
+	<analytic>
+		<title level="a" type="main">Toward a Unified Hybrid HPCQC Toolchain</title>
+		<author>
+			<persName><forename type="first">Philipp</forename><surname>Seitz</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Amr</forename><surname>Elsharkawy</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Xiao-Ting Michelle</forename><surname>To</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Martin</forename><surname>Schulz</surname></persName>
+		</author>
+		<idno type="DOI">10.1109/QCE57702.2023.10191</idno>
+	</analytic>
+	<monogr>
+		<title level="m">2023 IEEE International Conference on Quantum Computing and Engineering (QCE)</title>
+		<meeting><address><addrLine>Bellevue, WA, USA</addrLine></address></meeting>
+		<imprint>
+			<publisher>IEEE</publisher>
+			<date type="published" when="2023">2023</date>
+			<biblScope unit="volume">02</biblScope>
+			<biblScope unit="page" from="96" to="102" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b37">
+	<analytic>
+		<title level="a" type="main">Bridging paradigms: Designing for HPC-Quantum convergence</title>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Shehata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Peter</forename><surname>Groszkowski</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Naughton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Muralikrishnan</forename><surname>Gopalakrishnan Meena</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Elaine</forename><surname>Wong</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Daniel</forename><surname>Claudino</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Rafael</forename><surname>Ferreira Da Silva</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Beck</surname></persName>
+		</author>
+		<idno type="DOI">10.1016/j.future.2025.107980</idno>
+	</analytic>
+	<monogr>
+		<title level="j">Future Generation Computer Systems</title>
+		<imprint>
+			<biblScope unit="volume">174</biblScope>
+			<biblScope unit="page">107980</biblScope>
+			<date type="published" when="2026">2026. 2026</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b38">
+	<monogr>
+		<author>
+			<persName><forename type="first">Amir</forename><surname>Shehata</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Thomas</forename><surname>Naughton</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">In-Saeng</forename><surname>Suh</surname></persName>
+		</author>
+		<idno type="arXiv">arXiv:2408.08098[cs.DC</idno>
+		<ptr target="https://arxiv.org/abs/2408.08098" />
+		<title level="m">A Framework for Integrating Quantum Simulation and High Performance Computing</title>
+		<imprint>
+			<date type="published" when="2024">2024</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b39">
+	<analytic>
+		<title level="a" type="main">The quantum future of computation</title>
+		<author>
+			<persName><forename type="first">M</forename><surname>Krysta</surname></persName>
+		</author>
+		<author>
+			<persName><forename type="first">Matthias</forename><surname>Svore</surname></persName>
+		</author>
+		<author>
+			<persName><surname>Troyer</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Computer</title>
+		<imprint>
+			<biblScope unit="volume">49</biblScope>
+			<biblScope unit="page" from="21" to="30" />
+			<date type="published" when="2016">2016. 2016</date>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b40">
+	<monogr>
+		<ptr target="https://github.com/munich-quantum-toolkit/ddsim/tree/" />
+		<title level="m">Munich Quantum Toolkit. 2025. MQT-DDSIM</title>
+		<imprint>
+			<date>7f4b37ee2d574e6b1f44f9d2750fbb8c540c0788</date>
+		</imprint>
+	</monogr>
+	<note>GitHub repository</note>
+</biblStruct>
+
+<biblStruct xml:id="b41">
+	<monogr>
+		<title level="m" type="main">Supercomputer simulations of transmon quantum computers</title>
+		<author>
+			<persName><forename type="first">Dennis</forename><surname>Willsch</surname></persName>
+		</author>
+		<idno type="DOI">10.18154/RWTH-2020-08027</idno>
+		<imprint>
+			<date type="published" when="2007">2020. 2020. 20 February 2007. 2009. June 2009</date>
+			<pubPlace>Aachen</pubPlace>
+		</imprint>
+		<respStmt>
+			<orgName>RWTH Aachen University ; RWTH Aachen University; Dissertation, RWTH Aachen University</orgName>
+		</respStmt>
+	</monogr>
+	<note type="report_type">Dissertation</note>
+	<note>revised 12 March</note>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
