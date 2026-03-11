@@ -127,3 +127,5 @@ information from PDF documents.
 
 ## License
 MIT License
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18964941.svg)](https://doi.org/10.5281/zenodo.18964941)
