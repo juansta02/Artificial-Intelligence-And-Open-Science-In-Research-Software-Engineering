@@ -128,4 +128,7 @@ information from PDF documents.
 ## License
 MIT License
 
+
+[![Documentation Status](https://readthedocs.org/projects/Artificial-Intelligence-And-Open-Science-In-Research-Software/badge/?version=latest)](https://Artificial-Intelligence-And-Open-Science-In-Research-Software.readthedocs.io/en/latest/)
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18964941.svg)](https://doi.org/10.5281/zenodo.18964941)
