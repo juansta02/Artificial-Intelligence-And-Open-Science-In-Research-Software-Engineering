@@ -102,14 +102,14 @@ confirming that the extraction process works as expected.
 
 ### Word Cloud from Abstracts
 
-![Word Cloud](results/wordcloud.png)
+![Word Cloud](Assigment_1/results/wordcloud.png)
 
 The word cloud represents the most frequent terms appearing in the
 abstracts of the analyzed papers.
 
 ### Number of Figures per Article
 
-![Figures per paper](results/figures_per_paper.png)
+![Figures per paper](Assigment_1/results/figures_per_paper.png)
 
 This visualization shows the number of figures detected in each
 article based on the `<figure>` elements extracted from the XML files.
