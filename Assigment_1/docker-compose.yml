@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  analysis:
+    build: .
+    container_name: paper_analysis
+    volumes:
+      - .:/app
+    command: python wordCloud.py

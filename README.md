@@ -22,7 +22,6 @@ Python libraries:
 Grobid image in docker: https://hub.docker.com/r/grobid/grobid/tags
 
 
-
 ## Reproducibility
 
 1. Run Grobid with Docker:
@@ -89,6 +88,10 @@ figure extraction process is correct.
 
 Links were extracted from the TEI XML files by searching for `<ref>`
 elements containing a `target` attribute.
+
+External links were filtered by selecting only URLs starting with
+`http://` or `https://`, excluding internal document references
+(e.g., `#fig1`, `#b12`).
 
 To validate the extraction process, we manually inspected several
 XML files and identified the links extracted by our script.
