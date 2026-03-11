@@ -1,0 +1,13 @@
+version: 2
+
+sphinx:
+  configuration: Assigment_1/docs/conf.py
+
+build:
+  os: windows-11
+  tools:
+    python: "3.11"
+
+python:
+  install:
+    - requirements: Assigment_1/requirements.txt
