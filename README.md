@@ -114,5 +114,13 @@ abstracts of the analyzed papers.
 This visualization shows the number of figures detected in each
 article based on the `<figure>` elements extracted from the XML files.
 
+## Software Citation
+
+This work uses the GROBID software for extracting structured
+information from PDF documents.
+
+- Grobid: https://github.com/kermitt2/grobid 
+- - Software Heritage identifier: swh:1:dir:468c1e2f0c4b2f4e9db8e3a1f5b6e03f23cbb7f2
+
 ## License
 MIT License
